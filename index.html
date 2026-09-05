@@ -689,25 +689,27 @@
                     element.data.geojson.forEach(item => {
                         const notamObj = item.properties?.coreNOTAMData?.notam;
                         
-                        // 🌟 【修正箇所】隠れているNOTAMの全文（A〜G項目）を引っ張り出す
+                        // 🌟 【完全版】プロパティの全階層から伝統的メッセージやテキストを探索し構築
                         let fullText = item.properties?.traditionalMessage || 
                                        notamObj?.traditionalMessage || 
+                                       item.properties?.message || 
                                        "";
                         
-                        // 万が一全文データが無い場合は、APIの細かな情報から自力で復元する
+                        // プロパティが分散している場合、Android版と同様に各項目を結合して完全なテキストを組み立てる
                         if (!fullText && notamObj) {
-                            let q = notamObj.qLine ? `Q) ${notamObj.qLine}\n` : "";
-                            let a = notamObj.location ? `A) ${notamObj.location}\n` : "";
-                            let b = notamObj.bCode ? `B) ${notamObj.bCode}\n` : "";
-                            let c = notamObj.cCode ? `C) ${notamObj.cCode}\n` : "";
-                            let d = notamObj.dCode ? `D) ${notamObj.dCode}\n` : "";
-                            let e = notamObj.text ? `E) ${notamObj.text}\n` : "";
-                            let f = notamObj.fCode ? `F) ${notamObj.fCode}\n` : "";
-                            let g = notamObj.gCode ? `G) ${notamObj.gCode}\n` : "";
-                            fullText = (q + a + b + c + d + e + f + g).trim();
+                            let idStr = notamObj.number ? `${notamObj.number} ${notamObj.type || ''}\n` : '';
+                            let q = notamObj.qLine ? `Q) ${notamObj.qLine}\n` : (notamObj.q ? `Q) ${notamObj.q}\n` : '');
+                            let a = notamObj.location ? `A) ${notamObj.location}\n` : (notamObj.a ? `A) ${notamObj.a}\n` : '');
+                            let b = notamObj.bCode ? `B) ${notamObj.bCode} ` : (notamObj.b ? `B) ${notamObj.b} ` : '');
+                            let c = notamObj.cCode ? `C) ${notamObj.cCode}\n` : (notamObj.c ? `C) ${notamObj.c}\n` : '\n');
+                            let d = notamObj.dCode ? `D) ${notamObj.dCode}\n` : (notamObj.d ? `D) ${notamObj.d}\n` : '');
+                            let e = notamObj.text ? `E) ${notamObj.text}\n` : (notamObj.e ? `E) ${notamObj.e}\n` : '');
+                            let f = notamObj.fCode ? `F) ${notamObj.fCode} ` : (notamObj.f ? `F) ${notamObj.f} ` : '');
+                            let g = notamObj.gCode ? `G) ${notamObj.gCode}\n` : (notamObj.g ? `G) ${notamObj.g}\n` : '');
+                            
+                            fullText = (idStr + q + a + b + c + d + e + f + g).trim();
                         }
                         
-                        // どうしても取れない場合は元のE項目の文章だけをセット
                         let text = fullText || notamObj?.text || "";
                         
                         let id = notamObj?.number || "";
