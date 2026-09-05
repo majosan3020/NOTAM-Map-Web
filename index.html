@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NOTAM MAP View (Web)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --surface-variant: #2a2a2a;
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+            --orange-accent: #ff9800;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+        }
+
+        #header-container {
+            background-color: var(--bg-color);
+            padding: 8px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            position: relative;
+        }
+        .search-row input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+        }
+        .search-row input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        .search-row label {
+            position: absolute;
+            top: -8px;
+            left: 12px;
+            background: var(--bg-color);
+            padding: 0 4px;
+            font-size: 12px;
+            color: var(--primary-color);
+        }
+        .search-btn {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .chip-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none; 
+        }
+        .chip-row::-webkit-scrollbar { display: none; }
+        .chip {
+            padding: 6px 16px;
+            background-color: var(--surface-variant);
+            border: 1px solid #444;
+            border-radius: 16px;
+            color: var(--text-main);
+            white-space: nowrap;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .chip:hover { background-color: #333; }
+
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #555;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px; width: 18px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(20px); background-color: var(--primary-dark); }
+        
+        .filter-label { font-size: 14px; margin-right: 4px; }
+        
+        #keyword-input {
+            flex: 1;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            min-width: 0;
+        }
+        #keyword-input:disabled { opacity: 0.5; }
+
+        .date-btn-group {
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-variant);
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 0 4px;
+        }
+        #date-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            padding: 8px 4px;
+            font-size: 14px;
+            outline: none;
+            color-scheme: dark; 
+        }
+        #clear-date-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 16px;
+            padding: 0 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        #main-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            flex-direction: column;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+        }
+
+        #notam-panel {
+            background-color: var(--surface-variant);
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        @media (max-width: 768px) {
+            #main-container { flex-direction: column; }
+            #notam-panel {
+                position: absolute;
+                bottom: 0; left: 0; right: 0;
+                height: 38%; 
+            }
+        }
+        @media (min-width: 769px) {
+            #main-container { flex-direction: row; }
+            #notam-panel {
+                position: relative;
+                width: 400px;
+                height: 100%;
+                border-radius: 0;
+                border-left: 1px solid #444;
+            }
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        #notam-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-bottom: 10px;
+        }
+        .notam-card {
+            background-color: #333333;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            position: relative;
+        }
+        .notam-card:active { background-color: #444; }
+        .notam-card.selected {
+            border-color: var(--orange-accent);
+            background-color: #3a2e1f;
+        }
+        .notam-id {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .notam-text {
+            font-size: 13px;
+            color: var(--text-sub);
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; 
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            padding-right: 60px;
+        }
+        .details-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+        .details-btn:hover { text-decoration: underline; }
+
+        #fixed-ad-banner {
+            width: 100%;
+            height: 50px;
+            background-color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid #444;
+            color: #888;
+            font-size: 12px;
+            z-index: 2000; 
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 3000;
+            color: #fff;
+        }
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px; height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .modal-content {
+            background-color: var(--surface-variant);
+            width: 85%;
+            max-width: 500px;
+            max-height: 80vh;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 20px 20px 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .modal-body {
+            padding: 0 20px;
+            overflow-y: auto;
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-main);
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .modal-footer {
+            padding: 10px 20px 20px 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .modal-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 16px;
+        }
+    </style>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div id="header-container">
+        <div class="search-row">
+            <label>ICAO Code</label>
+            <input type="text" id="search-input" placeholder="e.g. RJTT">
+            <button class="search-btn" onclick="fetchNotams()">Search</button>
+        </div>
+        
+        <div class="chip-row" id="history-chips"></div>
+
+        <div class="filter-row">
+            <label class="toggle-switch">
+                <input type="checkbox" id="filter-toggle" onchange="toggleFilter()">
+                <span class="slider"></span>
+            </label>
+            <span class="filter-label">Filter</span>
+            
+            <input type="text" id="keyword-input" placeholder="Keyword" disabled oninput="applyFilters()">
+            
+            <div class="date-btn-group">
+                <input type="date" id="date-input" onchange="onDateChange()">
+                <button id="clear-date-btn" onclick="clearDate()">×</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-container">
+        <div id="map"></div>
+        
+        <div id="notam-panel">
+            <div class="panel-header">
+                <span id="list-title">NOTAM List (0 items)</span>
+            </div>
+            <div id="notam-list"></div>
+        </div>
+
+        <div id="loading" class="overlay">
+            <div class="spinner"></div>
+            <div>Fetching NOTAMs...</div>
+        </div>
+    </div>
+
+    <div id="fixed-ad-banner">
+        テスト広告枠（50px）
+    </div>
+
+    <div id="fullscreen-ad-overlay" class="overlay">
+        <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
+            <h3>Advertisement</h3>
+            <div style="height:200px; background:#eee; margin:10px 0; display:flex; align-items:center; justify-content:center;">
+                Ad Content
+            </div>
+            <button onclick="closeFullScreenAd()" style="padding:10px 20px; background:#555; color:#fff; border:none; border-radius:4px; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
+    <div id="details-modal" class="overlay" style="z-index: 4000;">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-title"></div>
+            <div class="modal-body" id="modal-text"></div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        let searchCount = 0;
+        let allFetchedNotams = []; 
+        let displayedNotams = [];  
+        let selectedIds = new Set();
+        
+        let searchHistory = JSON.parse(localStorage.getItem('notam_history') || '[]');
+
+        const map = L.map('map', { zoomControl: false }).setView([35.5, 139.7], 5);
+        L.control.zoom({ position: 'topleft' }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+        let mapLayers = L.layerGroup().addTo(map);
+
+        window.addEventListener('resize', () => { map.invalidateSize(); });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') fetchNotams(); });
+            renderHistory();
+            showFullScreenAd(); 
+        });
+
+        function renderHistory() {
+            const container = document.getElementById('history-chips');
+            container.innerHTML = '';
+            searchHistory.forEach(icao => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.innerText = icao;
+                chip.onclick = () => {
+                    document.getElementById('search-input').value = icao;
+                    fetchNotams();
+                };
+                container.appendChild(chip);
+            });
+        }
+
+        function saveToHistory(icao) {
+            searchHistory = [icao, ...searchHistory.filter(i => i !== icao)].slice(0, 10);
+            localStorage.setItem('notam_history', JSON.stringify(searchHistory));
+            renderHistory();
+        }
+
+        function openDetailsModal(id, text) {
+            document.getElementById('modal-title').innerText = `[${id}]`;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('details-modal').style.display = 'flex';
+        }
+        function closeDetailsModal() {
+            document.getElementById('details-modal').style.display = 'none';
+        }
+
+        function toggleFilter() {
+            const isEnabled = document.getElementById('filter-toggle').checked;
+            document.getElementById('keyword-input').disabled = !isEnabled;
+            applyFilters();
+        }
+
+        function onDateChange() {
+            const dateVal = document.getElementById('date-input').value;
+            document.getElementById('clear-date-btn').style.display = dateVal ? 'block' : 'none';
+            applyFilters();
+        }
+
+        function clearDate() {
+            document.getElementById('date-input').value = '';
+            document.getElementById('clear-date-btn').style.display = 'none';
+            applyFilters();
+        }
+
+        // --- 厳密な日付フィルター判定 (ポイント5) ---
+        function extractNotamDates(text) {
+            // B) 2409051200 または B) FROM 2409051200 などのパターンに対応
+            const bMatch = text.match(/B\)\s*(?:[A-Z]+\s*)?(\d{10})/);
+            const cMatch = text.match(/C\)\s*(?:[A-Z]+\s*)?(\d{10}|PERM)/);
+            
+            let startTime = 0;
+            let endTime = Number.MAX_SAFE_INTEGER;
+
+            if (bMatch) {
+                const b = bMatch[1];
+                const year = 2000 + parseInt(b.substring(0, 2), 10);
+                const month = parseInt(b.substring(2, 4), 10) - 1;
+                const day = parseInt(b.substring(4, 6), 10);
+                const hour = parseInt(b.substring(6, 8), 10);
+                const min = parseInt(b.substring(8, 10), 10);
+                startTime = Date.UTC(year, month, day, hour, min, 0);
+            }
+
+            if (cMatch) {
+                if (cMatch[1] === 'PERM') {
+                    endTime = Number.MAX_SAFE_INTEGER;
+                } else {
+                    const c = cMatch[1];
+                    const year = 2000 + parseInt(c.substring(0, 2), 10);
+                    const month = parseInt(c.substring(2, 4), 10) - 1;
+                    const day = parseInt(c.substring(4, 6), 10);
+                    const hour = parseInt(c.substring(6, 8), 10);
+                    const min = parseInt(c.substring(8, 10), 10);
+                    endTime = Date.UTC(year, month, day, hour, min, 0);
+                }
+            }
+            return { startTime, endTime };
+        }
+
+        function applyFilters() {
+            const isFilterEnabled = document.getElementById('filter-toggle').checked;
+            const keyword = document.getElementById('keyword-input').value.toUpperCase();
+            const dateStr = document.getElementById('date-input').value;
+
+            let filtered = allFetchedNotams.filter(notam => {
+                if (isFilterEnabled && keyword && !notam.text.toUpperCase().includes(keyword)) {
+                    return false;
+                }
+                if (dateStr) {
+                    const [y, m, d] = dateStr.split('-');
+                    // 選択された日のUTC 00:00:00 から 23:59:59 まで
+                    const targetStart = Date.UTC(parseInt(y), parseInt(m)-1, parseInt(d), 0, 0, 0);
+                    const targetEnd = Date.UTC(parseInt(y), parseInt(m)-1, parseInt(d), 23, 59, 59);
+                    
+                    const { startTime, endTime } = extractNotamDates(notam.text);
+                    // 有効期間が選択日の範囲と重なっているか（有効期限切れやまだ始まっていないものは除外）
+                    if (startTime > targetEnd || endTime < targetStart) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            // --- NOTAM番号順（アルファベット、番号順）にソート (ポイント4) ---
+            filtered.sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' }));
+
+            displayedNotams = filtered;
+            renderUI(false);
+        }
+
+        function showFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; }
+        function closeFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'none'; }
+
+        async function fetchNotams() {
+            let rawInput = document.getElementById('search-input').value.trim().toUpperCase();
+            if (!rawInput) return;
+            const icaos = rawInput.split(/[\s,，、]+/).filter(code => code.length > 0);
+            if (icaos.length === 0) return;
+
+            icaos.forEach(icao => saveToHistory(icao));
+
+            searchCount++;
+            if (searchCount % 3 === 0) showFullScreenAd();
+
+            document.getElementById('loading').style.display = 'flex';
+            allFetchedNotams = [];
+            selectedIds.clear();
+
+            try {
+                for (const icao of icaos) {
+                    const url = `http://128.22.140.172/notams?location=${encodeURIComponent(icao)}`;
+                    const response = await fetch(url);
+                    if (response.ok) {
+                        const json = await response.json();
+                        const parsedList = extractGeoJsonNotams(json);
+                        parsedList.forEach(p => {
+                            if (!allFetchedNotams.find(existing => existing.id === p.id)) {
+                                allFetchedNotams.push(p);
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                applyFilters(); 
+                renderUI(true); 
+            }
+        }
+
+        function calculateCoordinate(numStr, dirStr) {
+            try {
+                const baseParts = numStr.split('.');
+                const base = baseParts[0];
+                const dec = baseParts.length > 1 ? parseFloat("0." + baseParts[1]) : 0.0;
+                let coord = 0.0;
+                if (base.length === 4 || base.length === 5) {
+                    const degLen = base.length === 4 ? 2 : 3;
+                    coord = parseFloat(base.substring(0, degLen)) + (parseFloat(base.substring(degLen, degLen + 2)) + dec) / 60.0;
+                } else if (base.length === 6 || base.length === 7) {
+                    const degLen = base.length === 6 ? 2 : 3;
+                    coord = parseFloat(base.substring(0, degLen)) + parseFloat(base.substring(degLen, degLen + 2)) / 60.0 + (parseFloat(base.substring(degLen + 2, degLen + 4)) + dec) / 3600.0;
+                } else return null;
+                if (dirStr === 'S' || dirStr === 'W') coord = -coord;
+                return coord;
+            } catch (e) { return null; }
+        }
+
+        function parseCoordinateGroups(notamText) {
+            const textWithoutQLine = notamText.replace(/Q\)[\s\S]*?A\)/g, "A)");
+            const blocks = textWithoutQLine.split(/(?=\(\d+\)|\b\d+\.\s|\n\s*\n)/);
+            const allGroups = [];
+            blocks.forEach(block => {
+                const cleanText = block.replace(/\s+/g, "");
+                const locations = [];
+                const regexSuffix = /(\d{4,6}(?:\.\d+)?)(N|S)(\d{5,7}(?:\.\d+)?)(E|W)/g;
+                let match;
+                while ((match = regexSuffix.exec(cleanText)) !== null) {
+                    const lat = calculateCoordinate(match[1], match[2]);
+                    const lon = calculateCoordinate(match[3], match[4]);
+                    if (lat !== null && lon !== null) locations.push([lat, lon]);
+                }
+                const regexPrefix = /(N|S)(\d{4,6}(?:\.\d+)?)(E|W)(\d{5,7}(?:\.\d+)?)/g;
+                while ((match = regexPrefix.exec(cleanText)) !== null) {
+                    const lat = calculateCoordinate(match[2], match[1]);
+                    const lon = calculateCoordinate(match[4], match[3]);
+                    if (lat !== null && lon !== null) locations.push([lat, lon]);
+                }
+                if (locations.length > 0) {
+                    let currentGroup = [];
+                    for (let i = 0; i < locations.length; i++) {
+                        if (currentGroup.length === 0) currentGroup.push(locations[i]);
+                        else {
+                            const last = currentGroup[currentGroup.length - 1];
+                            if (Math.abs(last[0] - locations[i][0]) > 30 || Math.abs(last[1] - locations[i][1]) > 30) {
+                                if (currentGroup.length >= 2) allGroups.push(currentGroup);
+                                currentGroup = [locations[i]];
+                            } else currentGroup.push(locations[i]);
+                        }
+                    }
+                    if (currentGroup.length > 0) allGroups.push(currentGroup);
+                }
+            });
+            return allGroups;
+        }
+
+        function extractGeoJsonNotams(element) {
+            const list = [];
+            try {
+                if (element?.data?.geojson) {
+                    element.data.geojson.forEach(item => {
+                        const notamObj = item.properties?.coreNOTAMData?.notam;
+                        let text = notamObj?.text || "";
+                        let id = notamObj?.number || "";
+                        if (!id || id.startsWith("NMS_ID")) {
+                            const match = text.match(/([A-Z]\d{4}\/\d{2})/);
+                            if (match) id = match[1];
+                            else id = notamObj?.id || `NOTAM_${Math.floor(Math.random() * 1000000)}`;
+                        }
+
+                        if (text.trim() !== "") {
+                            const isArea = /BOUNDED|LINE JOINING|AREA|POLYGON|\bWI\b|\bWI:|WITHIN/i.test(text);
+                            const isCircle = /CIRCLE|RADIUS/i.test(text);
+                            let qCenter = null, radiusMeters = null;
+                            const qMatch = text.match(/Q\).*?\/(\d{4})(N|S)(\d{5})(E|W)(\d{3})/);
+                            if (qMatch) {
+                                qCenter = [calculateCoordinate(qMatch[1], qMatch[2]), calculateCoordinate(qMatch[3], qMatch[4])];
+                                radiusMeters = parseFloat(qMatch[5]) * 1852.0;
+                            }
+                            const groups = parseCoordinateGroups(text);
+                            if (groups.length === 0 && qCenter !== null && qCenter[0] !== null) groups.push([qCenter]);
+                            
+                            list.push({ id, text, groups, isArea, isCircle, radiusMeters });
+                        }
+                    });
+                }
+            } catch (e) {}
+            return list;
+        }
+
+        // --- 画面描画と図形・リスト連動 (ポイント1, 2, 3) ---
+        function renderUI(autoZoom = false) {
+            const listContainer = document.getElementById('notam-list');
+            listContainer.innerHTML = '';
+            mapLayers.clearLayers();
+            
+            document.getElementById('list-title').innerText = `NOTAM List (${displayedNotams.length} items)`;
+            
+            const bounds = L.latLngBounds();
+            let hasPoints = false;
+
+            // 何も選択されていない場合は、フィルター済みの全NOTAMを描画対象とする。選択されている場合はそのNOTAMのみ描画する (ポイント3)
+            const targetNotams = selectedIds.size > 0 
+                ? displayedNotams.filter(item => selectedIds.has(item.id))
+                : displayedNotams;
+
+            displayedNotams.forEach(item => {
+                const isSelected = selectedIds.has(item.id);
+                
+                // NOTAMカード作成
+                const card = document.createElement('div');
+                card.className = `notam-card ${isSelected ? 'selected' : ''}`;
+                card.innerHTML = `
+                    <div class="notam-id">[${item.id}]</div>
+                    <div class="notam-text">${item.text}</div>
+                    <button class="details-btn">Details</button>
+                `;
+                
+                // Detailsボタン押下時 (ポイント2)
+                card.querySelector('.details-btn').onclick = (e) => {
+                    e.stopPropagation(); // カード自体のクリックイベントの伝播を阻止
+                    openDetailsModal(item.id, item.text);
+                };
+
+                // カード本体クリック時 (ポイント3: 選択/複数選択切替 ＆ そのNOTAMのみ描画)
+                card.onclick = () => {
+                    if (selectedIds.has(item.id)) {
+                        selectedIds.delete(item.id);
+                    } else {
+                        selectedIds.add(item.id);
+                    }
+                    renderUI(false); 
+                };
+                listContainer.appendChild(card);
+            });
+
+            // 描画対象（targetNotams）の図形を地図上に展開
+            targetNotams.forEach(item => {
+                const isRoute = /RTE|ROUTE|AWY|AIRWAY|DCT /i.test(item.text);
+                item.groups.forEach(locs => {
+                    let layer = null;
+                    if (isRoute && locs.length >= 2) {
+                        layer = L.polyline(locs, {color: '#ff9800', weight: 4});
+                        locs.forEach(ll => bounds.extend(ll));
+                        hasPoints = true;
+                    } else if (item.isArea && locs.length >= 3) {
+                        layer = L.polygon(locs, {color: '#ff9800', fillColor: '#ff9800', fillOpacity: 0.13});
+                        locs.forEach(ll => bounds.extend(ll));
+                        hasPoints = true;
+                    } else if (item.isCircle && locs.length === 1 && item.radiusMeters > 0) {
+                        layer = L.circle(locs[0], {radius: item.radiusMeters, color: '#ff9800', fillOpacity: 0.13});
+                        bounds.extend(locs[0]);
+                        hasPoints = true;
+                    }
+
+                    if (layer) {
+                        // 図形をクリックしたときも詳細が見えるようにする (ポイント1)
+                        layer.on('click', () => {
+                            openDetailsModal(item.id, item.text);
+                        });
+                        layer.addTo(mapLayers);
+                    }
+                });
+            });
+
+            if (autoZoom && hasPoints) map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
+        }
+    </script>
+</body>
+</html>
