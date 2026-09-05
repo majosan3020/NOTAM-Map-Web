@@ -191,6 +191,7 @@
             display: flex;
             position: relative;
             flex-direction: column;
+            overflow: hidden; /* コンテナのはみ出しを防止 */
         }
         #map {
             width: 100%;
@@ -207,6 +208,7 @@
             z-index: 1000;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
+            overflow: hidden; /* パネル外へのはみ出しを防止 */
         }
 
         @media (max-width: 768px) {
@@ -244,7 +246,24 @@
             flex-direction: column;
             gap: 8px;
             padding-bottom: 10px;
+            min-height: 0; /* フレックスアイテムの無限拡張を防ぎスクロールさせる魔法のコード */
         }
+
+        /* スクロールバーのカスタマイズ */
+        #notam-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        #notam-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #notam-list::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 4px;
+        }
+        #notam-list::-webkit-scrollbar-thumb:hover {
+            background: #777;
+        }
+
         .notam-card {
             background-color: #333333;
             padding: 12px;
@@ -506,8 +525,10 @@
         }
 
         function extractNotamDates(text) {
-            const bMatch = text.match(/B\)\s*(?:[A-Z]+\s*)?(\d{10})/);
-            const cMatch = text.match(/C\)\s*(?:[A-Z]+\s*)?(\d{10}|PERM)/);
+            // スペースや改行を取り除いてから日付を判定（書式のブレに強くなります）
+            const cleanText = text.replace(/\s+/g, '').toUpperCase();
+            const bMatch = cleanText.match(/B\)(\d{10})/);
+            const cMatch = cleanText.match(/C\)(\d{10}|PERM)/);
             
             let startTime = 0;
             let endTime = Number.MAX_SAFE_INTEGER;
