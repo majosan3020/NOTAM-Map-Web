@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- 検索結果やブラウザタブに表示するアイコン -->
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <!-- Google検索やSNSシェア時にタイトル・説明・画像を表示する設定 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NOTAM MAP View (Web)</title>
+    <meta name="description" content="リアルタイムな航空情報（NOTAM）を地図上でビジュアルに確認できるパイロット・航空ファン向けマップアプリ。">
+    <meta property="og:title" content="NOTAM MAP View (Web)">
+    <meta property="og:description" content="リアルタイムな航空情報（NOTAM）を地図上でビジュアルに確認できるパイロット・航空ファン向けマップアプリ。">
+    <meta property="og:image" content="https://notam-map-web.vercel.app/icon.png">
+    <meta property="og:url" content="https://notam-map-web.vercel.app/">
+    <meta property="og:type" content="website">
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
@@ -490,9 +502,7 @@
             applyFilters();
         }
 
-        // --- 厳密な日付フィルター判定 (ポイント5) ---
         function extractNotamDates(text) {
-            // B) 2409051200 または B) FROM 2409051200 などのパターンに対応
             const bMatch = text.match(/B\)\s*(?:[A-Z]+\s*)?(\d{10})/);
             const cMatch = text.match(/C\)\s*(?:[A-Z]+\s*)?(\d{10}|PERM)/);
             
@@ -536,12 +546,10 @@
                 }
                 if (dateStr) {
                     const [y, m, d] = dateStr.split('-');
-                    // 選択された日のUTC 00:00:00 から 23:59:59 まで
                     const targetStart = Date.UTC(parseInt(y), parseInt(m)-1, parseInt(d), 0, 0, 0);
                     const targetEnd = Date.UTC(parseInt(y), parseInt(m)-1, parseInt(d), 23, 59, 59);
                     
                     const { startTime, endTime } = extractNotamDates(notam.text);
-                    // 有効期間が選択日の範囲と重なっているか（有効期限切れやまだ始まっていないものは除外）
                     if (startTime > targetEnd || endTime < targetStart) {
                         return false;
                     }
@@ -549,7 +557,6 @@
                 return true;
             });
 
-            // --- NOTAM番号順（アルファベット、番号順）にソート (ポイント4) ---
             filtered.sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' }));
 
             displayedNotams = filtered;
@@ -686,7 +693,6 @@
             return list;
         }
 
-        // --- 画面描画と図形・リスト連動 (ポイント1, 2, 3) ---
         function renderUI(autoZoom = false) {
             const listContainer = document.getElementById('notam-list');
             listContainer.innerHTML = '';
@@ -697,7 +703,6 @@
             const bounds = L.latLngBounds();
             let hasPoints = false;
 
-            // 何も選択されていない場合は、フィルター済みの全NOTAMを描画対象とする。選択されている場合はそのNOTAMのみ描画する (ポイント3)
             const targetNotams = selectedIds.size > 0 
                 ? displayedNotams.filter(item => selectedIds.has(item.id))
                 : displayedNotams;
@@ -705,7 +710,6 @@
             displayedNotams.forEach(item => {
                 const isSelected = selectedIds.has(item.id);
                 
-                // NOTAMカード作成
                 const card = document.createElement('div');
                 card.className = `notam-card ${isSelected ? 'selected' : ''}`;
                 card.innerHTML = `
@@ -714,13 +718,11 @@
                     <button class="details-btn">Details</button>
                 `;
                 
-                // Detailsボタン押下時 (ポイント2)
                 card.querySelector('.details-btn').onclick = (e) => {
-                    e.stopPropagation(); // カード自体のクリックイベントの伝播を阻止
+                    e.stopPropagation();
                     openDetailsModal(item.id, item.text);
                 };
 
-                // カード本体クリック時 (ポイント3: 選択/複数選択切替 ＆ そのNOTAMのみ描画)
                 card.onclick = () => {
                     if (selectedIds.has(item.id)) {
                         selectedIds.delete(item.id);
@@ -732,7 +734,6 @@
                 listContainer.appendChild(card);
             });
 
-            // 描画対象（targetNotams）の図形を地図上に展開
             targetNotams.forEach(item => {
                 const isRoute = /RTE|ROUTE|AWY|AIRWAY|DCT /i.test(item.text);
                 item.groups.forEach(locs => {
@@ -752,7 +753,6 @@
                     }
 
                     if (layer) {
-                        // 図形をクリックしたときも詳細が見えるようにする (ポイント1)
                         layer.on('click', () => {
                             openDetailsModal(item.id, item.text);
                         });
