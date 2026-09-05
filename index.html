@@ -191,7 +191,7 @@
             display: flex;
             position: relative;
             flex-direction: column;
-            overflow: hidden; /* コンテナのはみ出しを防止 */
+            overflow: hidden; 
         }
         #map {
             width: 100%;
@@ -208,7 +208,7 @@
             z-index: 1000;
             border-top-left-radius: 16px;
             border-top-right-radius: 16px;
-            overflow: hidden; /* パネル外へのはみ出しを防止 */
+            overflow: hidden; 
         }
 
         @media (max-width: 768px) {
@@ -246,7 +246,7 @@
             flex-direction: column;
             gap: 8px;
             padding-bottom: 10px;
-            min-height: 0; /* フレックスアイテムの無限拡張を防ぎスクロールさせる魔法のコード */
+            min-height: 0; 
         }
 
         /* スクロールバーのカスタマイズ */
@@ -525,7 +525,6 @@
         }
 
         function extractNotamDates(text) {
-            // スペースや改行を取り除いてから日付を判定（書式のブレに強くなります）
             const cleanText = text.replace(/\s+/g, '').toUpperCase();
             const bMatch = cleanText.match(/B\)(\d{10})/);
             const cMatch = cleanText.match(/C\)(\d{10}|PERM)/);
@@ -689,7 +688,28 @@
                 if (element?.data?.geojson) {
                     element.data.geojson.forEach(item => {
                         const notamObj = item.properties?.coreNOTAMData?.notam;
-                        let text = notamObj?.text || "";
+                        
+                        // 🌟 【修正箇所】隠れているNOTAMの全文（A〜G項目）を引っ張り出す
+                        let fullText = item.properties?.traditionalMessage || 
+                                       notamObj?.traditionalMessage || 
+                                       "";
+                        
+                        // 万が一全文データが無い場合は、APIの細かな情報から自力で復元する
+                        if (!fullText && notamObj) {
+                            let q = notamObj.qLine ? `Q) ${notamObj.qLine}\n` : "";
+                            let a = notamObj.location ? `A) ${notamObj.location}\n` : "";
+                            let b = notamObj.bCode ? `B) ${notamObj.bCode}\n` : "";
+                            let c = notamObj.cCode ? `C) ${notamObj.cCode}\n` : "";
+                            let d = notamObj.dCode ? `D) ${notamObj.dCode}\n` : "";
+                            let e = notamObj.text ? `E) ${notamObj.text}\n` : "";
+                            let f = notamObj.fCode ? `F) ${notamObj.fCode}\n` : "";
+                            let g = notamObj.gCode ? `G) ${notamObj.gCode}\n` : "";
+                            fullText = (q + a + b + c + d + e + f + g).trim();
+                        }
+                        
+                        // どうしても取れない場合は元のE項目の文章だけをセット
+                        let text = fullText || notamObj?.text || "";
+                        
                         let id = notamObj?.number || "";
                         if (!id || id.startsWith("NMS_ID")) {
                             const match = text.match(/([A-Z]\d{4}\/\d{2})/);
