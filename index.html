@@ -577,7 +577,6 @@
             try {
                 for (const icao of icaos) {
                     const response = await fetch(`/api/notams?location=${icao}`);
-                    const response = await fetch(url);
                     if (response.ok) {
                         const json = await response.json();
                         const parsedList = extractGeoJsonNotams(json);
