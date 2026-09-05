@@ -576,7 +576,7 @@
 
             try {
                 for (const icao of icaos) {
-                    const url = `http://128.22.140.172/notams?location=${encodeURIComponent(icao)}`;
+                    const response = await fetch(`/api/notams?location=${icao}`);
                     const response = await fetch(url);
                     if (response.ok) {
                         const json = await response.json();
