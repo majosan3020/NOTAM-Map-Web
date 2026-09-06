@@ -4,6 +4,10 @@
     <!-- Google Search Console 所有権確認タグ -->
     <meta name="google-site-verification" content="p86GmsAR55aSLSJZxqKLKah10V5Y4SBMTIyCFPg3yPk" />
 
+    <!-- Google AdSense コード -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159"
+         crossorigin="anonymous"></script>
+
     <!-- 検索結果やブラウザタブに表示するアイコン -->
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="apple-touch-icon" href="/icon.png">
@@ -384,7 +388,6 @@
             padding: 8px 16px;
         }
     </style>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -689,13 +692,11 @@
                     element.data.geojson.forEach(item => {
                         const notamObj = item.properties?.coreNOTAMData?.notam;
                         
-                        // 🌟 【完全版】プロパティの全階層から伝統的メッセージやテキストを探索し構築
                         let fullText = item.properties?.traditionalMessage || 
                                        notamObj?.traditionalMessage || 
                                        item.properties?.message || 
                                        "";
                         
-                        // プロパティが分散している場合、Android版と同様に各項目を結合して完全なテキストを組み立てる
                         if (!fullText && notamObj) {
                             let idStr = notamObj.number ? `${notamObj.number} ${notamObj.type || ''}\n` : '';
                             let q = notamObj.qLine ? `Q) ${notamObj.qLine}\n` : (notamObj.q ? `Q) ${notamObj.q}\n` : '');
