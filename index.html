@@ -9,8 +9,8 @@
          crossorigin="anonymous"></script>
 
     <!-- 検索結果やブラウザタブに表示するアイコン -->
-    <link rel="icon" href="https://notam-map-web.vercel.app/icon.png" type="image/png">
-    <link rel="apple-touch-icon" href="https://notam-map-web.vercel.app/icon.png">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/icon.png">
 
     <!-- Google検索やSNSシェア時にタイトル・説明・画像を表示する設定 -->
     <meta charset="UTF-8">
@@ -72,6 +72,7 @@
             border: 1px solid #444;
             background-color: var(--surface-color);
             color: var(--text-main);
+            text-transform: uppercase; /* 見た目も強制的に大文字にする */
         }
         .search-row input[type="text"]:focus {
             border-color: var(--primary-color);
@@ -394,7 +395,8 @@
     <div id="header-container">
         <div class="search-row">
             <label>ICAO Code</label>
-            <input type="text" id="search-input" placeholder="e.g. RJTT">
+            <!-- 🌟 スマホで英数字入力・大文字を促す属性（autocapitalize="characters" inputmode="search"）を追加 -->
+            <input type="text" id="search-input" placeholder="e.g. RJTT" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
             <button class="search-btn" onclick="fetchNotams()">Search</button>
         </div>
         
@@ -474,6 +476,31 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
+            
+            // 🌟 入力時に全角英数・スペース・カンマを半角＆大文字に自動変換する処理
+            searchInput.addEventListener('input', function() {
+                const start = this.selectionStart;
+                const end = this.selectionEnd;
+                
+                let val = this.value;
+                
+                // 1. 全角英数字を半角に変換
+                val = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                });
+                
+                // 2. 全角スペースや全角カンマ、読点などを半角に変換
+                val = val.replace(/ /g, ' ').replace(/[、，]/g, ',');
+                
+                // 3. 小文字を大文字に強制変換
+                val = val.toUpperCase();
+                
+                this.value = val;
+                
+                // カーソルの位置を保持する（文字の追加・削除時にカーソルが末尾に飛ぶのを防ぐ）
+                this.setSelectionRange(start, end);
+            });
+
             searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') fetchNotams(); });
             renderHistory();
             showFullScreenAd(); 
@@ -693,7 +720,6 @@
                         const notamObj = item.properties?.coreNOTAMData?.notam;
                         if (!notamObj) return;
                         
-                        // APIが返すあらゆる「生の全文データ」が隠れている場所を探す
                         let candidates = [
                             item.properties?.rawText,
                             item.properties?.rawNotam,
@@ -706,10 +732,8 @@
 
                         let finalString = raw;
 
-                        // 全文が見つからない場合は、各項目のデータから手動で完全なNOTAM形式を復元する
                         if (!finalString || !finalString.includes('B)')) {
                             
-                            // ISO日時 (例: 2026-09-14T06:00:00.000Z) を NOTAM形式 (2609140600) に変換する機能
                             function fmtDate(dStr) {
                                 if (!dStr) return "";
                                 const d = new Date(dStr);
