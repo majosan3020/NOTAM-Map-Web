@@ -24,8 +24,6 @@
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- 🌟 緯度経度グリッド線プラグインのCSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-latlng-graticule@file.js/leaflet.latlng-graticule.css" />
 
     <style>
         :root {
@@ -461,8 +459,9 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- 🌟 緯度経度グリッド線プラグインのJS -->
-    <script src="https://cdn.jsdelivr.net/npm/leaflet-latlng-graticule@file.js/leaflet.latlng-graticule.js"></script>
+    
+    <!-- 🌟 正しいプラグインのURLに修正しました -->
+    <script src="https://unpkg.com/leaflet.latlng-graticule@2.0.0/leaflet.latlng-graticule.js"></script>
 
     <script>
         let searchCount = 0;
@@ -476,10 +475,11 @@
         L.control.zoom({ position: 'topleft' }).addTo(map);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
         
-        // 🌟 緯度経度グリッド線レイヤーの追加（ダークテーマに合わせて控えめな色設定）
-        L.latLngGraticule({
+        // 🌟 正しい関数名 `L.latlngGraticule` に修正しました。
+        L.latlngGraticule({
             showLabel: true,
-            color: '#666',
+            color: '#666666',   // グリッド線の色
+            fontColor: '#333333', // 緯度経度の文字色
             weight: 0.8,
             dashArray: [5, 5],
             zoomInterval: [
