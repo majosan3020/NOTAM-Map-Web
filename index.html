@@ -24,6 +24,9 @@
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- 🌟 緯度経度グリッド線プラグインのCSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-latlng-graticule@file.js/leaflet.latlng-graticule.css" />
+
     <style>
         :root {
             --bg-color: #121212;
@@ -458,6 +461,9 @@
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- 🌟 緯度経度グリッド線プラグインのJS -->
+    <script src="https://cdn.jsdelivr.net/npm/leaflet-latlng-graticule@file.js/leaflet.latlng-graticule.js"></script>
+
     <script>
         let searchCount = 0;
         let allFetchedNotams = []; 
@@ -469,46 +475,54 @@
         const map = L.map('map', { zoomControl: false }).setView([35.5, 139.7], 5);
         L.control.zoom({ position: 'topleft' }).addTo(map);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+        
+        // 🌟 緯度経度グリッド線レイヤーの追加（ダークテーマに合わせて控えめな色設定）
+        L.latLngGraticule({
+            showLabel: true,
+            color: '#666',
+            weight: 0.8,
+            dashArray: [5, 5],
+            zoomInterval: [
+                {start: 2, end: 3, interval: 30},
+                {start: 4, end: 5, interval: 10},
+                {start: 6, end: 7, interval: 5},
+                {start: 8, end: 10, interval: 1},
+                {start: 11, end: 18, interval: 0.2}
+            ]
+        }).addTo(map);
+
         let mapLayers = L.layerGroup().addTo(map);
 
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
-            let isComposing = false; // 🌟 IME入力中（変換中）かどうかのフラグ
+            let isComposing = false; 
 
-            // IMEの変換が始まった時
             searchInput.addEventListener('compositionstart', () => {
                 isComposing = true;
             });
 
-            // IMEの変換が確定した時
             searchInput.addEventListener('compositionend', () => {
                 isComposing = false;
                 formatInput(searchInput);
             });
 
-            // 通常の入力時
             searchInput.addEventListener('input', function() {
-                if (isComposing) return; // 🌟 変換中は処理をスキップしてバグを防ぐ
+                if (isComposing) return; 
                 formatInput(this);
             });
 
-            // 大文字化・半角化の関数
             function formatInput(el) {
                 const start = el.selectionStart;
                 const end = el.selectionEnd;
                 let val = el.value;
                 
-                // 1. 全角英数字を半角に変換
                 val = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
                     return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                 });
                 
-                // 2. 全角スペースや全角カンマ、読点などを半角に変換
                 val = val.replace(/ /g, ' ').replace(/[、，]/g, ',');
-                
-                // 3. 小文字を大文字に強制変換
                 val = val.toUpperCase();
                 
                 if (el.value !== val) {
@@ -519,9 +533,7 @@
                 }
             }
 
-            // 検索実行（Enterキー）
             searchInput.addEventListener('keydown', (e) => { 
-                // 🌟 IME確定のためのEnterキーと、検索実行のEnterキーを区別する
                 if (e.key === 'Enter' && !isComposing) {
                     fetchNotams(); 
                 }
