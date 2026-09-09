@@ -513,9 +513,8 @@
                 interactive: false
             };
 
-            // ラベルを配置する「画面の端」の座標を取得
             const edgeWest = bounds.getWest();
-            const edgeNorth = bounds.getNorth(); // 🌟 下部から上部に変更
+            const edgeSouth = bounds.getSouth(); // 🌟 再び南側に配置
 
             // 🌟 小数を「60進数（度・分）」の表記（31.30N や 122E）に変換する関数
             function format60(val, isLat) {
@@ -557,18 +556,17 @@
                 L.marker([lat, edgeWest], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
 
-            // 経線（縦線）と「上端」のラベルを描画
+            // 経線（縦線）と「下端」のラベルを描画（🌟アイコンのアンカーを調整して広告に隠れないよう上へオフセット）
             for (let lng = west; lng <= east; lng += step) {
                 L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
                 
-                // 🌟 上端にラベルを配置（anchorを調整して地図の上枠の内側に綺麗に収まるように配置）
                 const icon = L.divIcon({
                     className: 'graticule-label',
                     html: format60(lng, false),
                     iconSize: [40, 20],
-                    iconAnchor: [20, -5] 
+                    iconAnchor: [20, 35] // 35px上方にオフセットし、下部のバナー広告上に浮かせる
                 });
-                L.marker([edgeNorth, lng], {icon: icon, interactive: false}).addTo(graticuleLayer);
+                L.marker([edgeSouth, lng], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
         }
 
