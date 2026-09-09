@@ -458,11 +458,9 @@
         </div>
     </div>
 
+    <!-- 🌟 エラーの元になっていた不安定なプラグインURLを完全に削除しました -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
-    <!-- 🌟 正しいプラグインのURLに修正しました -->
-    <script src="https://unpkg.com/leaflet.latlng-graticule@2.0.0/leaflet.latlng-graticule.js"></script>
-
     <script>
         let searchCount = 0;
         let allFetchedNotams = []; 
@@ -474,24 +472,50 @@
         const map = L.map('map', { zoomControl: false }).setView([35.5, 139.7], 5);
         L.control.zoom({ position: 'topleft' }).addTo(map);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-        
-        // 🌟 正しい関数名 `L.latlngGraticule` に修正しました。
-        L.latlngGraticule({
-            showLabel: true,
-            color: '#666666',   // グリッド線の色
-            fontColor: '#333333', // 緯度経度の文字色
-            weight: 0.8,
-            dashArray: [5, 5],
-            zoomInterval: [
-                {start: 2, end: 3, interval: 30},
-                {start: 4, end: 5, interval: 10},
-                {start: 6, end: 7, interval: 5},
-                {start: 8, end: 10, interval: 1},
-                {start: 11, end: 18, interval: 0.2}
-            ]
-        }).addTo(map);
-
         let mapLayers = L.layerGroup().addTo(map);
+
+        // 🌟 ここから：自前で緯度経度のグリッド線を引く安全な処理（外部ファイルに頼りません）
+        const graticuleLayer = L.layerGroup().addTo(map);
+
+        function drawGraticule() {
+            graticuleLayer.clearLayers();
+            const zoom = map.getZoom();
+            
+            // ズームレベルに応じて間隔（度数）を変える
+            let step = 10;
+            if (zoom >= 5) step = 5;
+            if (zoom >= 7) step = 2;
+            if (zoom >= 9) step = 1;
+            if (zoom >= 11) step = 0.5;
+
+            const bounds = map.getBounds();
+            const west = Math.floor(bounds.getWest() / step) * step;
+            const east = Math.ceil(bounds.getEast() / step) * step;
+            const south = Math.max(-89.9, Math.floor(bounds.getSouth() / step) * step);
+            const north = Math.min(89.9, Math.ceil(bounds.getNorth() / step) * step);
+
+            const lineStyle = { 
+                color: '#888888', // グリッド線の色
+                weight: 1,        // 太さ
+                opacity: 0.5,     // 透明度
+                dashArray: '5, 5',// 点線
+                interactive: false// クリック判定を無くす（NOTAMの選択を邪魔しないように）
+            };
+
+            // 緯線（横線）を引く
+            for (let lat = south; lat <= north; lat += step) {
+                L.polyline([[lat, west - step], [lat, east + step]], lineStyle).addTo(graticuleLayer);
+            }
+            // 経線（縦線）を引く
+            for (let lng = west; lng <= east; lng += step) {
+                L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
+            }
+        }
+
+        // マップを動かした時と初期表示時にグリッド線を描画
+        map.on('moveend', drawGraticule);
+        drawGraticule();
+        // 🌟 ここまで：自前のグリッド線処理
 
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
