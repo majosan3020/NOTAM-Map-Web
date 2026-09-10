@@ -8,7 +8,7 @@
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159"
          crossorigin="anonymous"></script>
 
-<!-- 検索結果やブラウザタブに表示するアイコン -->
+    <!-- 検索結果やブラウザタブに表示するアイコン -->
     <link rel="icon" href="/icon.png" type="image/png" sizes="any">
     <link rel="apple-touch-icon" href="/icon.png">
 
@@ -514,9 +514,9 @@
             };
 
             const edgeWest = bounds.getWest();
-            const edgeSouth = bounds.getSouth(); // 🌟 再び南側に配置
+            const edgeSouth = bounds.getSouth();
 
-            // 🌟 小数を「60進数（度・分）」の表記（31.30N や 122E）に変換する関数
+            // 🌟 小数を「60進数（度・分）」の表記に変換する関数
             function format60(val, isLat) {
                 let dir = '';
                 let num = val;
@@ -556,15 +556,16 @@
                 L.marker([lat, edgeWest], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
 
-            // 経線（縦線）と「下端」のラベルを描画（🌟アイコンのアンカーを調整して広告に隠れないよう上へオフセット）
+            // 経線（縦線）と「下端」のラベルを描画
             for (let lng = west; lng <= east; lng += step) {
                 L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
                 
+                // 🌟 前回の 35px から 75px にオフセットを倍増させて、バナーの完全に上に配置しました！
                 const icon = L.divIcon({
                     className: 'graticule-label',
                     html: format60(lng, false),
                     iconSize: [40, 20],
-                    iconAnchor: [20, 35] // 35px上方にオフセットし、下部のバナー広告上に浮かせる
+                    iconAnchor: [20, 75] 
                 });
                 L.marker([edgeSouth, lng], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
