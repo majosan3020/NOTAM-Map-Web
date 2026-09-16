@@ -54,9 +54,47 @@
             padding: 8px 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        /* 🌟 トップブランドバー（アイコン＋タイトル＋メニューボタン） */
+        .brand-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+        }
+        .brand-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        .brand-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .menu-btn {
+            background-color: var(--surface-variant);
+            color: var(--text-main);
+            border: 1px solid #444;
+            padding: 6px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .menu-btn:hover {
+            background-color: #333;
         }
 
         .search-row {
@@ -367,13 +405,13 @@
             color: var(--primary-color);
         }
         .modal-body {
-            padding: 0 20px;
+            padding: 0 20px 20px 20px;
             overflow-y: auto;
             flex: 1;
             font-size: 14px;
             color: var(--text-main);
             white-space: pre-wrap;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .modal-footer {
             padding: 10px 20px 20px 20px;
@@ -406,6 +444,15 @@
 <body>
 
     <div id="header-container">
+        <!-- 🌟 ヘッダー上部：アイコン＋タイトル＋メニューボタン -->
+        <div class="brand-row">
+            <div class="brand-left">
+                <img src="/icon.png" alt="Logo" class="brand-icon">
+                <span class="brand-title">NOTAM MAP View</span>
+            </div>
+            <button class="menu-btn" onclick="openMenuModal()">Menu / About</button>
+        </div>
+
         <div class="search-row">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJTT" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -457,6 +504,35 @@
                 Ad Content
             </div>
             <button onclick="closeFullScreenAd()" style="padding:10px 20px; background:#555; color:#fff; border:none; border-radius:4px; cursor:pointer;">Close</button>
+        </div>
+    </div>
+
+    <!-- 🌟 メニュー・解説・プライバシーポリシー用モーダル -->
+    <div id="menu-modal" class="overlay" style="z-index: 4000;">
+        <div class="modal-content">
+            <div class="modal-header">NOTAM MAP View について</div>
+            <div class="modal-body">
+【アプリの概要・目的】
+「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Airmen）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。
+
+【主な機能と使い方】
+1. ICAOコード検索:
+   画面上部の検索バーに空港のICAOコード（例: RJTT, RJAAなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にポリラインやポリゴン、円形でビジュアル表示します。
+2. キーワード・日付フィルター:
+   取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行い、必要な情報を素早く確認できます。
+3. 詳細情報の確認:
+   リスト内の「Details」ボタンまたは地図上の図形をクリックすることで、NOTAMの全文（テキスト情報）をポップアップで詳細に閲覧可能です。
+
+【免責事項】
+当サービスで提供する航空情報の正確性・完全性については万全を期しておりますが、実際のフライトプランの作成や運航にあたっては、必ず公式の航空情報（AIP, AIS Japan等）を併せてご確認ください。本アプリの利用によって生じたいかなる損害についても、開発者は一切の責任を負いかねます。
+
+【プライバシーポリシー & 広告について】
+当サイトでは、第三者配信の広告サービス（Google AdSense）を利用しており、ユーザーの興味に応じた商品やサービスの広告を表示するため、Cookieを使用することがあります。
+Cookieを無効にする方法やGoogle AdSenseに関する詳細については、Googleのポリシーと規約ページをご確認ください。
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" onclick="closeMenuModal()">閉じる</button>
+            </div>
         </div>
     </div>
 
@@ -560,7 +636,6 @@
             for (let lng = west; lng <= east; lng += step) {
                 L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
                 
-                // 🌟 前回の 35px から 75px にオフセットを倍増させて、バナーの完全に上に配置しました！
                 const icon = L.divIcon({
                     className: 'graticule-label',
                     html: format60(lng, false),
@@ -624,6 +699,14 @@
             renderHistory();
             showFullScreenAd(); 
         });
+
+        // 🌟 メニューモーダルの開閉関数
+        function openMenuModal() {
+            document.getElementById('menu-modal').style.display = 'flex';
+        }
+        function closeMenuModal() {
+            document.getElementById('menu-modal').style.display = 'none';
+        }
 
         function renderHistory() {
             const container = document.getElementById('history-chips');
