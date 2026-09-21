@@ -59,6 +59,13 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
+        /* 🌟 折りたたみ対象のヘッダー下部（履歴・フィルター） */
+        #header-collapsible {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
         /* 🌟 トップブランドバー（アイコン＋タイトル＋メニューボタン） */
         .brand-row {
             display: flex;
@@ -314,7 +321,6 @@
             min-height: 0; 
         }
 
-        /* スクロールバーのカスタマイズ */
         #notam-list::-webkit-scrollbar { width: 8px; }
         #notam-list::-webkit-scrollbar-track { background: transparent; }
         #notam-list::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
@@ -440,7 +446,6 @@
             padding: 8px 16px;
         }
 
-        /* 🌟 グリッド線のラベル用CSS */
         .graticule-label {
             color: #ffffff;
             font-size: 12px;
@@ -468,23 +473,26 @@
         <div class="search-row">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJTT" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
-            <button class="search-btn" onclick="fetchNotams()">Search</button>
+            <button class="search-btn" id="search-btn-el" onclick="fetchNotams()">Search</button>
         </div>
         
-        <div class="chip-row" id="history-chips"></div>
+        <!-- 🌟 折りたたみ対象の履歴＆フィルターエリア -->
+        <div id="header-collapsible">
+            <div class="chip-row" id="history-chips"></div>
 
-        <div class="filter-row">
-            <label class="toggle-switch">
-                <input type="checkbox" id="filter-toggle" onchange="toggleFilter()">
-                <span class="slider"></span>
-            </label>
-            <span class="filter-label">Filter</span>
-            
-            <input type="text" id="keyword-input" placeholder="Keyword" disabled oninput="applyFilters()">
-            
-            <div class="date-btn-group">
-                <input type="date" id="date-input" onchange="onDateChange()">
-                <button id="clear-date-btn" onclick="clearDate()">×</button>
+            <div class="filter-row">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="filter-toggle" onchange="toggleFilter()">
+                    <span class="slider"></span>
+                </label>
+                <span class="filter-label">Filter</span>
+                
+                <input type="text" id="keyword-input" placeholder="Keyword" disabled oninput="applyFilters()">
+                
+                <div class="date-btn-group">
+                    <input type="date" id="date-input" onchange="onDateChange()">
+                    <button id="clear-date-btn" onclick="clearDate()">×</button>
+                </div>
             </div>
         </div>
     </div>
@@ -493,7 +501,7 @@
         <div id="map"></div>
         
         <!-- 🌟 地図フルスクリーントグルボタン -->
-        <button id="toggle-panel-btn" onclick="toggleNotamPanel()">⛶ 画面を広く</button>
+        <button id="toggle-panel-btn" onclick="toggleNotamPanel()"></button>
         
         <div id="notam-panel">
             <div class="panel-header">
@@ -501,12 +509,12 @@
                 <!-- 🌟 NOTAMリスト並び替えメニュー -->
                 <div style="display:flex; gap:6px;">
                     <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
-                        <option value="id">番号順</option>
-                        <option value="date">発令順</option>
+                        <option value="id" id="opt-sort-id"></option>
+                        <option value="date" id="opt-sort-date"></option>
                     </select>
                     <select id="sort-order" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
-                        <option value="asc">昇順</option>
-                        <option value="desc">降順</option>
+                        <option value="asc" id="opt-sort-asc"></option>
+                        <option value="desc" id="opt-sort-desc"></option>
                     </select>
                 </div>
             </div>
@@ -515,12 +523,12 @@
 
         <div id="loading" class="overlay">
             <div class="spinner"></div>
-            <div>Fetching NOTAMs...</div>
+            <div id="loading-text">Fetching NOTAMs...</div>
         </div>
     </div>
 
     <div id="fixed-ad-banner">
-        テスト広告枠（50px）
+        Advertisement
     </div>
 
     <div id="fullscreen-ad-overlay" class="overlay">
@@ -536,28 +544,10 @@
     <!-- 🌟 メニュー・解説・プライバシーポリシー用モーダル -->
     <div id="menu-modal" class="overlay" style="z-index: 4000;">
         <div class="modal-content">
-            <div class="modal-header">NOTAM MAP View について</div>
-            <div class="modal-body">
-【アプリの概要・目的】
-「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Airmen）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。
-
-【主な機能と使い方】
-1. ICAOコード検索:
-   画面上部の検索バーに空港のICAOコード（例: RJTT, RJAAなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にポリラインやポリゴン、円形でビジュアル表示します。
-2. キーワード・日付フィルター:
-   取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行い、必要な情報を素早く確認できます。
-3. 詳細情報の確認:
-   リスト内の「Details」ボタンまたは地図上の図形をクリックすることで、NOTAMの全文（テキスト情報）をポップアップで詳細に閲覧可能です。
-
-【免責事項】
-当サービスで提供する航空情報の正確性・完全性については万全を期しておりますが、実際のフライトプランの作成や運航にあたっては、必ず公式の航空情報（AIP, AIS Japan等）を併せてご確認ください。本アプリの利用によって生じたいかなる損害についても、開発者は一切の責任を負いかねます。
-
-【プライバシーポリシー & 広告について】
-当サイトでは、第三者配信の広告サービス（Google AdSense）を利用しており、ユーザーの興味に応じた商品やサービスの広告を表示するため、Cookieを使用することがあります。
-Cookieを無効にする方法やGoogle AdSenseに関する詳細については、Googleのポリシーと規約ページをご確認ください。
-            </div>
+            <div class="modal-header" id="about-modal-title"></div>
+            <div class="modal-body" id="about-modal-body"></div>
             <div class="modal-footer">
-                <button class="modal-btn" onclick="closeMenuModal()">閉じる</button>
+                <button class="modal-btn" id="about-modal-close" onclick="closeMenuModal()"></button>
             </div>
         </div>
     </div>
@@ -567,7 +557,7 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             <div class="modal-header" id="modal-title"></div>
             <div class="modal-body" id="modal-text"></div>
             <div class="modal-footer">
-                <button class="modal-btn" onclick="closeDetailsModal()">Close</button>
+                <button class="modal-btn" id="details-modal-close" onclick="closeDetailsModal()"></button>
             </div>
         </div>
     </div>
@@ -575,10 +565,14 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
+        // 🌟 ユーザーのOS・ブラウザ言語を判定 (日本語かそれ以外か)
+        const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+
         let searchCount = 0;
         let allFetchedNotams = []; 
         let displayedNotams = [];  
         let selectedIds = new Set();
+        let isMapExpanded = false;
         
         let searchHistory = JSON.parse(localStorage.getItem('notam_history') || '[]');
 
@@ -587,7 +581,6 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
         let mapLayers = L.layerGroup().addTo(map);
 
-        // 🌟 グリッド線とラベルを引く機能
         const graticuleLayer = L.layerGroup().addTo(map);
 
         function drawGraticule() {
@@ -651,6 +644,53 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 🌟 起動時の多言語（i18n）テキストの適用
+            document.getElementById('toggle-panel-btn').innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
+            document.getElementById('opt-sort-id').innerText = isJa ? '番号順' : 'By ID';
+            document.getElementById('opt-sort-date').innerText = isJa ? '発令順' : 'By Date';
+            document.getElementById('opt-sort-asc').innerText = isJa ? '昇順' : 'Asc';
+            document.getElementById('opt-sort-desc').innerText = isJa ? '降順' : 'Desc';
+            document.getElementById('keyword-input').placeholder = isJa ? 'キーワード' : 'Keyword';
+            document.getElementById('loading-text').innerText = isJa ? 'NOTAMを取得中...' : 'Fetching NOTAMs...';
+            document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
+
+            // メニューモーダルテキストの切り替え
+            document.getElementById('about-modal-title').innerText = isJa ? 'NOTAM MAP View について' : 'About NOTAM MAP View';
+            document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
+            document.getElementById('about-modal-body').innerText = isJa ? `【アプリの概要・目的】
+「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Airmen）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。
+
+【主な機能と使い方】
+1. ICAOコード検索:
+   画面上部の検索バーに空港のICAOコード（例: RJTT, RJAAなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にポリラインやポリゴン、円形でビジュアル表示します。
+2. キーワード・日付フィルター:
+   取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行い、必要な情報を素早く確認できます。
+3. 詳細情報の確認:
+   リスト内の「Details」ボタンまたは地図上の図形をクリックすることで、NOTAMの全文（テキスト情報）をポップアップで詳細に閲覧可能です。
+
+【免責事項】
+当サービスで提供する航空情報の正確性・完全性については万全を期しておりますが、実際のフライトプランの作成や運航にあたっては、必ず公式の航空情報（AIP, AIS Japan等）を併せてご確認ください。本アプリの利用によって生じたいかなる損害についても、開発者は一切の責任を負いかねます。
+
+【プライバシーポリシー & 広告について】
+当サイトでは、第三者配信の広告サービス（Google AdSense）を利用しており、ユーザーの興味に応じた商品やサービスの広告を表示するため、Cookieを使用することがあります。
+Cookieを無効にする方法やGoogle AdSenseに関する詳細については、Googleのポリシーと規約ページをご確認ください。` : `[Overview]
+"NOTAM MAP View" is a web map application designed for pilots, aviation professionals, and aviation enthusiasts to visually and intuitively check real-time NOTAMs (Notice to Airmen) on a map.
+
+[Features & Usage]
+1. ICAO Code Search:
+   Enter an ICAO code (e.g., RJTT, KLAX) in the search bar and click "Search" to fetch the latest NOTAMs. The app visualizes restricted airspaces and routes using polylines, polygons, and circles.
+2. Keyword & Date Filter:
+   Quickly narrow down the fetched NOTAM list by specific keywords (RWY, TWY, ILS, etc.) or effective dates.
+3. Details View:
+   Click the "Details" button in the list or click directly on the shapes on the map to view the full original NOTAM text.
+
+[Disclaimer]
+While we strive for accuracy and completeness of the aviation information provided, please ensure you consult official aviation sources (AIP, AIS, etc.) when creating actual flight plans or operating aircraft. The developer assumes no responsibility for any damages arising from the use of this application.
+
+[Privacy Policy & Advertising]
+This site uses third-party advertising services (Google AdSense), which may use Cookies to display advertisements for products and services based on users' interests and previous visits to this or other websites.
+For more information on how to disable Cookies or Google AdSense policies, please review Google's official Policy and Terms page.`;
+
             const searchInput = document.getElementById('search-input');
             let isComposing = false; 
 
@@ -682,17 +722,22 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             showFullScreenAd(); 
         });
 
-        // 🌟 パネル表示/非表示の切り替え関数
+        // 🌟 パネルおよびヘッダー履歴表示/非表示の切り替え関数
         function toggleNotamPanel() {
             const panel = document.getElementById('notam-panel');
+            const headerCollapsible = document.getElementById('header-collapsible');
             const btn = document.getElementById('toggle-panel-btn');
             
-            if (panel.style.display === 'none') {
-                panel.style.display = 'flex';
-                btn.innerHTML = '⛶ 画面を広く';
-            } else {
+            isMapExpanded = !isMapExpanded;
+            
+            if (isMapExpanded) {
                 panel.style.display = 'none';
-                btn.innerHTML = '▶ リスト表示';
+                headerCollapsible.style.display = 'none';
+                btn.innerHTML = isJa ? '▶ リストと検索条件を表示' : '▶ Show List & Filters';
+            } else {
+                panel.style.display = 'flex';
+                headerCollapsible.style.display = 'flex';
+                btn.innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
             }
             // マップの再描画を促す
             setTimeout(() => map.invalidateSize(), 300);
@@ -825,7 +870,6 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
                     if (valA.letter !== valB.letter) return valA.letter.localeCompare(valB.letter);
                     if (valA.num !== valB.num) return valA.num - valB.num;
                     
-                    // 特殊なIDフォーマット用のフォールバック
                     return a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' });
                 } else if (sortType === 'date') {
                     // 発令日時(B)順
@@ -1035,7 +1079,10 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             listContainer.innerHTML = '';
             mapLayers.clearLayers();
             
-            document.getElementById('list-title').innerText = `NOTAM List (${displayedNotams.length} items)`;
+            // 🌟 翻訳を反映させたリストタイトル
+            document.getElementById('list-title').innerText = isJa 
+                ? `NOTAMリスト (${displayedNotams.length}件)` 
+                : `NOTAM List (${displayedNotams.length} items)`;
             
             const bounds = L.latLngBounds();
             let hasPoints = false;
@@ -1052,7 +1099,7 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
                 card.innerHTML = `
                     <div class="notam-id">[${item.id}]</div>
                     <div class="notam-text">${item.text}</div>
-                    <button class="details-btn">Details</button>
+                    <button class="details-btn">${isJa ? '詳細' : 'Details'}</button>
                 `;
                 
                 card.querySelector('.details-btn').onclick = (e) => {
