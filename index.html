@@ -243,6 +243,27 @@
             flex: 1;
         }
 
+        /* 🌟 マップフルスクリーン用トグルボタン */
+        #toggle-panel-btn {
+            position: absolute;
+            top: 10px;
+            left: 50px;
+            z-index: 1000;
+            background-color: var(--surface-variant);
+            color: var(--primary-color);
+            border: 1px solid #444;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        #toggle-panel-btn:hover { background-color: #333; }
+
         #notam-panel {
             background-color: var(--surface-variant);
             display: flex;
@@ -279,7 +300,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
         }
         
@@ -294,19 +315,10 @@
         }
 
         /* スクロールバーのカスタマイズ */
-        #notam-list::-webkit-scrollbar {
-            width: 8px;
-        }
-        #notam-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        #notam-list::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 4px;
-        }
-        #notam-list::-webkit-scrollbar-thumb:hover {
-            background: #777;
-        }
+        #notam-list::-webkit-scrollbar { width: 8px; }
+        #notam-list::-webkit-scrollbar-track { background: transparent; }
+        #notam-list::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        #notam-list::-webkit-scrollbar-thumb:hover { background: #777; }
 
         .notam-card {
             background-color: #333333;
@@ -480,9 +492,23 @@
     <div id="main-container">
         <div id="map"></div>
         
+        <!-- 🌟 地図フルスクリーントグルボタン -->
+        <button id="toggle-panel-btn" onclick="toggleNotamPanel()">⛶ 画面を広く</button>
+        
         <div id="notam-panel">
             <div class="panel-header">
                 <span id="list-title">NOTAM List (0 items)</span>
+                <!-- 🌟 NOTAMリスト並び替えメニュー -->
+                <div style="display:flex; gap:6px;">
+                    <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
+                        <option value="id">番号順</option>
+                        <option value="date">発令順</option>
+                    </select>
+                    <select id="sort-order" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
+                        <option value="asc">昇順</option>
+                        <option value="desc">降順</option>
+                    </select>
+                </div>
             </div>
             <div id="notam-list"></div>
         </div>
@@ -568,7 +594,6 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             graticuleLayer.clearLayers();
             const zoom = map.getZoom();
             
-            // ズームレベルに応じて間隔（度数）を変える
             let step = 10;
             if (zoom >= 5) step = 5;
             if (zoom >= 7) step = 2;
@@ -582,21 +607,15 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             const north = Math.min(89.9, Math.ceil(bounds.getNorth() / step) * step);
 
             const lineStyle = { 
-                color: '#888888',
-                weight: 1,
-                opacity: 0.5,
-                dashArray: '5, 5',
-                interactive: false
+                color: '#888888', weight: 1, opacity: 0.5, dashArray: '5, 5', interactive: false
             };
 
             const edgeWest = bounds.getWest();
             const edgeSouth = bounds.getSouth();
 
-            // 🌟 小数を「60進数（度・分）」の表記に変換する関数
             function format60(val, isLat) {
                 let dir = '';
                 let num = val;
-                
                 if (isLat) {
                     dir = num >= 0 ? 'N' : 'S';
                 } else {
@@ -605,48 +624,27 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
                     if (num <= -180) num += 360;
                     dir = num >= 0 ? 'E' : 'W';
                 }
-                
                 num = Math.abs(num);
                 let deg = Math.floor(num);
                 let min = Math.round((num - deg) * 60);
-                
                 if (min === 60) { deg += 1; min = 0; }
-                
-                if (min === 0) {
-                    return `${deg}${dir}`;
-                } else {
-                    return `${deg}.${min.toString().padStart(2, '0')}${dir}`; 
-                }
+                if (min === 0) return `${deg}${dir}`;
+                else return `${deg}.${min.toString().padStart(2, '0')}${dir}`; 
             }
 
-            // 緯線（横線）と「左端」のラベルを描画
             for (let lat = south; lat <= north; lat += step) {
                 L.polyline([[lat, bounds.getWest() - step], [lat, bounds.getEast() + step]], lineStyle).addTo(graticuleLayer);
-                
-                const icon = L.divIcon({
-                    className: 'graticule-label',
-                    html: format60(lat, true),
-                    iconSize: [40, 20],
-                    iconAnchor: [-5, 10]
-                });
+                const icon = L.divIcon({ className: 'graticule-label', html: format60(lat, true), iconSize: [40, 20], iconAnchor: [-5, 10] });
                 L.marker([lat, edgeWest], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
 
-            // 経線（縦線）と「下端」のラベルを描画
             for (let lng = west; lng <= east; lng += step) {
                 L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
-                
-                const icon = L.divIcon({
-                    className: 'graticule-label',
-                    html: format60(lng, false),
-                    iconSize: [40, 20],
-                    iconAnchor: [20, 75] 
-                });
+                const icon = L.divIcon({ className: 'graticule-label', html: format60(lng, false), iconSize: [40, 20], iconAnchor: [20, 75] });
                 L.marker([edgeSouth, lng], {icon: icon, interactive: false}).addTo(graticuleLayer);
             }
         }
 
-        // 地図を動かした時、またはズームした時にリアルタイムで線を更新する
         map.on('move', drawGraticule);
         drawGraticule();
 
@@ -656,57 +654,53 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             const searchInput = document.getElementById('search-input');
             let isComposing = false; 
 
-            searchInput.addEventListener('compositionstart', () => {
-                isComposing = true;
-            });
-
-            searchInput.addEventListener('compositionend', () => {
-                isComposing = false;
-                formatInput(searchInput);
-            });
-
-            searchInput.addEventListener('input', function() {
-                if (isComposing) return; 
-                formatInput(this);
-            });
+            searchInput.addEventListener('compositionstart', () => { isComposing = true; });
+            searchInput.addEventListener('compositionend', () => { isComposing = false; formatInput(searchInput); });
+            searchInput.addEventListener('input', function() { if (isComposing) return; formatInput(this); });
 
             function formatInput(el) {
                 const start = el.selectionStart;
                 const end = el.selectionEnd;
                 let val = el.value;
-                
                 val = val.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
                     return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
                 });
-                
                 val = val.replace(/ /g, ' ').replace(/[、，]/g, ',');
                 val = val.toUpperCase();
                 
                 if (el.value !== val) {
                     el.value = val;
-                    try {
-                        el.setSelectionRange(start, end);
-                    } catch (e) {}
+                    try { el.setSelectionRange(start, end); } catch (e) {}
                 }
             }
 
             searchInput.addEventListener('keydown', (e) => { 
-                if (e.key === 'Enter' && !isComposing) {
-                    fetchNotams(); 
-                }
+                if (e.key === 'Enter' && !isComposing) fetchNotams(); 
             });
 
             renderHistory();
             showFullScreenAd(); 
         });
 
+        // 🌟 パネル表示/非表示の切り替え関数
+        function toggleNotamPanel() {
+            const panel = document.getElementById('notam-panel');
+            const btn = document.getElementById('toggle-panel-btn');
+            
+            if (panel.style.display === 'none') {
+                panel.style.display = 'flex';
+                btn.innerHTML = '⛶ 画面を広く';
+            } else {
+                panel.style.display = 'none';
+                btn.innerHTML = '▶ リスト表示';
+            }
+            // マップの再描画を促す
+            setTimeout(() => map.invalidateSize(), 300);
+        }
+
         // 🌟 メニューモーダルの開閉関数
-        function openMenuModal() {
-            document.getElementById('menu-modal').style.display = 'flex';
-        }
-        function closeMenuModal() {
-            document.getElementById('menu-modal').style.display = 'none';
-        }
+        function openMenuModal() { document.getElementById('menu-modal').style.display = 'flex'; }
+        function closeMenuModal() { document.getElementById('menu-modal').style.display = 'none'; }
 
         function renderHistory() {
             const container = document.getElementById('history-chips');
@@ -790,10 +784,13 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
             return { startTime, endTime };
         }
 
+        // 🌟 フィルターと「並び替え（ソート）」の適用関数
         function applyFilters() {
             const isFilterEnabled = document.getElementById('filter-toggle').checked;
             const keyword = document.getElementById('keyword-input').value.toUpperCase();
             const dateStr = document.getElementById('date-input').value;
+            const sortType = document.getElementById('sort-type').value;
+            const sortOrder = document.getElementById('sort-order').value;
 
             let filtered = allFetchedNotams.filter(notam => {
                 if (isFilterEnabled && keyword && !notam.text.toUpperCase().includes(keyword)) {
@@ -812,7 +809,37 @@ Cookieを無効にする方法やGoogle AdSenseに関する詳細については
                 return true;
             });
 
-            filtered.sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' }));
+            // 🌟 並び替え（ソート）の実行
+            filtered.sort((a, b) => {
+                if (sortType === 'id') {
+                    // 番号順（A0044/24 のような場合、発令年(24)と番号(0044)を考慮してソート）
+                    const getYearAndNum = (id) => {
+                        const match = id.match(/([A-Z]?)(\d+)\/(\d{2})/);
+                        if (match) return { letter: match[1], num: parseInt(match[2]), year: parseInt(match[3]) };
+                        return { letter: '', num: 0, year: 0 };
+                    };
+                    const valA = getYearAndNum(a.id);
+                    const valB = getYearAndNum(b.id);
+                    
+                    if (valA.year !== valB.year) return valA.year - valB.year;
+                    if (valA.letter !== valB.letter) return valA.letter.localeCompare(valB.letter);
+                    if (valA.num !== valB.num) return valA.num - valB.num;
+                    
+                    // 特殊なIDフォーマット用のフォールバック
+                    return a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' });
+                } else if (sortType === 'date') {
+                    // 発令日時(B)順
+                    const dateA = extractNotamDates(a.text).startTime || 0;
+                    const dateB = extractNotamDates(b.text).startTime || 0;
+                    return dateA - dateB;
+                }
+                return 0;
+            });
+
+            // 降順の場合は配列を反転させる
+            if (sortOrder === 'desc') {
+                filtered.reverse();
+            }
 
             displayedNotams = filtered;
             renderUI(false);
