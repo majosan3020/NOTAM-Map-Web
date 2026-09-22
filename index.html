@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google Search Console 所有権確認タグ（更新版） -->
+    <!-- Google Search Console 所有権確認タグ -->
     <meta name="google-site-verification" content="qAs5C_HIV--J1RTbZB0OC53woMWOL0ZaIFP2a8SGWw8" />
 
     <!-- Google AdSense コード -->
@@ -59,14 +59,13 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
 
-        /* 🌟 折りたたみ対象のヘッダー下部（履歴・フィルター） */
         #header-collapsible {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        /* 🌟 トップブランドバー（アイコン＋タイトル＋メニューボタン） */
+        /* 🌟 トップブランドバー（アイコン＋タイトル＋右側操作群） */
         .brand-row {
             display: flex;
             justify-content: space-between;
@@ -90,6 +89,27 @@
             font-weight: bold;
             color: var(--primary-color);
         }
+        .brand-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 🌟 Last Update 表示用のスタイル */
+        .last-update-badge {
+            font-size: 11px;
+            color: var(--text-sub);
+            background-color: var(--surface-color);
+            border: 1px solid #444;
+            padding: 5px 8px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        .last-update-badge span {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
         .menu-btn {
             background-color: var(--surface-variant);
             color: var(--text-main);
@@ -250,7 +270,6 @@
             flex: 1;
         }
 
-        /* 🌟 マップフルスクリーン用トグルボタン */
         #toggle-panel-btn {
             position: absolute;
             top: 10px;
@@ -461,13 +480,18 @@
 <body>
 
     <div id="header-container">
-        <!-- 🌟 ヘッダー上部：アイコン＋タイトル＋メニューボタン -->
+        <!-- 🌟 ヘッダー上部：アイコン＋タイトル＋Last Update ＋ メニューボタン -->
         <div class="brand-row">
             <div class="brand-left">
                 <img src="/icon.png" alt="Logo" class="brand-icon">
                 <span class="brand-title">NOTAM MAP View</span>
             </div>
-            <button class="menu-btn" onclick="openMenuModal()">Menu / About</button>
+            <div class="brand-right">
+                <div class="last-update-badge" id="last-update-container" style="display: none;">
+                    <span id="last-update-label">Last Update:</span> <span id="last-update-time">--:--:--</span>
+                </div>
+                <button class="menu-btn" onclick="openMenuModal()">Menu / About</button>
+            </div>
         </div>
 
         <div class="search-row">
@@ -653,6 +677,7 @@
             document.getElementById('keyword-input').placeholder = isJa ? 'キーワード' : 'Keyword';
             document.getElementById('loading-text').innerText = isJa ? 'NOTAMを取得中...' : 'Fetching NOTAMs...';
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
+            document.getElementById('last-update-label').innerText = isJa ? '取得時刻:' : 'Last Update:';
 
             // メニューモーダルテキストの切り替え
             document.getElementById('about-modal-title').innerText = isJa ? 'NOTAM MAP View について' : 'About NOTAM MAP View';
@@ -739,11 +764,9 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                 headerCollapsible.style.display = 'flex';
                 btn.innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
             }
-            // マップの再描画を促す
             setTimeout(() => map.invalidateSize(), 300);
         }
 
-        // 🌟 メニューモーダルの開閉関数
         function openMenuModal() { document.getElementById('menu-modal').style.display = 'flex'; }
         function closeMenuModal() { document.getElementById('menu-modal').style.display = 'none'; }
 
@@ -829,7 +852,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             return { startTime, endTime };
         }
 
-        // 🌟 フィルターと「並び替え（ソート）」の適用関数
         function applyFilters() {
             const isFilterEnabled = document.getElementById('filter-toggle').checked;
             const keyword = document.getElementById('keyword-input').value.toUpperCase();
@@ -854,10 +876,8 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                 return true;
             });
 
-            // 🌟 並び替え（ソート）の実行
             filtered.sort((a, b) => {
                 if (sortType === 'id') {
-                    // 番号順（A0044/24 のような場合、発令年(24)と番号(0044)を考慮してソート）
                     const getYearAndNum = (id) => {
                         const match = id.match(/([A-Z]?)(\d+)\/(\d{2})/);
                         if (match) return { letter: match[1], num: parseInt(match[2]), year: parseInt(match[3]) };
@@ -872,7 +892,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                     
                     return a.id.localeCompare(b.id, 'en', { numeric: true, sensitivity: 'base' });
                 } else if (sortType === 'date') {
-                    // 発令日時(B)順
                     const dateA = extractNotamDates(a.text).startTime || 0;
                     const dateB = extractNotamDates(b.text).startTime || 0;
                     return dateA - dateB;
@@ -880,7 +899,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                 return 0;
             });
 
-            // 降順の場合は配列を反転させる
             if (sortOrder === 'desc') {
                 filtered.reverse();
             }
@@ -920,6 +938,13 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                         });
                     }
                 }
+                
+                // 🌟 サーバーからデータを取得し終えた瞬間のローカル時間をバッジに反映
+                const now = new Date();
+                const timeString = now.toLocaleTimeString(); // ユーザーのローカルタイム形式 (例: 20:15:30 など)
+                document.getElementById('last-update-time').innerText = timeString;
+                document.getElementById('last-update-container').style.display = 'inline-block';
+
             } catch (e) {
                 console.error(e);
             } finally {
@@ -1079,7 +1104,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             listContainer.innerHTML = '';
             mapLayers.clearLayers();
             
-            // 🌟 翻訳を反映させたリストタイトル
             document.getElementById('list-title').innerText = isJa 
                 ? `NOTAMリスト (${displayedNotams.length}件)` 
                 : `NOTAM List (${displayedNotams.length} items)`;
