@@ -95,7 +95,7 @@
             gap: 8px;
         }
         
-        /* 🌟 Last Update 表示用のスタイル */
+        /* 🌟 VPSデータ最新更新時刻 表示用のスタイル */
         .last-update-badge {
             font-size: 11px;
             color: var(--text-sub);
@@ -487,7 +487,7 @@
                 <span class="brand-title">NOTAM MAP View</span>
             </div>
             <div class="brand-right">
-                <div class="last-update-badge" id="last-update-container" style="display: none;">
+                <div class="last-update-badge" id="last-update-container">
                     <span id="last-update-label">Last Update:</span> <span id="last-update-time">--:--:--</span>
                 </div>
                 <button class="menu-btn" onclick="openMenuModal()">Menu / About</button>
@@ -828,7 +828,8 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
 
             if (bMatch) {
                 const b = bMatch[1];
-                const year = 2000 + parseInt(b.substring(0, 2), 10);
+                let year = parseInt(b.substring(0, 2), 10);
+                year = year >= 50 ? 1900 + year : 2000 + year;
                 const month = parseInt(b.substring(2, 4), 10) - 1;
                 const day = parseInt(b.substring(4, 6), 10);
                 const hour = parseInt(b.substring(6, 8), 10);
@@ -841,7 +842,8 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                     endTime = Number.MAX_SAFE_INTEGER;
                 } else {
                     const c = cMatch[1];
-                    const year = 2000 + parseInt(c.substring(0, 2), 10);
+                    let year = parseInt(c.substring(0, 2), 10);
+                    year = year >= 50 ? 1900 + year : 2000 + year;
                     const month = parseInt(c.substring(2, 4), 10) - 1;
                     const day = parseInt(c.substring(4, 6), 10);
                     const hour = parseInt(c.substring(6, 8), 10);
@@ -930,6 +932,14 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                     const response = await fetch(`/api/notams?location=${icao}`);
                     if (response.ok) {
                         const json = await response.json();
+                        
+                        // 🌟 サーバーから返ってきた `all_notams.json` のファイル更新時刻（Unix時間）を反映
+                        if (json.lastModified) {
+                            const updateDate = new Date(json.lastModified * 1000);
+                            const timeString = updateDate.toLocaleTimeString(); // ユーザーのローカルタイム (例: 13:07:11 など)
+                            document.getElementById('last-update-time').innerText = timeString;
+                        }
+
                         const parsedList = extractGeoJsonNotams(json);
                         parsedList.forEach(p => {
                             if (!allFetchedNotams.find(existing => existing.id === p.id)) {
@@ -938,13 +948,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                         });
                     }
                 }
-                
-                // 🌟 サーバーからデータを取得し終えた瞬間のローカル時間をバッジに反映
-                const now = new Date();
-                const timeString = now.toLocaleTimeString(); // ユーザーのローカルタイム形式 (例: 20:15:30 など)
-                document.getElementById('last-update-time').innerText = timeString;
-                document.getElementById('last-update-container').style.display = 'inline-block';
-
             } catch (e) {
                 console.error(e);
             } finally {
