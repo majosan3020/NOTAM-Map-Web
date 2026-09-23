@@ -330,6 +330,21 @@
             font-weight: bold;
         }
         
+        #clear-selection-btn {
+            background-color: var(--surface-color);
+            color: var(--orange-accent);
+            border: 1px solid var(--orange-accent);
+            border-radius: 4px;
+            font-size: 11px;
+            padding: 4px 8px;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
+        }
+        #clear-selection-btn:hover {
+            background-color: #3a2e1f;
+        }
+
         #notam-list {
             flex: 1;
             overflow-y: auto;
@@ -529,9 +544,13 @@
         
         <div id="notam-panel">
             <div class="panel-header">
-                <span id="list-title">NOTAM List (0 items)</span>
-                <!-- 🌟 NOTAMリスト並び替えメニュー -->
-                <div style="display:flex; gap:6px;">
+                <div style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px;">
+                    <span id="list-title">NOTAM List (0 items)</span>
+                    <span id="selected-count" style="font-size: 13px; color: var(--orange-accent);">[Selected: 0]</span>
+                </div>
+                <!-- 🌟 NOTAMリスト並び替えメニューと選択解除ボタン -->
+                <div style="display:flex; gap:6px; align-items: center;">
+                    <button id="clear-selection-btn" onclick="clearSelection()">Clear Selection</button>
                     <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
                         <option value="id" id="opt-sort-id"></option>
                         <option value="date" id="opt-sort-date"></option>
@@ -677,6 +696,7 @@
             document.getElementById('loading-text').innerText = isJa ? 'NOTAMを取得中...' : 'Fetching NOTAMs...';
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
             document.getElementById('last-update-label').innerText = isJa ? 'データ最新:' : 'Latest Data:';
+            document.getElementById('clear-selection-btn').innerText = isJa ? '選択解除' : 'Clear Selection';
 
             document.getElementById('about-modal-title').innerText = isJa ? 'NOTAM MAP View について' : 'About NOTAM MAP View';
             document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
@@ -752,6 +772,12 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             renderHistory();
             showFullScreenAd(); 
         });
+
+        // 🌟 選択解除（Clear Selection）ボタンの処理
+        function clearSelection() {
+            selectedIds.clear();
+            renderUI(false);
+        }
 
         function toggleNotamPanel() {
             const panel = document.getElementById('notam-panel');
@@ -1115,9 +1141,17 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             listContainer.innerHTML = '';
             mapLayers.clearLayers();
             
+            // 🌟 リストのタイトル文言と、選択中の件数表示を更新
             document.getElementById('list-title').innerText = isJa 
                 ? `NOTAMリスト (${displayedNotams.length}件)` 
                 : `NOTAM List (${displayedNotams.length} items)`;
+            
+            document.getElementById('selected-count').innerText = isJa
+                ? `[選択中: ${selectedIds.size}]`
+                : `[Selected: ${selectedIds.size}]`;
+            
+            // 🌟 選択されている場合のみ「選択解除」ボタンを表示
+            document.getElementById('clear-selection-btn').style.display = selectedIds.size > 0 ? 'inline-block' : 'none';
             
             const bounds = L.latLngBounds();
             let hasPoints = false;
