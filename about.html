@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About & Guide - NOTAM MAP View</title>
+    <style>
+        body { background-color: #121212; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1, h2, h3 { color: #d0bcff; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        a { color: #ff9800; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; }
+        .lang-en { display: none; } /* デフォルトで英語を隠す（JSで制御） */
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-link">← Back to Map App</a>
+
+    <!-- 🇯🇵 日本語コンテンツ -->
+    <div class="lang-ja">
+        <h1>NOTAM MAP View について</h1>
+        
+        <h2>アプリの概要・目的</h2>
+        <p>「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Air Missions）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。<br>
+        テキストだけで配信される難解なNOTAMの座標や対象エリアを解析し、ポリゴンやラインとして地図上に描画することで、飛行計画の立案や空域の安全確認をサポートします。</p>
+
+        <h2>主な機能と使い方</h2>
+        <ul>
+            <li><strong>ICAOコード検索:</strong> 画面上部の検索バーに空港やFIRのICAOコード（例: RJTT, RJAA, EGTTなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にビジュアル表示します。</li>
+            <li><strong>取得日時（Latest Data）の確認:</strong> 画面右上には、バックエンドサーバーがFAAから約4分おきに自動取得しているデータの実際の最終更新日時が表示され、常に情報の鮮度を確認できます。</li>
+            <li><strong>キーワード・日付フィルター:</strong> 取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行ったり、リストを並び替えて必要な情報を素早く抽出できます。</li>
+            <li><strong>地図のフルスクリーン表示:</strong> 画面左上の「⛶ 画面を広く」ボタンを押すことで、メニューやリストを非表示にし、広域の空域制限を俯瞰して確認できます。</li>
+        </ul>
+
+        <h2>免責事項 (Disclaimer)</h2>
+        <p>当サービスで提供する航空情報および描画される図形の正確性・完全性については万全を期しておりますが、自動解析プログラムの性質上、本来の制限エリアと異なる描画が行われる場合があります（例：代替ルートのみの描画など）。<br>
+        <strong>実際のフライトプランの作成や航空機の運航にあたっては、必ず公式の航空情報（AIP, AIS Japan, FAA等）の原本を併せてご確認ください。</strong><br>
+        本アプリの利用によって生じたいかなる損害・トラブルについても、開発者および運営者は一切の責任を負いかねます。</p>
+    </div>
+
+    <!-- 🇺🇸 英語コンテンツ -->
+    <div class="lang-en">
+        <h1>About NOTAM MAP View</h1>
+        
+        <h2>Overview & Purpose</h2>
+        <p>"NOTAM MAP View" is a web map application designed for pilots, aviation professionals, and aviation enthusiasts to visually and intuitively check real-time NOTAMs (Notice to Air Missions) on a map.<br>
+        By parsing complex NOTAM coordinates and affected areas, it draws polygons, lines, and circles on the map, supporting flight planning and airspace safety checks.</p>
+
+        <h2>Features & Usage</h2>
+        <ul>
+            <li><strong>ICAO Code Search:</strong> Enter ICAO codes (e.g., RJTT, KLAX, EGTT) in the search bar to fetch the latest NOTAMs. The app visualizes restricted airspaces and routes.</li>
+            <li><strong>Latest Data Timestamp:</strong> The badge at the top right displays the actual last-modified timestamp of the backend data, which is automatically updated from the FAA approximately every 4 minutes.</li>
+            <li><strong>Filters & Sorting:</strong> Narrow down NOTAMs using keywords (RWY, TWY, ILS, etc.) or effective dates, and easily sort the list to find what you need.</li>
+            <li><strong>Fullscreen Map:</strong> Click the "Expand Map" button to hide the lists and filters, maximizing your map viewing area for better situational awareness.</li>
+        </ul>
+
+        <h2>Disclaimer</h2>
+        <p>While we strive for accuracy and completeness of the aviation information provided, the automated parsing may occasionally result in inaccurate drawings (e.g., drawing alternate routes instead of restricted areas).<br>
+        <strong>When creating actual flight plans or operating aircraft, you MUST always consult official aviation sources (AIP, AIS, FAA, etc.).</strong><br>
+        The developer assumes no responsibility for any damages, incidents, or liabilities arising from the use of this application.</p>
+    </div>
+
+    <script>
+        // ブラウザ言語を取得して表示を切り替える
+        document.addEventListener('DOMContentLoaded', () => {
+            const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+            if (!isJa) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - NOTAM MAP View</title>
+    <style>
+        :root {
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+        }
+        
+        body { background-color: #121212; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { color: #d0bcff; border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 30px;}
+        a { color: #ff9800; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; }
+        .lang-en { display: none; }
+        
+        /* 🌟 メールアドレス・ボタン用のスタイル */
+        .contact-box {
+            margin-top: 30px;
+            padding: 30px 20px;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+            text-align: center;
+        }
+        .email-text {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .email-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: var(--primary-dark);
+            text-decoration: none;
+            border-radius: 24px;
+            font-weight: bold;
+            font-size: 16px;
+            transition: opacity 0.2s;
+        }
+        .email-btn:hover {
+            opacity: 0.8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-link">← Back to Map App</a>
+
+    <!-- 🇯🇵 日本語コンテンツ -->
+    <div class="lang-ja">
+        <h1>お問い合わせ (Contact Us)</h1>
+        <p>当アプリ（NOTAM MAP View）に関する不具合のご報告、機能に関するご要望、その他のお問い合わせは、以下のメールアドレスまでお送りください。<br>
+        ※内容によってはご返信できない場合がございます。あらかじめご了承ください。</p>
+        
+        <div class="contact-box">
+            <div class="email-text">
+                <a href="mailto:majosan3020@gmail.com">majosan3020@gmail.com</a>
+            </div>
+            <a href="mailto:majosan3020@gmail.com" class="email-btn">メールを作成する</a>
+        </div>
+    </div>
+
+    <!-- 🇺🇸 英語コンテンツ -->
+    <div class="lang-en">
+        <h1>Contact Us</h1>
+        <p>If you have any bug reports, feature requests, or other inquiries regarding NOTAM MAP View, please contact us at the email address below.<br>
+        *Please note that we may not be able to reply to all messages individually.</p>
+        
+        <div class="contact-box">
+            <div class="email-text">
+                <a href="mailto:majosan3020@gmail.com">majosan3020@gmail.com</a>
+            </div>
+            <a href="mailto:majosan3020@gmail.com" class="email-btn">Send Email</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+            if (!isJa) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

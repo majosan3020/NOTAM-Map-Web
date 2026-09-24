@@ -490,6 +490,26 @@
             text-align: center;
             line-height: 20px;
         }
+
+        /* 🌟 ナビゲーションメニュー用リンクのスタイル */
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid #444;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .nav-link:hover {
+            background-color: #333;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
     </style>
 </head>
 <body>
@@ -584,11 +604,16 @@
         </div>
     </div>
 
-    <!-- 🌟 メニュー・解説・プライバシーポリシー用モーダル -->
+    <!-- 🌟 クローラー向けの明確なリンクを設置したナビゲーションモーダル -->
     <div id="menu-modal" class="overlay" style="z-index: 4000;">
         <div class="modal-content">
-            <div class="modal-header" id="about-modal-title"></div>
-            <div class="modal-body" id="about-modal-body"></div>
+            <div class="modal-header">Menu / Navigation</div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- HTML上に明記された <a> タグによりSEOとクローラーの巡回性が向上します -->
+                <a href="/about.html" class="nav-link">ℹ️ About & Guide (概要・使い方)</a>
+                <a href="/privacy.html" class="nav-link">🛡️ Privacy Policy (プライバシーポリシー)</a>
+                <a href="/contact.html" class="nav-link">✉️ Contact Us (お問い合わせ)</a>
+            </div>
             <div class="modal-footer">
                 <button class="modal-btn" id="about-modal-close" onclick="closeMenuModal()"></button>
             </div>
@@ -697,50 +722,9 @@
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
             document.getElementById('last-update-label').innerText = isJa ? 'データ最新:' : 'Latest Data:';
             document.getElementById('clear-selection-btn').innerText = isJa ? '選択解除' : 'Clear Selection';
-
-            document.getElementById('about-modal-title').innerText = isJa ? 'NOTAM MAP View について' : 'About NOTAM MAP View';
+            
+            // モーダルの閉じるボタンの文言
             document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
-            document.getElementById('about-modal-body').innerText = isJa ? `【アプリの概要・目的】
-「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Air Missions）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。
-
-【主な機能と使い方】
-1. ICAOコード検索:
-   画面上部の検索バーに空港のICAOコード（例: RJTT, RJAAなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にポリラインやポリゴン、円形でビジュアル表示します。
-2. 取得日時（Latest Data）表示:
-   画面右上の「データ最新」バッジには、バックエンドサーバーがFAAから約4分おきに自動取得しているデータの最終更新日時が表示されます。
-3. キーワード・日付フィルター & リスト並び替え:
-   取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行ったり、番号順・発令順（昇順・降順）でリストを並び替えて必要な情報を素早く確認できます。
-4. 画面を広く（フルスクリーン表示）:
-   画面左上の「⛶ 画面を広く」ボタンを押すことで、NOTAMリストや検索履歴・フィルターを非表示にし、地図画面を最大化して広く見渡すことができます。
-5. 詳細情報の確認:
-   リスト内の「Details」ボタンまたは地図上の図形をクリックすることで、NOTAMの全文（テキスト情報）をポップアップで詳細に閲覧可能です。
-
-【免責事項】
-当サービスで提供する航空情報の正確性・完全性については万全を期しておりますが、実際のフライトプランの作成や運航にあたっては、必ず公式の航空情報（AIP, AIS Japan等）を併せてご確認ください。本アプリの利用によって生じたいかなる損害についても、開発者は一切の責任を負いかねます。
-
-【プライバシーポリシー & 広告について】
-当サイトでは、第三者配信の広告サービス（Google AdSense）を利用しており、ユーザーの興味に応じた商品やサービスの広告を表示するため、Cookieを使用することがあります。
-Cookieを無効にする方法やGoogle AdSenseに関する詳細については、Googleのポリシーと規約ページをご確認ください。` : `[Overview]
-"NOTAM MAP View" is a web map application designed for pilots, aviation professionals, and aviation enthusiasts to visually and intuitively check real-time NOTAMs (Notice to Air Missions) on a map.
-
-[Features & Usage]
-1. ICAO Code Search:
-   Enter an ICAO code (e.g., RJTT, KLAX) in the search bar and click "Search" to fetch the latest NOTAMs. The app visualizes restricted airspaces and routes using polylines, polygons, and circles.
-2. Latest Data Timestamp:
-   The "Latest Data" badge at the top right displays the actual last-modified timestamp of the backend data (all_notams.json), which is automatically updated from the FAA approximately every 4 minutes.
-3. Keyword/Date Filter & List Sorting:
-   Easily narrow down NOTAMs using keywords (RWY, TWY, ILS, etc.) or effective dates, and sort the list by ID or issued date in ascending/descending order.
-4. Expand Map (Fullscreen Mode):
-   Click the "Expand Map" button at the top left to hide the NOTAM list, history, and filters, maximizing your map viewing area.
-5. Details View:
-   Click the "Details" button in the list or click directly on the shapes on the map to view the full original NOTAM text.
-
-[Disclaimer]
-While we strive for accuracy and completeness of the aviation information provided, please ensure you consult official aviation sources (AIP, AIS, etc.) when creating actual flight plans or operating aircraft. The developer assumes no responsibility for any damages arising from the use of this application.
-
-[Privacy Policy & Advertising]
-This site uses third-party advertising services (Google AdSense), which may use Cookies to display advertisements for products and services based on users' interests and previous visits to this or other websites.
-For more information on how to disable Cookies or Google AdSense policies, please review Google's official Policy and Terms page.`;
 
             const searchInput = document.getElementById('search-input');
             let isComposing = false; 
@@ -773,7 +757,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             showFullScreenAd(); 
         });
 
-        // 🌟 選択解除（Clear Selection）ボタンの処理
         function clearSelection() {
             selectedIds.clear();
             renderUI(false);
@@ -1141,7 +1124,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
             listContainer.innerHTML = '';
             mapLayers.clearLayers();
             
-            // 🌟 リストのタイトル文言と、選択中の件数表示を更新
             document.getElementById('list-title').innerText = isJa 
                 ? `NOTAMリスト (${displayedNotams.length}件)` 
                 : `NOTAM List (${displayedNotams.length} items)`;
@@ -1150,7 +1132,6 @@ For more information on how to disable Cookies or Google AdSense policies, pleas
                 ? `[選択中: ${selectedIds.size}]`
                 : `[Selected: ${selectedIds.size}]`;
             
-            // 🌟 選択されている場合のみ「選択解除」ボタンを表示
             document.getElementById('clear-selection-btn').style.display = selectedIds.size > 0 ? 'inline-block' : 'none';
             
             const bounds = L.latLngBounds();
