@@ -644,7 +644,12 @@
         
         let searchHistory = JSON.parse(localStorage.getItem('notam_history') || '[]');
 
-        const map = L.map('map', { zoomControl: false }).setView([35.5, 139.7], 5);
+        // ★ 高速化1: 地図の描画エンジンを SVG から Canvas に変更（preferCanvas: true）
+        const map = L.map('map', { 
+            zoomControl: false,
+            preferCanvas: true 
+        }).setView([35.5, 139.7], 5);
+        
         L.control.zoom({ position: 'topleft' }).addTo(map);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
         let mapLayers = L.layerGroup().addTo(map);
@@ -1141,6 +1146,9 @@
                 ? displayedNotams.filter(item => selectedIds.has(item.id))
                 : displayedNotams;
 
+            // ★ 高速化2: DOMを1回でまとめて描画（DocumentFragmentを使用）
+            const fragment = document.createDocumentFragment();
+
             displayedNotams.forEach(item => {
                 const isSelected = selectedIds.has(item.id);
                 
@@ -1165,8 +1173,11 @@
                     }
                     renderUI(false); 
                 };
-                listContainer.appendChild(card);
+                
+                fragment.appendChild(card); // フラグメントに貯める
             });
+            
+            listContainer.appendChild(fragment); // 最後に1回だけ画面に追加
 
             targetNotams.forEach(item => {
                 const isRoute = /RTE|ROUTE|AWY|AIRWAY|DCT /i.test(item.text);
