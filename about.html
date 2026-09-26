@@ -5,12 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About & Guide - NOTAM MAP View</title>
     <style>
-        body { background-color: #121212; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
-        h1, h2, h3 { color: #d0bcff; border-bottom: 1px solid #333; padding-bottom: 8px; }
-        a { color: #ff9800; text-decoration: none; }
+        :root {
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+            --orange-accent: #ff9800;
+        }
+        body { 
+            background-color: #121212; 
+            color: #ffffff; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.8; 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+        h1 { 
+            color: var(--primary-color); 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            margin-top: 30px; 
+            margin-bottom: 20px;
+        }
+        h2 { 
+            color: var(--primary-color); 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+            margin-top: 40px;
+        }
+        p {
+            margin-bottom: 16px;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        a { color: var(--orange-accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .back-link { display: inline-block; margin-bottom: 20px; padding: 10px 15px; background: #2a2a2a; border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; }
-        .lang-en { display: none; } /* デフォルトで英語を隠す（JSで制御） */
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            padding: 10px 15px; 
+            background: #2a2a2a; 
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            color: #fff; 
+            font-weight: bold; 
+            transition: background-color 0.2s;
+        }
+        .back-link:hover {
+            background-color: #333;
+        }
+        .lang-en { display: none; }
+        
+        .qa-box {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-color);
+        }
+        .disclaimer-box {
+            background-color: #3a2e1f;
+            border: 1px solid var(--orange-accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -19,50 +81,107 @@
 
     <!-- 🇯🇵 日本語コンテンツ -->
     <div class="lang-ja">
-        <h1>NOTAM MAP View について</h1>
-        
-        <h2>アプリの概要・目的</h2>
-        <p>「NOTAM MAP View」は、パイロット、航空従事者、および航空ファンの皆様に向けて、リアルタイムな航空情報（NOTAM：Notice to Air Missions）を地図上で視覚的かつ直感的に確認できるように開発されたWebマップアプリケーションです。<br>
-        テキストだけで配信される難解なNOTAMの座標や対象エリアを解析し、ポリゴンやラインとして地図上に描画することで、飛行計画の立案や空域の安全確認をサポートします。</p>
+        <h1>NOTAM MAP view について</h1>
+        <p>NOTAM MAP viewは、世界中の航空情報（NOTAM）を地図上で視覚的に確認できるウェブサービスです。これまでテキストベースで解読が難しかったNOTAM情報を、直感的なインターフェースでマッピングし、航空関係者や航空ファン、バーチャルパイロットの情報収集をサポートします。</p>
+
+        <h2>NOTAM（ノータム）とは？</h2>
+        <p>NOTAM（Notice to Air Missions）とは、航空機の運航に関わる施設、業務、方式、および危険等の設定、状態、変更に関する公式な情報です。空港の滑走路閉鎖、空域の制限、航法無線施設のメンテナンスなど、安全な運航に欠かせない最新の通知が含まれます。当サイトでは、これらのテキストデータを解析し、地図上の該当エリアへマッピングしています。</p>
+
+        <h2>なぜNOTAMの視覚化が必要なのか？（開発の背景）</h2>
+        <p>従来のNOTAMは、大文字の英数字や専門的な略語で構成されたテキストデータとして配信されるため、解読には専門的な知識と時間が必要です。さらに、座標データだけでは「実際にどの範囲の空域に影響があるのか」を瞬時にイメージすることが困難でした。</p>
+        <p>当サイトは、この複雑な情報を地図上に直接描画することで、テキストを読み解くストレスを軽減し、誰でも一目で空域の状況を把握できるようにすることを目指して開発されました。</p>
+
+        <h2>こんな方におすすめです（活用シーン）</h2>
+        <ul>
+            <li><strong>航空ファン・スポッター:</strong> 航空祭などのイベントに伴う一時的な空域制限や、特別な飛行ルートの確認など、撮影や見学の事前準備の参考に。</li>
+            <li><strong>バーチャルパイロット:</strong> フライトシミュレーター（MSFSやX-Planeなど）において、より現実世界に近いリアルな運航環境を再現するための情報収集に。</li>
+            <li><strong>ドローン（無人航空機）操縦者:</strong> 飛行予定エリア周辺での突発的な空域制限や、注意すべき障害物情報の事前確認の補助として。</li>
+            <li><strong>航空情報の学習者:</strong> NOTAMの略語やフォーマットを勉強中の方が、実際の地図上の場所とテキストを照らし合わせて学習するためのツールとして。</li>
+        </ul>
 
         <h2>主な機能と使い方</h2>
         <ul>
-            <li><strong>ICAOコード検索:</strong> 画面上部の検索バーに空港やFIRのICAOコード（例: RJTT, RJAA, EGTTなど）を入力して「Search」ボタンを押すことで、その地域の最新NOTAMを取得し、対象空域やルートを地図上にビジュアル表示します。</li>
-            <li><strong>取得日時（Latest Data）の確認:</strong> 画面右上には、バックエンドサーバーがFAAから約4分おきに自動取得しているデータの実際の最終更新日時が表示され、常に情報の鮮度を確認できます。</li>
-            <li><strong>キーワード・日付フィルター:</strong> 取得したNOTAMリストから特定のキーワード（RWY, TWY, ILSなど）や有効期間で絞り込みを行ったり、リストを並び替えて必要な情報を素早く抽出できます。</li>
-            <li><strong>地図のフルスクリーン表示:</strong> 画面左上の「⛶ 画面を広く」ボタンを押すことで、メニューやリストを非表示にし、広域の空域制限を俯瞰して確認できます。</li>
+            <li><strong>地図上での視覚化:</strong> 取得したNOTAM情報をマップ上にピンポイントで表示し、影響範囲を直感的に把握できます。</li>
+            <li><strong>最新データの取得:</strong> 公式の航空情報APIと連携し、グローバルなデータを反映しています。</li>
+            <li><strong>シンプルな操作性:</strong>
+                <ul>
+                    <li>画面上部の検索バーに目的のICAOコードを入力して検索します。</li>
+                    <li>マップ上に表示されているNOTAMの図形やルートをクリック・タップします。</li>
+                    <li>画面上に、該当エリアで発出されているNOTAMの詳細（制限内容、有効期間など）が表示されます。</li>
+                </ul>
+            </li>
         </ul>
 
-        <h2>免責事項 (Disclaimer)</h2>
-        <p>当サービスで提供する航空情報および描画される図形の正確性・完全性については万全を期しておりますが、自動解析プログラムの性質上、本来の制限エリアと異なる描画が行われる場合があります（例：代替ルートのみの描画など）。<br>
-        <strong>実際のフライトプランの作成や航空機の運航にあたっては、必ず公式の航空情報（AIP, AIS Japan, FAA等）の原本を併せてご確認ください。</strong><br>
-        本アプリの利用によって生じたいかなる損害・トラブルについても、開発者および運営者は一切の責任を負いかねます。</p>
+        <h2>よくある質問 (FAQ)</h2>
+        <div class="qa-box">
+            <p><strong>Q. データの更新頻度はどれくらいですか？</strong><br>
+            A. 外部APIを通じて最新のデータを取得して地図上に反映しています。ただし、通信環境やAPI側の仕様により、実際の発出から表示までにタイムラグが生じる場合があります。</p>
+        </div>
+        <div class="qa-box">
+            <p><strong>Q. どのエリアのNOTAMに対応していますか？</strong><br>
+            A. グローバルなAPIを利用しているため、世界中の主要な空港および空域のNOTAM情報をカバーしています。検索バーから目的のICAOコードを入力してご確認ください。</p>
+        </div>
+
+        <h2>免責事項（必ずお読みください）</h2>
+        <div class="disclaimer-box">
+            <p>当サイト（NOTAM MAP view）で提供する情報は、外部APIから取得したデータを視覚化したものであり、あくまで参考情報（Reference only）として提供するものです。</p>
+            <p><strong>データの遅延、欠落、または解析エラーが発生する可能性があるため、実際の飛行計画（フライトプラン）の作成や、現実の航空機の運航には絶対に使用しないでください。</strong> 実運航の際は、必ず各国の航空情報機関（AIS）や関連当局が発行する公式の最新NOTAMをご確認ください。</p>
+            <p>当サイトの利用により生じたいかなる損害についても、運営者は一切の責任を負いかねます。</p>
+        </div>
     </div>
 
     <!-- 🇺🇸 英語コンテンツ -->
     <div class="lang-en">
-        <h1>About NOTAM MAP View</h1>
-        
-        <h2>Overview & Purpose</h2>
-        <p>"NOTAM MAP View" is a web map application designed for pilots, aviation professionals, and aviation enthusiasts to visually and intuitively check real-time NOTAMs (Notice to Air Missions) on a map.<br>
-        By parsing complex NOTAM coordinates and affected areas, it draws polygons, lines, and circles on the map, supporting flight planning and airspace safety checks.</p>
+        <h1>About NOTAM MAP view</h1>
+        <p>NOTAM MAP view is a web service that allows you to visually check aviation information (NOTAMs) from around the world on a map. By mapping NOTAM information—which has traditionally been difficult to decipher in its text-based format—onto an intuitive interface, we support information gathering for aviation professionals, aviation enthusiasts, and virtual pilots.</p>
 
-        <h2>Features & Usage</h2>
+        <h2>What is a NOTAM?</h2>
+        <p>A NOTAM (Notice to Air Missions) is official information containing details concerning the establishment, condition, or change in any aeronautical facility, service, procedure, or hazard. It includes the latest notices essential for safe operations, such as airport runway closures, airspace restrictions, and navigational radio facility maintenance. This site parses these text data and maps them to the corresponding areas on the map.</p>
+
+        <h2>Why visualize NOTAMs? (Development Background)</h2>
+        <p>Traditional NOTAMs are distributed as text data composed of uppercase alphanumeric characters and specialized abbreviations, requiring specialized knowledge and time to decipher. Furthermore, it has been difficult to instantly visualize "which airspace is actually affected" using only coordinate data.</p>
+        <p>This site was developed with the aim of reducing the stress of deciphering text and enabling anyone to grasp the airspace situation at a glance by drawing this complex information directly on a map.</p>
+
+        <h2>Recommended for (Use Cases)</h2>
         <ul>
-            <li><strong>ICAO Code Search:</strong> Enter ICAO codes (e.g., RJTT, KLAX, EGTT) in the search bar to fetch the latest NOTAMs. The app visualizes restricted airspaces and routes.</li>
-            <li><strong>Latest Data Timestamp:</strong> The badge at the top right displays the actual last-modified timestamp of the backend data, which is automatically updated from the FAA approximately every 4 minutes.</li>
-            <li><strong>Filters & Sorting:</strong> Narrow down NOTAMs using keywords (RWY, TWY, ILS, etc.) or effective dates, and easily sort the list to find what you need.</li>
-            <li><strong>Fullscreen Map:</strong> Click the "Expand Map" button to hide the lists and filters, maximizing your map viewing area for better situational awareness.</li>
+            <li><strong>Aviation Enthusiasts & Spotters:</strong> For reference in advance preparation for photography and observation, such as temporary airspace restrictions accompanying events like air shows, or checking special flight routes.</li>
+            <li><strong>Virtual Pilots:</strong> For gathering information to recreate a more realistic operating environment close to the real world in flight simulators (such as MSFS or X-Plane).</li>
+            <li><strong>Drone (UAV) Operators:</strong> As an aid for checking in advance for sudden airspace restrictions or obstacle information to be aware of around the planned flight area.</li>
+            <li><strong>Aviation Information Learners:</strong> As a tool for those studying NOTAM abbreviations and formats to learn by comparing the text with actual locations on the map.</li>
         </ul>
 
-        <h2>Disclaimer</h2>
-        <p>While we strive for accuracy and completeness of the aviation information provided, the automated parsing may occasionally result in inaccurate drawings (e.g., drawing alternate routes instead of restricted areas).<br>
-        <strong>When creating actual flight plans or operating aircraft, you MUST always consult official aviation sources (AIP, AIS, FAA, etc.).</strong><br>
-        The developer assumes no responsibility for any damages, incidents, or liabilities arising from the use of this application.</p>
+        <h2>Key Features & Usage</h2>
+        <ul>
+            <li><strong>Visualization on a Map:</strong> Displays fetched NOTAM information precisely on the map, allowing you to intuitively grasp the affected areas.</li>
+            <li><strong>Fetching Latest Data:</strong> Integrates with official aeronautical information APIs to reflect global data.</li>
+            <li><strong>Simple Operation:</strong>
+                <ul>
+                    <li>Enter the desired ICAO code in the search bar at the top of the screen and search.</li>
+                    <li>Click or tap the NOTAM shapes or routes displayed on the map.</li>
+                    <li>The details of the NOTAM issued in the corresponding area (restriction details, effective period, etc.) will be displayed on the screen.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>Frequently Asked Questions (FAQ)</h2>
+        <div class="qa-box">
+            <p><strong>Q. How often is the data updated?</strong><br>
+            A. We fetch the latest data through external APIs and reflect it on the map. However, due to communication environments and API specifications, there may be a time lag between the actual issuance and its display.</p>
+        </div>
+        <div class="qa-box">
+            <p><strong>Q. Which areas' NOTAMs are supported?</strong><br>
+            A. Because we use a global API, we cover NOTAM information for major airports and airspaces worldwide. Please enter the desired ICAO code from the search bar to check.</p>
+        </div>
+
+        <h2>Disclaimer (Please read)</h2>
+        <div class="disclaimer-box">
+            <p>The information provided on this site (NOTAM MAP view) is a visualization of data fetched from external APIs and is provided strictly for reference only.</p>
+            <p><strong>Because data delays, omissions, or parsing errors may occur, NEVER use this information for creating actual flight plans or operating real aircraft.</strong> For actual operations, always consult the official, latest NOTAMs issued by the Aeronautical Information Service (AIS) or relevant authorities of each country.</p>
+            <p>The operator assumes no responsibility for any damages or liabilities arising from the use of this site.</p>
+        </div>
     </div>
 
     <script>
-        // ブラウザ言語を取得して表示を切り替える
         document.addEventListener('DOMContentLoaded', () => {
             const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
             if (!isJa) {
