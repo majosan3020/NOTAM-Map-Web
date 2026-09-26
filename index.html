@@ -582,7 +582,20 @@
                     </select>
                 </div>
             </div>
-            <div id="notam-list"></div>
+            
+            <div id="notam-list">
+                <!-- ★AdSense対策: 初期表示用のテキストコンテンツ（検索実行時にクリアされます） -->
+                <div style="padding: 20px; color: var(--text-sub); line-height: 1.6;">
+                    <h3 style="color: var(--primary-color); margin-top: 0;">航空情報を地図上で視覚化</h3>
+                    <p>画面上部の検索バーにICAOコード（例: <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>KZLA</strong>）を入力して「Search」を押すと、最新のNOTAM情報が地図上に描画されます。</p>
+                    <p>当アプリの詳しい使い方、NOTAMの解説、免責事項については以下のリンクをご確認ください。</p>
+                    <ul style="padding-left: 20px;">
+                        <li><a href="/about.html" style="color: var(--orange-accent);">About & Guide (概要・使い方)</a></li>
+                        <li><a href="/privacy.html" style="color: var(--orange-accent);">Privacy Policy</a></li>
+                        <li><a href="/contact.html" style="color: var(--orange-accent);">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div id="loading" class="overlay">
@@ -595,6 +608,7 @@
         Advertisement
     </div>
 
+    <!-- ★AdSense対策: フルスクリーン広告用のオーバーレイは残していますが、関数側で呼び出しを停止中 -->
     <div id="fullscreen-ad-overlay" class="overlay">
         <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
             <h3>Advertisement</h3>
@@ -942,9 +956,11 @@
             icaos.forEach(icao => saveToHistory(icao));
 
             searchCount++;
-            if (searchCount % 3 === 0) showFullScreenAd();
             
-            // ★AdSense対策: 検索を実行し、コンテンツが表示されるタイミングでバナーを出現させる
+            // ★AdSense対策: 審査通過までは3回ごとの全画面広告も停止しておく
+            // if (searchCount % 3 === 0) showFullScreenAd();
+            
+            // ★AdSense対策: 検索を実行し、コンテンツが表示されるタイミングで初めてバナー広告を出現させる
             document.getElementById('fixed-ad-banner').style.display = 'flex';
 
             document.getElementById('loading').style.display = 'flex';
