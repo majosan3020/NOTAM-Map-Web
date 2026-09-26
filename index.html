@@ -409,7 +409,8 @@
             width: 100%;
             height: 50px;
             background-color: #222;
-            display: flex;
+            /* ★AdSense対策: 初期状態ではバナーを非表示にしておく */
+            display: none; 
             align-items: center;
             justify-content: center;
             border-top: 1px solid #444;
@@ -644,7 +645,6 @@
         
         let searchHistory = JSON.parse(localStorage.getItem('notam_history') || '[]');
 
-        // ★ 高速化1: 地図の描画エンジンを SVG から Canvas に変更（preferCanvas: true）
         const map = L.map('map', { 
             zoomControl: false,
             preferCanvas: true 
@@ -727,10 +727,8 @@
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
             document.getElementById('clear-selection-btn').innerText = isJa ? '選択解除' : 'Clear Selection';
             
-            // 修正①: JS初期化時にも "Data Time:" を固定でセット
             document.getElementById('last-update-label').innerText = 'Data Time:';
             
-            // モーダルの閉じるボタンの文言
             document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
 
             const searchInput = document.getElementById('search-input');
@@ -761,7 +759,9 @@
             });
 
             renderHistory();
-            showFullScreenAd(); 
+            
+            // ★AdSense対策: 初期アクセス時に出ていた全画面広告を無効化
+            // showFullScreenAd(); 
         });
 
         function clearSelection() {
@@ -943,6 +943,9 @@
 
             searchCount++;
             if (searchCount % 3 === 0) showFullScreenAd();
+            
+            // ★AdSense対策: 検索を実行し、コンテンツが表示されるタイミングでバナーを出現させる
+            document.getElementById('fixed-ad-banner').style.display = 'flex';
 
             document.getElementById('loading').style.display = 'flex';
             allFetchedNotams = [];
@@ -957,7 +960,6 @@
                         if (json.lastModified) {
                             const updateDate = new Date(json.lastModified * 1000);
                             
-                            // 修正②: 年を削除し「月/日 時刻」のフォーマットに変更
                             const month = updateDate.getMonth() + 1;
                             const day = updateDate.getDate();
                             const hours = String(updateDate.getHours()).padStart(2, '0');
@@ -1150,7 +1152,6 @@
                 ? displayedNotams.filter(item => selectedIds.has(item.id))
                 : displayedNotams;
 
-            // ★ 高速化2: DOMを1回でまとめて描画（DocumentFragmentを使用）
             const fragment = document.createDocumentFragment();
 
             displayedNotams.forEach(item => {
@@ -1178,10 +1179,10 @@
                     renderUI(false); 
                 };
                 
-                fragment.appendChild(card); // フラグメントに貯める
+                fragment.appendChild(card); 
             });
             
-            listContainer.appendChild(fragment); // 最後に1回だけ画面に追加
+            listContainer.appendChild(fragment); 
 
             targetNotams.forEach(item => {
                 const isRoute = /RTE|ROUTE|AWY|AIRWAY|DCT /i.test(item.text);
