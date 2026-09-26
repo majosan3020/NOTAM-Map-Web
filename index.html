@@ -523,9 +523,9 @@
             </div>
             <div class="brand-right">
                 <div class="last-update-badge" id="last-update-container">
-                    <span id="last-update-label">Latest Data:</span> <span id="last-update-time">--</span>
+                    <span id="last-update-label">Data Time:</span> <span id="last-update-time">--/-- --:--</span>
                 </div>
-                <button class="menu-btn" onclick="openMenuModal()">Menu / About</button>
+                <button class="menu-btn" onclick="openMenuModal()">Menu</button>
             </div>
         </div>
 
@@ -725,8 +725,10 @@
             document.getElementById('keyword-input').placeholder = isJa ? 'キーワード' : 'Keyword';
             document.getElementById('loading-text').innerText = isJa ? 'NOTAMを取得中...' : 'Fetching NOTAMs...';
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
-            document.getElementById('last-update-label').innerText = isJa ? 'データ最新:' : 'Latest Data:';
             document.getElementById('clear-selection-btn').innerText = isJa ? '選択解除' : 'Clear Selection';
+            
+            // 修正①: JS初期化時にも "Data Time:" を固定でセット
+            document.getElementById('last-update-label').innerText = 'Data Time:';
             
             // モーダルの閉じるボタンの文言
             document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
@@ -954,12 +956,14 @@
                         
                         if (json.lastModified) {
                             const updateDate = new Date(json.lastModified * 1000);
-                            const year = updateDate.getFullYear();
-                            const month = String(updateDate.getMonth() + 1).padStart(2, '0');
-                            const day = String(updateDate.getDate()).padStart(2, '0');
+                            
+                            // 修正②: 年を削除し「月/日 時刻」のフォーマットに変更
+                            const month = updateDate.getMonth() + 1;
+                            const day = updateDate.getDate();
                             const hours = String(updateDate.getHours()).padStart(2, '0');
                             const minutes = String(updateDate.getMinutes()).padStart(2, '0');
-                            document.getElementById('last-update-time').innerText = `${year}/${month}/${day} ${hours}:${minutes}`;
+                            
+                            document.getElementById('last-update-time').innerText = `${month}/${day} ${hours}:${minutes}`;
                         }
 
                         const parsedList = extractGeoJsonNotams(json);
