@@ -129,6 +129,9 @@
             gap: 8px;
             align-items: center;
             position: relative;
+            margin: 0;
+            padding: 0;
+            border: none;
         }
         .search-row input[type="text"] {
             flex: 1;
@@ -409,7 +412,6 @@
             width: 100%;
             height: 50px;
             background-color: #222;
-            /* ★AdSense対策: 初期状態ではバナーを非表示にしておく */
             display: none; 
             align-items: center;
             justify-content: center;
@@ -530,11 +532,12 @@
             </div>
         </div>
 
-        <div class="search-row">
+        <!-- ★ エンターキーで検索できるように <form> タグに変更しました -->
+        <form class="search-row" onsubmit="event.preventDefault(); fetchNotams();">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJJJ ATFM EGTT KZLA (4-Letter Uppercase)" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
-            <button class="search-btn" id="search-btn-el" onclick="fetchNotams()">Search</button>
-        </div>
+            <button type="submit" class="search-btn" id="search-btn-el">Search</button>
+        </form>
         
         <!-- 🌟 折りたたみ対象の履歴＆フィルターエリア -->
         <div id="header-collapsible">
@@ -584,7 +587,7 @@
             </div>
             
             <div id="notam-list">
-                <!-- ★AdSense対策: 初期表示用の長文テキストコンテンツ（検索実行時にクリアされます） -->
+                <!-- ★AdSense対策: 初期表示用の長文テキストコンテンツ -->
                 <div style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
                     <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）を地図上で視覚化</h2>
                     
@@ -599,11 +602,11 @@
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">関連コラムとガイド</h3>
                     <p>NOTAMの読み方やICAOコードに関する詳しい解説、当ツールの活用方法については、以下の専門コラムやガイドページをご参照ください。</p>
                     <ul style="padding-left: 20px; font-weight: bold;">
-                        <li><a href="/article-notam.html" style="color: var(--orange-accent);">【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
-                        <li><a href="/article-icao.html" style="color: var(--orange-accent);">【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
-                        <li><a href="/about.html" style="color: var(--orange-accent);">当アプリの概要と詳細な使い方</a></li>
-                        <li><a href="/privacy.html" style="color: var(--orange-accent);">プライバシーポリシー</a></li>
-                        <li><a href="/contact.html" style="color: var(--orange-accent);">お問い合わせ (Contact Us)</a></li>
+                        <li><a href="/article-notam.html" style="color: var(--orange-accent);" target="_blank">【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+                        <li><a href="/article-icao.html" style="color: var(--orange-accent);" target="_blank">【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+                        <li><a href="/about.html" style="color: var(--orange-accent);" target="_blank">当アプリの概要と詳細な使い方</a></li>
+                        <li><a href="/privacy.html" style="color: var(--orange-accent);" target="_blank">プライバシーポリシー</a></li>
+                        <li><a href="/contact.html" style="color: var(--orange-accent);" target="_blank">お問い合わせ (Contact Us)</a></li>
                     </ul>
                 </div>
             </div>
@@ -619,7 +622,7 @@
         Advertisement
     </div>
 
-    <!-- ★AdSense対策: フルスクリーン広告用のオーバーレイは残していますが、関数側で呼び出しを停止中 -->
+    <!-- ★AdSense対策: 全画面広告用のオーバーレイ -->
     <div id="fullscreen-ad-overlay" class="overlay">
         <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
             <h3>Advertisement</h3>
@@ -635,10 +638,15 @@
         <div class="modal-content">
             <div class="modal-header">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- HTML上に明記された <a> タグによりSEOとクローラーの巡回性が向上します -->
-                <a href="/about.html" class="nav-link">ℹ️ About & Guide (概要・使い方)</a>
-                <a href="/privacy.html" class="nav-link">🛡️ Privacy Policy (プライバシーポリシー)</a>
-                <a href="/contact.html" class="nav-link">✉️ Contact Us (お問い合わせ)</a>
+                <a href="/article-notam.html" class="nav-link" target="_blank">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
+                <a href="/article-icao.html" class="nav-link" target="_blank">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
+                <a href="/about.html" class="nav-link" target="_blank">ℹ️ About & Guide (概要・使い方)</a>
+                <a href="/privacy.html" class="nav-link" target="_blank">🛡️ Privacy Policy (プライバシーポリシー)</a>
+                <a href="/contact.html" class="nav-link" target="_blank">✉️ Contact Us (お問い合わせ)</a>
+                
+                <button onclick="closeMenuModal()" class="nav-link" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
+                    ⬅ マップ画面に戻る (Close Menu)
+                </button>
             </div>
             <div class="modal-footer">
                 <button class="modal-btn" id="about-modal-close" onclick="closeMenuModal()"></button>
@@ -769,14 +777,13 @@
                 }
             }
 
-            searchInput.addEventListener('keydown', (e) => { 
-                if (e.key === 'Enter' && !isComposing) fetchNotams(); 
-            });
-
             renderHistory();
             
-            // ★AdSense対策: 初期アクセス時に出ていた全画面広告を無効化
-            // showFullScreenAd(); 
+            // ★ 初期アクセス時やコラムから戻ってきた際、前回検索した履歴があれば自動で復元（再検索）します
+            if (searchHistory.length > 0) {
+                document.getElementById('search-input').value = searchHistory[0];
+                fetchNotams(true); // true を渡すことで初回アクセス時の広告カウントをスキップ
+            }
         });
 
         function clearSelection() {
@@ -948,7 +955,8 @@
         function showFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; }
         function closeFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'none'; }
 
-        async function fetchNotams() {
+        // ★ isAutoLoad パラメータを追加し、自動復元時は広告カウントをスキップします
+        async function fetchNotams(isAutoLoad = false) {
             let rawInput = document.getElementById('search-input').value.trim().toUpperCase();
             if (!rawInput) return;
             const icaos = rawInput.split(/[\s,，、]+/).filter(code => code.length > 0);
@@ -956,12 +964,14 @@
 
             icaos.forEach(icao => saveToHistory(icao));
 
-            searchCount++;
+            // ★ ユーザーが手動で検索した場合のみカウントを増やし、3回ごとに全画面広告を表示します
+            if (!isAutoLoad) {
+                searchCount++;
+                if (searchCount % 3 === 0) {
+                    showFullScreenAd();
+                }
+            }
             
-            // ★AdSense対策: 審査通過までは3回ごとの全画面広告も停止しておく
-            // if (searchCount % 3 === 0) showFullScreenAd();
-            
-            // ★AdSense対策: 検索を実行し、コンテンツが表示されるタイミングで初めてバナー広告を出現させる
             document.getElementById('fixed-ad-banner').style.display = 'flex';
 
             document.getElementById('loading').style.display = 'flex';
