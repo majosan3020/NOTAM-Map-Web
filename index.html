@@ -779,10 +779,33 @@
 
             renderHistory();
             
-            // ★ 初期アクセス時やコラムから戻ってきた際、前回検索した履歴があれば自動で復元（再検索）します
-            if (searchHistory.length > 0) {
+            // ★ 前回検索した「結果データ」が保存されていれば、APIを叩かずに一瞬で復元する
+            const lastQuery = localStorage.getItem('last_search_query');
+            const lastData = localStorage.getItem('last_notam_data');
+            const lastTime = localStorage.getItem('last_update_time');
+
+            if (lastQuery && lastData) {
+                try {
+                    document.getElementById('search-input').value = lastQuery;
+                    if (lastTime) document.getElementById('last-update-time').innerText = lastTime;
+                    
+                    allFetchedNotams = JSON.parse(lastData);
+                    document.getElementById('fixed-ad-banner').style.display = 'flex';
+                    
+                    applyFilters(); 
+                    renderUI(true);
+                } catch (e) {
+                    console.error("Failed to restore history", e);
+                    // パース失敗時は通常の検索履歴からのフェッチにフォールバック
+                    if (searchHistory.length > 0) {
+                        document.getElementById('search-input').value = searchHistory[0];
+                        fetchNotams(true);
+                    }
+                }
+            } else if (searchHistory.length > 0) {
+                // データはないが検索履歴のキーワードだけある場合はAPIを叩いて復元
                 document.getElementById('search-input').value = searchHistory[0];
-                fetchNotams(true); // true を渡すことで初回アクセス時の広告カウントをスキップ
+                fetchNotams(true);
             }
         });
 
@@ -955,17 +978,16 @@
         function showFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; }
         function closeFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'none'; }
 
-        // ★ isAutoLoad パラメータを追加し、自動復元時は広告カウントをスキップします
+        // ★ isAutoLoad パラメータを追加。手動検索時のみカウント・履歴追加を行います
         async function fetchNotams(isAutoLoad = false) {
             let rawInput = document.getElementById('search-input').value.trim().toUpperCase();
             if (!rawInput) return;
             const icaos = rawInput.split(/[\s,，、]+/).filter(code => code.length > 0);
             if (icaos.length === 0) return;
 
-            icaos.forEach(icao => saveToHistory(icao));
-
-            // ★ ユーザーが手動で検索した場合のみカウントを増やし、3回ごとに全画面広告を表示します
+            // ★ ユーザーが手動で検索した場合のみ履歴を追加し、カウントを増やします
             if (!isAutoLoad) {
+                icaos.forEach(icao => saveToHistory(icao));
                 searchCount++;
                 if (searchCount % 3 === 0) {
                     showFullScreenAd();
@@ -973,7 +995,6 @@
             }
             
             document.getElementById('fixed-ad-banner').style.display = 'flex';
-
             document.getElementById('loading').style.display = 'flex';
             allFetchedNotams = [];
             selectedIds.clear();
@@ -1003,6 +1024,17 @@
                         });
                     }
                 }
+                
+                // ★ 検索成功時に結果（データそのもの）をローカルストレージに保存
+                try {
+                    localStorage.setItem('last_search_query', rawInput);
+                    localStorage.setItem('last_notam_data', JSON.stringify(allFetchedNotams));
+                    const timeText = document.getElementById('last-update-time').innerText;
+                    if (timeText) localStorage.setItem('last_update_time', timeText);
+                } catch(e) {
+                    console.warn("Storage save error", e);
+                }
+
             } catch (e) {
                 console.error(e);
             } finally {
