@@ -584,15 +584,26 @@
             </div>
             
             <div id="notam-list">
-                <!-- ★AdSense対策: 初期表示用のテキストコンテンツ（検索実行時にクリアされます） -->
-                <div style="padding: 20px; color: var(--text-sub); line-height: 1.6;">
-                    <h3 style="color: var(--primary-color); margin-top: 0;">航空情報を地図上で視覚化</h3>
-                    <p>画面上部の検索バーにICAOコード（例: <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>KZLA</strong>）を入力して「Search」を押すと、最新のNOTAM情報が地図上に描画されます。</p>
-                    <p>当アプリの詳しい使い方、NOTAMの解説、免責事項については以下のリンクをご確認ください。</p>
-                    <ul style="padding-left: 20px;">
-                        <li><a href="/about.html" style="color: var(--orange-accent);">About & Guide (概要・使い方)</a></li>
-                        <li><a href="/privacy.html" style="color: var(--orange-accent);">Privacy Policy</a></li>
-                        <li><a href="/contact.html" style="color: var(--orange-accent);">Contact Us</a></li>
+                <!-- ★AdSense対策: 初期表示用の長文テキストコンテンツ（検索実行時にクリアされます） -->
+                <div style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
+                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）を地図上で視覚化</h2>
+                    
+                    <p>当サイト「NOTAM MAP View」は、世界中の航空従事者や航空ファンに向けて、最新のNOTAM（Notice to Air Missions：航空情報）をインタラクティブな地図上に描画し、視覚的に把握できる専門ツールです。</p>
+
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">NOTAM（Notice to Air Missions）とは？</h3>
+                    <p>NOTAMとは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害など）を関係者に通知するためのシステムです。かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当ツールは、その複雑なテキストデータを解析し、ポリゴンやラインとして地図上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
+
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">基本的な使い方</h3>
+                    <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>KZLA</strong>（ロサンゼルス）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、マップ上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
+
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">関連コラムとガイド</h3>
+                    <p>NOTAMの読み方やICAOコードに関する詳しい解説、当ツールの活用方法については、以下の専門コラムやガイドページをご参照ください。</p>
+                    <ul style="padding-left: 20px; font-weight: bold;">
+                        <li><a href="/article-notam.html" style="color: var(--orange-accent);">【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+                        <li><a href="/article-icao.html" style="color: var(--orange-accent);">【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+                        <li><a href="/about.html" style="color: var(--orange-accent);">当アプリの概要と詳細な使い方</a></li>
+                        <li><a href="/privacy.html" style="color: var(--orange-accent);">プライバシーポリシー</a></li>
+                        <li><a href="/contact.html" style="color: var(--orange-accent);">お問い合わせ (Contact Us)</a></li>
                     </ul>
                 </div>
             </div>
@@ -631,16 +642,6 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn" id="about-modal-close" onclick="closeMenuModal()"></button>
-            </div>
-        </div>
-    </div>
-
-    <div id="details-modal" class="overlay" style="z-index: 4000;">
-        <div class="modal-content">
-            <div class="modal-header" id="modal-title"></div>
-            <div class="modal-body" id="modal-text"></div>
-            <div class="modal-footer">
-                <button class="modal-btn" id="details-modal-close" onclick="closeDetailsModal()"></button>
             </div>
         </div>
     </div>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】初心者向け NOTAMの基礎知識と読み方 - NOTAM MAP View</title>
+    <meta name="description" content="航空情報NOTAM（Notice to Air Missions）の基本的な読み方、Qコードの意味、そして航空の安全にどのように関わっているのかをわかりやすく解説します。">
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #d0bcff;
+            --text-main: #ffffff;
+            --text-sub: #dddddd;
+            --orange-accent: #ff9800;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: var(--surface-color);
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+        }
+        .header a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .header a:hover { text-decoration: underline; }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1 { color: var(--primary-color); font-size: 24px; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; }
+        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 30px; }
+        p { color: var(--text-sub); font-size: 15px; margin-bottom: 20px; }
+        .code-block {
+            background-color: #000;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            font-family: monospace;
+            color: #a5d6a7;
+            overflow-x: auto;
+        }
+        ul { color: var(--text-sub); padding-left: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="/index.html">← NOTAM MAP View トップへ戻る</a>
+    </div>
+
+    <div class="container">
+        <h1>【コラム】初心者向け NOTAMの基礎知識と読み方</h1>
+        
+        <p>航空機の安全な運航に欠かせない情報、それが<strong>NOTAM（ノータム）</strong>です。本記事では、パイロットや航空ファン、さらにはドローンオペレーターにとっても重要となるNOTAMの基礎知識について解説します。</p>
+
+        <h2>NOTAMとは何か？</h2>
+        <p>NOTAMは「Notice to Air Missions」の略称です。以前は「Notice to Airmen（航空従事者への通知）」と呼ばれていましたが、近年、ドローンや宇宙開発など空のミッションの多様化に伴い、より包括的な名称へと変更されました。</p>
+        <p>滑走路の予期せぬ閉鎖、空域の軍事訓練、航法無線の電波停止など、航空図（チャート）には掲載されていない最新の変動情報を、関係者へ迅速に知らせるためのテレックスベースの通知システムです。</p>
+
+        <h2>NOTAMの構造と読み方の基本</h2>
+        <p>NOTAMは世界共通のフォーマット（ICAOフォーマット）で記述されています。一見するとアルファベットと数字の羅列ですが、ルールを知れば誰でも解読可能です。代表的な項目（アイテム）を見てみましょう。</p>
+        
+        <ul>
+            <li><strong>Q行（Q Line）:</strong> NOTAMの影響範囲や対象をコード化した最も重要な行です。コンピューターが処理しやすいように作られています。</li>
+            <li><strong>A行（Item A）:</strong> 対象となる空港や飛行情報区（FIR）の4桁の「ICAOコード」が記載されます。（例：RJTT = 羽田空港）</li>
+            <li><strong>B行・C行（Item B, C）:</strong> このNOTAMの「有効開始日時（B）」と「有効終了日時（C）」です。日時はすべて協定世界時（UTC）で表記されます。</li>
+            <li><strong>E行（Item E）:</strong> NOTAMの具体的な内容が平易な英語（または略語）で記載されるメインの文章部分です。</li>
+        </ul>
+
+        <h2>実際のNOTAMの例</h2>
+        <p>以下は架空のNOTAMの例です。</p>
+        <div class="code-block">
+A0123/26 NOTAMN<br>
+Q) RJJJ/QMRLC/IV/NBO/A/000/999/3533N13946E005<br>
+A) RJTT<br>
+B) 2610010000 C) 2610010500<br>
+E) RWY 34R/16L CLSD DUE TO MAINT.
+        </div>
+        <p>このNOTAMを解読すると、「羽田空港（RJTT）において、10月1日のUTC 00:00から05:00まで、メンテナンスのため滑走路34R/16Lが閉鎖される」という意味になります。</p>
+
+        <h2>当ツール「NOTAM MAP View」の活用</h2>
+        <p>このようにテキストベースのNOTAMは、E行を読めば内容はわかりますが、「どの空域が、どれくらいの広さで制限されているのか」を頭の中でイメージするのは熟練のパイロットでも困難です。</p>
+        <p>当サイトのツールを使用すれば、これらの座標データやQ行の情報を自動的に解析し、地図上に図形としてプロットします。視覚的に空の状況を把握し、より安全で効率的なフライトプランニングにお役立てください。</p>
+    </div>
+
+</body>
+</html>
