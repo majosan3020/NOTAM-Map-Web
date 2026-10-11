@@ -96,17 +96,18 @@
     <form class="contact-form" action="https://formspree.io/f/xvkgqbnr" method="POST">
         <div class="form-group">
             <label id="label-name">お名前 / Name</label>
-            <input type="text" name="name" required placeholder="John Doe">
+            <input type="text" name="name" id="input-name" required placeholder="John Doe">
         </div>
         
         <div class="form-group">
             <label id="label-email">メールアドレス / Email</label>
-            <input type="email" name="email" required placeholder="your@email.com">
+            <input type="email" name="email" id="input-email" required placeholder="your@email.com">
         </div>
         
         <div class="form-group">
             <label id="label-message">お問い合わせ内容 / Message</label>
-            <textarea name="message" required placeholder="ここにメッセージを入力してください / Enter your message here..."></textarea>
+            <!-- ★ IDを付与し、初期のplaceholderは空にしてJSで上書きします -->
+            <textarea name="message" id="input-message" required placeholder=""></textarea>
         </div>
         
         <button type="submit" class="submit-btn" id="btn-submit">送信する / Send Message</button>
@@ -122,14 +123,23 @@
                 document.querySelector('.lang-en').style.display = 'block';
                 
                 document.getElementById('label-name').innerText = 'Name';
-                document.getElementById('label-email').innerText = 'Email';
+                document.getElementById('label-email').innerText = 'Email Address';
                 document.getElementById('label-message').innerText = 'Message';
                 document.getElementById('btn-submit').innerText = 'Send Message';
+
+                // ★ 英語用のプレースホルダーに書き換え
+                document.getElementById('input-name').placeholder = 'e.g. John Doe';
+                document.getElementById('input-message').placeholder = 'Please enter your message here...';
+
             } else {
                 document.getElementById('label-name').innerText = 'お名前';
                 document.getElementById('label-email').innerText = 'メールアドレス';
                 document.getElementById('label-message').innerText = 'お問い合わせ内容';
                 document.getElementById('btn-submit').innerText = '送信する';
+
+                // ★ 日本語用のプレースホルダーに書き換え
+                document.getElementById('input-name').placeholder = '例: 航空 太郎';
+                document.getElementById('input-message').placeholder = 'ここにメッセージを入力してください...';
             }
         });
     </script>
