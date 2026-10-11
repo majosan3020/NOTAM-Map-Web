@@ -151,4 +151,52 @@
             ※当アプリ「NOTAM MAP View」がマップ上に円を描画する際も、このQ行の座標と半径データを解析して表示しています。</p>
         </div>
 
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px
+        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item A (Affected Facility: 対象施設・空域)</h4>
+            <p style="margin-bottom: 0;">影響を受ける空港や空域のICAO 4レターコード（例: RJTT、RJJJ）が記載されます。複数のFIRにまたがる場合は複数記載されることもあります。</p>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item B (Start Time: 開始日時)</h4>
+                <p style="margin-bottom: 0;">NOTAMの有効開始日時。協定世界時（UTC）で、<code>YYMMDDHHMM</code>（年2桁・月・日・時・分）の形式で記載されます。</p>
+            </div>
+            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
+                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item C (End Time: 終了日時)</h4>
+                <p style="margin-bottom: 0;">NOTAMの有効終了日時。書式はItem Bと同じです。恒久的な変更の場合は「<code>PERM</code>」、予定日時の場合は末尾に「<code>EST</code>」が付くことがあります。</p>
+            </div>
+        </div>
+
+        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item D (Schedule: スケジュール・有効時間帯)</h4>
+            <p style="margin-bottom: 0;"><strong>【重要】</strong> Item BからCの期間内で、実際に規制や活動が行われる「具体的な時間帯や曜日」を指定します。<br>
+            <span style="color: var(--text-sub); font-size: 13px;">例: <code>D) DAILY 0100-0900</code> や <code>D) MON WED FRI 2200-0200</code></span><br>
+            期間中ずっと有効なのではなく、特定の時間のみ射撃訓練や落下傘降下が行われる場合などに使用されます。このD行を見落とすと、実際には活動していない時間帯に不要な迂回をしてしまう可能性があります。</p>
+        </div>
+
+        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item E (Text: 詳細内容)</h4>
+            <p style="margin-bottom: 0;">NOTAMの具体的な内容が、英語の平文や標準的な航空略語（ICAO Abbreviations）を用いて記載されます。実際の規制内容や障害物の詳細などはここで確認します。当アプリでポリゴンを描画するための複雑な座標（LINE JOINING...など）も、主にこの行のテキストから抽出しています。</p>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item F (Lower Limit: 下限高度)</h4>
+                <p style="margin-bottom: 0;"><strong>【重要】</strong> 規制や活動の影響が及ぶ空間の「下限」を示します。<br>
+                <span style="color: var(--text-sub); font-size: 13px;">例: <code>SFC</code>（Surface: 地表面）、<code>GND</code>（Ground）、<code>3000FT AMSL</code>（海抜3000フィート）など。</span></p>
+            </div>
+            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item G (Upper Limit: 上限高度)</h4>
+                <p style="margin-bottom: 0;"><strong>【重要】</strong> 規制や活動の影響が及ぶ空間の「上限」を示します。<br>
+                <span style="color: var(--text-sub); font-size: 13px;">例: <code>10000FT AMSL</code>、<code>FL290</code>（フライトレベル290）、<code>UNL</code>（Unlimited: 無制限）など。</span><br>
+                自機の飛行高度がF行とG行の間に含まれていなければ、その空域を安全に通過できる場合があるため、D行と並んで極めて重要な情報です。</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="/" class="back-btn">⬅ マップ画面に戻る</a>
+        </div>
+    </div>
+
+</body>
+</html>
