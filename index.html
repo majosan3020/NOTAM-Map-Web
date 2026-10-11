@@ -622,6 +622,17 @@
         Advertisement
     </div>
 
+    <!-- ★欠落していた NOTAM詳細用モーダル を復活 -->
+    <div id="details-modal" class="overlay" style="z-index: 3500;">
+        <div class="modal-content">
+            <div class="modal-header" id="modal-title"></div>
+            <div class="modal-body" id="modal-text"></div>
+            <div class="modal-footer">
+                <button class="modal-btn" id="details-modal-close" onclick="closeDetailsModal()"></button>
+            </div>
+        </div>
+    </div>
+
     <!-- ★AdSense対策: 全画面広告用のオーバーレイ -->
     <div id="fullscreen-ad-overlay" class="overlay">
         <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
