@@ -1,95 +1,245 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- Google Search Console / AdSense -->
+    <meta name="google-site-verification" content="qAs5C_HIV--J1RTbZB0OC53woMWOL0ZaIFP2a8SGWw8" />
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【コラム】ICAOコードとは？空港を識別する4文字の秘密 - NOTAM MAP View</title>
-    <meta name="description" content="パイロットや航空関係者が使用する「ICAOコード」の仕組みや、IATAコードとの違い、NOTAM検索における活用方法について詳しく解説します。">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ICAOコードとは？空港を識別する4文字の秘密 - NOTAM MAP View</title>
+    
+    <link rel="icon" href="/icon.png" type="image/png" sizes="any">
+    <link rel="apple-touch-icon" href="/icon.png">
+
     <style>
         :root {
             --bg-color: #121212;
             --surface-color: #1e1e1e;
-            --primary-color: #d0bcff;
+            --surface-variant: #2a2a2a;
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
             --text-main: #ffffff;
-            --text-sub: #dddddd;
+            --text-sub: #aaaaaa;
             --orange-accent: #ff9800;
         }
+
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.8;
         }
+
+        /* ヘッダー */
         .header {
-            background-color: var(--surface-color);
-            padding: 15px 20px;
-            border-bottom: 1px solid #333;
+            background-color: var(--bg-color);
+            padding: 12px 20px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #333;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
-        .header a {
-            color: var(--primary-color);
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
-            font-weight: bold;
+        }
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        .brand-title {
             font-size: 16px;
+            font-weight: bold;
+            color: var(--primary-color);
         }
-        .header a:hover { text-decoration: underline; }
-        .container {
+
+        /* 記事コンテナ */
+        .article-container {
             max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
-        h1 { color: var(--primary-color); font-size: 24px; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; }
-        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 30px; }
-        p { color: var(--text-sub); font-size: 15px; margin-bottom: 20px; }
-        .code-block {
-            background-color: #000;
-            padding: 15px;
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-top: 0;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+        h2 {
+            color: #ffffff;
+            font-size: 18px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 8px;
+            margin-top: 40px;
+        }
+        
+        p {
+            color: var(--text-sub);
+            margin-bottom: 16px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background-color: var(--surface-variant);
+            color: var(--text-main);
+            text-decoration: none;
             border-radius: 8px;
             border: 1px solid #444;
-            font-family: monospace;
-            color: #a5d6a7;
-            overflow-x: auto;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s;
         }
-        ul { color: var(--text-sub); padding-left: 20px; }
-        li { margin-bottom: 10px; }
+        .back-btn:hover {
+            background-color: #333;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        code {
+            background-color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #a8c7fa;
+        }
+        
+        .code-box {
+            background-color: var(--surface-variant);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <a href="/index.html">← NOTAM MAP View トップへ戻る</a>
-    </div>
+    <header class="header">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Logo" class="brand-icon">
+            <span class="brand-title">NOTAM MAP View</span>
+        </a>
+        <a href="/" class="back-btn" id="btn-back-header" style="padding: 6px 12px; font-size: 12px;">マップへ戻る</a>
+    </header>
 
-    <div class="container">
+    <!-- 🇯🇵 日本語用コンテンツ -->
+    <div class="article-container" id="content-ja">
         <h1>【コラム】ICAOコードとは？空港を識別する4文字の秘密</h1>
-        
-        <p>航空の世界では、空港や空域を正確に特定するために独自の暗号のようなアルファベットが使われます。当ツール「NOTAM MAP View」で検索する際にも必須となる<strong>「ICAO（アイカオ）コード」</strong>について、その仕組みと役割を解説します。</p>
 
-        <h2>ICAOコードとIATAコードの違い</h2>
-        <p>旅行の際、航空券や手荷物タグに「HND（羽田）」や「NRT（成田）」という3文字のアルファベットを見たことがあるかもしれません。これは<strong>IATA（国際航空運送協会）コード</strong>と呼ばれ、主に旅客や貨物のビジネス用途で使用されます。</p>
-        <p>一方、パイロット、航空管制官、ディスパッチャーなどの航空従事者がフライトプランやNOTAMを扱う際に使用するのが、4文字のアルファベットからなる<strong>ICAO（国際民間航空機関）コード</strong>です。羽田空港であれば「RJTT」、成田空港であれば「RJAA」となります。</p>
+        <p>NOTAMを検索する際、必ず入力するのが「<strong>ICAOコード（アイカオ・コード）</strong>」です。私たちが普段の旅行で目にする空港コードとは少し違うこの4文字には、世界中の空を安全に管理するための規則的な意味が込められています。</p>
 
-        <h2>ICAOコードの規則性（日本の例）</h2>
-        <p>ICAOコードの4文字はランダムに決められているわけではなく、世界地図をブロック分けした明確なルールに基づいています。日本の空港を例に見てみましょう。</p>
-        
+        <h2>IATAコードとICAOコードの違い</h2>
+        <p>空港を表すコードには、大きく分けて2種類あります。</p>
         <ul>
-            <li><strong>1文字目「R」:</strong> 航空管区（リージョン）を表します。「R」は北西太平洋地域を指します。</li>
-            <li><strong>2文字目「J」:</strong> 国を表します。「J」は日本（Japan）です。</li>
-            <li><strong>3・4文字目:</strong> 各空港に割り当てられた固有のアルファベットです。</li>
+            <li><span style="color: var(--orange-accent); font-weight: bold;">IATAコード（3文字）：</span> 主に旅客（一般の乗客）や荷物の管理に使われます。航空券や手荷物タグに印字されるもので、例えば羽田空港は「HND」、成田空港は「NRT」です。</li>
+            <li><span style="color: var(--orange-accent); font-weight: bold;">ICAOコード（4文字）：</span> 主にパイロットや航空管制官など、航空業務のために使われます。フライトプランや<strong>NOTAMの検索</strong>では必ずこちらを使用します。羽田空港は「RJTT」、成田空港は「RJAA」となります。</li>
         </ul>
-        <p>このルールにより、「RJ」から始まるコードを見れば、世界中のパイロットが一目で「日本の空港だ」と認識できるようになっています。</p>
 
-        <h2>NOTAMとFIR（飛行情報区）</h2>
-        <p>NOTAMは個別の空港だけでなく、もっと広大な空域に対しても発行されます。この広大な空域を管理する単位を<strong>FIR（飛行情報区）</strong>と呼びます。</p>
-        <p>日本の空域の大部分は「福岡FIR」として一括管理されており、そのICAOコードは<strong>「RJJJ」</strong>です。例えば、日本周辺の洋上での自衛隊や米軍の訓練空域の設定、火山灰の警報などは、個別の空港ではなくこの「RJJJ」宛てにNOTAMが発行されます。</p>
+        <h2>4文字の構成ルール</h2>
+        <p>ICAOコードは適当に割り当てられているわけではなく、地球上の「どこにあるか」を論理的に示しています。日本の「RJTT（羽田）」を例に分解してみましょう。</p>
 
-        <h2>NOTAM MAP Viewでの検索のコツ</h2>
-        <p>当ツールで情報を検索する際は、この4文字のICAOコードを使用します。調べたい空港の局地的な情報を知りたい場合は「RJTT（羽田）」などを、日本上空の広範囲な空域制限を知りたい場合は「RJJJ（福岡FIR）」を検索してみてください。</p>
-        <p>また、検索ボックスに <code>RJTT RJAA RJJJ</code> のようにスペース区切りで複数のICAOコードを入力することで、それらのNOTAMを地図上に同時描画することも可能です。フライトルート上の必要な情報を一括で視覚化するのにご活用ください。</p>
+        <div class="code-box">
+            <h4 style="color: var(--orange-accent); margin-top: 0;">1文字目：「航空エリア（地域）」</h4>
+            <p>世界を大きく分けたエリアを示します。<br>
+            ・<strong>R</strong> = 西北太平洋地域（日本、韓国、台湾など）<br>
+            ・<strong>E</strong> = 北部ヨーロッパ（イギリス、ドイツなど）<br>
+            ・<strong>K</strong> = アメリカ合衆国（本土）</p>
+
+            <h4 style="color: var(--orange-accent); margin-top: 0;">2文字目：「国・領域」</h4>
+            <p>1文字目で指定されたエリア内の、どの国かを示します。<br>
+            ・R<strong>J</strong> = 日本 (Japan)<br>
+            ・R<strong>K</strong> = 韓国 (Korea)<br>
+            ・E<strong>G</strong> = イギリス (Great Britain)</p>
+
+            <h4 style="color: var(--orange-accent); margin-top: 0;">3・4文字目：「個別の空港・施設」</h4>
+            <p>その国の中での特定の空港や飛行情報区（FIR）を示します。<br>
+            ・RJ<strong>TT</strong> = 東京国際空港（羽田）<br>
+            ・RJ<strong>BB</strong> = 関西国際空港<br>
+            ・RJ<strong>JJ</strong> = 福岡FIR（日本全体の空域情報を検索する際によく使われます）</p>
+        </div>
+
+        <p>※アメリカ合衆国（K）など一部の国では、1文字目の「K」の後にそのまま3文字のIATAコードを繋げてICAOコードとする例外的なルール（例：ロサンゼルス IATA:LAX → ICAO:KLAX）もあります。</p>
+
+        <h2>NOTAM検索のコツ</h2>
+        <p>当アプリで特定空港のNOTAMを調べたい場合は、その空港のICAOコード（例: <code>RJTT</code>）を入力します。<br>
+        しかし、空港ピンポイントではなく「日本周辺の空域全体」にかかるエンルート上の制限やミサイル発射警報などを調べたい場合は、FIR（飛行情報区）のコードである <code>RJJJ</code> を検索すると、より広域の情報をカバーすることができます。</p>
     </div>
 
+    <!-- 🇬🇧 英語用コンテンツ -->
+    <div class="article-container" id="content-en" style="display: none;">
+        <h1>[Guide] What is an ICAO Code? The Secret of the 4-Letter Identifier</h1>
+
+        <p>When searching for NOTAMs, you always need to enter an "<strong>ICAO Code</strong>". Unlike the 3-letter airport codes we usually see when booking flights, these 4-letter codes follow a strict geographical logic designed for aviation safety and air traffic control worldwide.</p>
+
+        <h2>IATA vs. ICAO Codes</h2>
+        <p>There are two main types of airport identifier codes:</p>
+        <ul>
+            <li><span style="color: var(--orange-accent); font-weight: bold;">IATA Codes (3 letters):</span> Primarily used for passengers, ticketing, and baggage handling. For example, Tokyo Haneda is "HND" and London Heathrow is "LHR".</li>
+            <li><span style="color: var(--orange-accent); font-weight: bold;">ICAO Codes (4 letters):</span> Used by pilots, air traffic controllers, and aviation professionals. Flight plans and <strong>NOTAM searches</strong> rely exclusively on these codes. Tokyo Haneda is "RJTT" and London Heathrow is "EGLL".</li>
+        </ul>
+
+        <h2>The 4-Letter Structure</h2>
+        <p>ICAO codes are not assigned randomly; they logically indicate "where on Earth" the facility is located. Let's break down "RJTT" (Tokyo Haneda) as an example.</p>
+
+        <div class="code-box">
+            <h4 style="color: var(--orange-accent); margin-top: 0;">1st Letter: Aviation Region</h4>
+            <p>Indicates a broad geographic region of the world.<br>
+            - <strong>R</strong> = Western North Pacific (Japan, South Korea, Taiwan, etc.)<br>
+            - <strong>E</strong> = Northern Europe (UK, Germany, etc.)<br>
+            - <strong>K</strong> = Contiguous United States</p>
+
+            <h4 style="color: var(--orange-accent); margin-top: 0;">2nd Letter: Country</h4>
+            <p>Indicates the specific country within that region.<br>
+            - R<strong>J</strong> = Japan<br>
+            - R<strong>K</strong> = South Korea<br>
+            - E<strong>G</strong> = Great Britain</p>
+
+            <h4 style="color: var(--orange-accent); margin-top: 0;">3rd & 4th Letters: Specific Airport / FIR</h4>
+            <p>Assigned to a specific airport or Flight Information Region (FIR) within that country.<br>
+            - RJ<strong>TT</strong> = Tokyo International Airport (Haneda)<br>
+            - RJ<strong>BB</strong> = Kansai International Airport<br>
+            - RJ<strong>JJ</strong> = Fukuoka FIR (Often used to search for en-route NOTAMs covering Japanese airspace)</p>
+        </div>
+
+        <p>* Note: Some countries have different conventions. For example, in the contiguous United States, the ICAO code is often simply the letter "K" followed by the 3-letter IATA code (e.g., Los Angeles IATA: LAX &rarr; ICAO: KLAX).</p>
+
+        <h2>Tips for NOTAM Searching</h2>
+        <p>If you want to check NOTAMs for a specific airport in our app, simply enter its ICAO code (e.g., <code>EGLL</code>).<br>
+        However, if you want to find en-route restrictions, GPS anomalies, or airspace warnings that cover a vast area rather than a specific runway, try searching the Flight Information Region (FIR) code (e.g., <code>EGTT</code> for London FIR or <code>RJJJ</code> for Fukuoka FIR). This will provide a broader operational overview.</p>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
+        <a href="/" class="back-btn" id="btn-back-footer">⬅ マップ画面に戻る</a>
+    </div>
+
+    <script>
+        // 🌟 ブラウザの言語を判定し、日本語以外なら英語表示に切り替え
+        const isJaArticle = (navigator.language || navigator.userLanguage).startsWith('ja');
+        
+        if (!isJaArticle) {
+            document.title = "[Guide] What is an ICAO Code? - NOTAM MAP View";
+            
+            document.getElementById('content-ja').style.display = 'none';
+            document.getElementById('content-en').style.display = 'block';
+            
+            document.getElementById('btn-back-header').innerText = 'Return to Map';
+            document.getElementById('btn-back-footer').innerText = '⬅ Return to Map';
+        }
+    </script>
 </body>
 </html>

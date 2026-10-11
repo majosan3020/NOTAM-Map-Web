@@ -532,7 +532,7 @@
             </div>
         </div>
 
-        <!-- ★ エンターキーで検索できるように <form> タグに変更しました -->
+        <!-- ★ エンターキーで検索できるように <form> タグに変更 -->
         <form class="search-row" onsubmit="event.preventDefault(); fetchNotams();">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJJJ ATFM EGTT KZLA (4-Letter Uppercase)" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
@@ -587,18 +587,14 @@
             </div>
             
             <div id="notam-list">
-                <!-- ★AdSense対策: 初期表示用の長文テキストコンテンツ -->
-                <div style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
+                <!-- 🇯🇵 日本語用の初期表示テキスト -->
+                <div id="intro-ja" style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
                     <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）を地図上で視覚化</h2>
-                    
                     <p>当サイト「NOTAM MAP View」は、世界中の航空従事者や航空ファンに向けて、最新のNOTAM（Notice to Air Missions：航空情報）をインタラクティブな地図上に描画し、視覚的に把握できる専門ツールです。</p>
-
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">NOTAM（Notice to Air Missions）とは？</h3>
                     <p>NOTAMとは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害など）を関係者に通知するためのシステムです。かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当ツールは、その複雑なテキストデータを解析し、ポリゴンやラインとして地図上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
-
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">基本的な使い方</h3>
                     <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>KZLA</strong>（ロサンゼルス）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、マップ上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
-
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">関連コラムとガイド</h3>
                     <p>NOTAMの読み方やICAOコードに関する詳しい解説、当ツールの活用方法については、以下の専門コラムやガイドページをご参照ください。</p>
                     <ul style="padding-left: 20px; font-weight: bold;">
@@ -607,6 +603,25 @@
                         <li><a href="/about.html" style="color: var(--orange-accent);" target="_blank">当アプリの概要と詳細な使い方</a></li>
                         <li><a href="/privacy.html" style="color: var(--orange-accent);" target="_blank">プライバシーポリシー</a></li>
                         <li><a href="/contact.html" style="color: var(--orange-accent);" target="_blank">お問い合わせ (Contact Us)</a></li>
+                    </ul>
+                </div>
+                
+                <!-- 🇬🇧 英語用の初期表示テキスト (JSで切り替え) -->
+                <div id="intro-en" style="padding: 20px; color: var(--text-sub); line-height: 1.8; display: none;">
+                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">Visualize Real-Time NOTAMs on the Map</h2>
+                    <p>This site, "NOTAM MAP View", is a specialized tool for aviation professionals and enthusiasts worldwide. It visually maps the latest NOTAMs (Notice to Air Missions) on an interactive map for easy understanding.</p>
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">What is a NOTAM?</h3>
+                    <p>A NOTAM is a system used to notify those concerned with aircraft operations about essential information such as runway closures, airspace restrictions, and navigation aid outages. Previously known as "Notice to Airmen," the more inclusive term "Notice to Air Missions" is now officially adopted. Since these are usually distributed in a cryptic text format, it was difficult to intuitively grasp their location and extent. This tool parses that complex text data and maps it as polygons and lines, dramatically improving the efficiency of flight planning and airspace verification.</p>
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Basic Usage</h3>
+                    <p>Enter the ICAO code of the airport or airspace you want to check (e.g., <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>KZLA</strong>) in the search bar at the top of the screen and press the "Search" button. The latest data will be fetched from the server, and restricted areas and routes will be highlighted on the map. You can also search for multiple ICAO codes simultaneously by separating them with a space.</p>
+                    <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Related Columns and Guides</h3>
+                    <p>For more detailed explanations on reading NOTAMs and ICAO codes, as well as how to use this tool, please refer to the specialized columns and guide pages below.</p>
+                    <ul style="padding-left: 20px; font-weight: bold;">
+                        <li><a href="/article-notam.html" style="color: var(--orange-accent);" target="_blank">[Guide] NOTAM Basics & How to Read</a></li>
+                        <li><a href="/article-icao.html" style="color: var(--orange-accent);" target="_blank">[Guide] What is an ICAO Code?</a></li>
+                        <li><a href="/about.html" style="color: var(--orange-accent);" target="_blank">About & Guide</a></li>
+                        <li><a href="/privacy.html" style="color: var(--orange-accent);" target="_blank">Privacy Policy</a></li>
+                        <li><a href="/contact.html" style="color: var(--orange-accent);" target="_blank">Contact Us</a></li>
                     </ul>
                 </div>
             </div>
@@ -622,7 +637,7 @@
         Advertisement
     </div>
 
-    <!-- ★欠落していた NOTAM詳細用モーダル を復活 -->
+    <!-- ★ NOTAM詳細用モーダル -->
     <div id="details-modal" class="overlay" style="z-index: 3500;">
         <div class="modal-content">
             <div class="modal-header" id="modal-title"></div>
@@ -647,15 +662,16 @@
     <!-- 🌟 クローラー向けの明確なリンクを設置したナビゲーションモーダル -->
     <div id="menu-modal" class="overlay" style="z-index: 4000;">
         <div class="modal-content">
-            <div class="modal-header">Menu / Navigation</div>
+            <div class="modal-header" id="menu-header-title">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <a href="/article-notam.html" class="nav-link" target="_blank">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
-                <a href="/article-icao.html" class="nav-link" target="_blank">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
-                <a href="/about.html" class="nav-link" target="_blank">ℹ️ About & Guide (概要・使い方)</a>
-                <a href="/privacy.html" class="nav-link" target="_blank">🛡️ Privacy Policy (プライバシーポリシー)</a>
-                <a href="/contact.html" class="nav-link" target="_blank">✉️ Contact Us (お問い合わせ)</a>
+                <!-- ★ IDを付与してJSから言語切り替えできるようにしました -->
+                <a href="/article-notam.html" class="nav-link" target="_blank" id="menu-notam">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
+                <a href="/article-icao.html" class="nav-link" target="_blank" id="menu-icao">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
+                <a href="/about.html" class="nav-link" target="_blank" id="menu-about">ℹ️ About & Guide (概要・使い方)</a>
+                <a href="/privacy.html" class="nav-link" target="_blank" id="menu-privacy">🛡️ Privacy Policy (プライバシーポリシー)</a>
+                <a href="/contact.html" class="nav-link" target="_blank" id="menu-contact">✉️ Contact Us (お問い合わせ)</a>
                 
-                <button onclick="closeMenuModal()" class="nav-link" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
+                <button onclick="closeMenuModal()" class="nav-link" id="menu-close" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
                     ⬅ マップ画面に戻る (Close Menu)
                 </button>
             </div>
@@ -751,6 +767,21 @@
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // ★ 言語に応じたUIテキストの切り替え
+            if (!isJa) {
+                // 初期画面テキストの切り替え
+                document.getElementById('intro-ja').style.display = 'none';
+                document.getElementById('intro-en').style.display = 'block';
+
+                // メニューモーダル内のテキスト切り替え
+                document.getElementById('menu-notam').innerHTML = '📖 [Guide] NOTAM Basics & How to Read';
+                document.getElementById('menu-icao').innerHTML = '📖 [Guide] What is an ICAO Code?';
+                document.getElementById('menu-about').innerHTML = 'ℹ️ About & Guide';
+                document.getElementById('menu-privacy').innerHTML = '🛡️ Privacy Policy';
+                document.getElementById('menu-contact').innerHTML = '✉️ Contact Us';
+                document.getElementById('menu-close').innerHTML = '⬅ Return to Map (Close Menu)';
+            }
+
             document.getElementById('toggle-panel-btn').innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
             document.getElementById('opt-sort-id').innerText = isJa ? '番号順' : 'By ID';
             document.getElementById('opt-sort-date').innerText = isJa ? '発令順' : 'By Date';
@@ -803,6 +834,7 @@
                     allFetchedNotams = JSON.parse(lastData);
                     document.getElementById('fixed-ad-banner').style.display = 'flex';
                     
+                    // ※復元時は初期テキスト(intro-ja/en)はapplyFilters内でクリアされるので処理不要
                     applyFilters(); 
                     renderUI(true);
                 } catch (e) {
