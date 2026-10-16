@@ -533,7 +533,7 @@
         </div>
 
         <!-- ★ エンターキーで検索できるように <form> タグに変更 -->
-        <form class="search-row" onsubmit="event.preventDefault(); fetchNotams();">
+        <form class="search-row" onsubmit="event.preventDefault(); handleSearchSubmit();">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJJJ ATFM EGTT KZLA (4-Letter Uppercase)" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
             <button type="submit" class="search-btn" id="search-btn-el">Search</button>
@@ -834,23 +834,66 @@
                     allFetchedNotams = JSON.parse(lastData);
                     document.getElementById('fixed-ad-banner').style.display = 'flex';
                     
-                    // ※復元時は初期テキスト(intro-ja/en)はapplyFilters内でクリアされるので処理不要
                     applyFilters(); 
                     renderUI(true);
                 } catch (e) {
                     console.error("Failed to restore history", e);
-                    // パース失敗時は通常の検索履歴からのフェッチにフォールバック
-                    if (searchHistory.length > 0) {
-                        document.getElementById('search-input').value = searchHistory[0];
-                        fetchNotams(true);
-                    }
+                    // 初期表示（ガイド）の状態にするためクリア
+                    showWelcomeGuide();
                 }
-            } else if (searchHistory.length > 0) {
-                // データはないが検索履歴のキーワードだけある場合はAPIを叩いて復元
-                document.getElementById('search-input').value = searchHistory[0];
-                fetchNotams(true);
+            } else {
+                // 初回アクセス時やデータがないときは初期ガイドを表示
+                showWelcomeGuide();
             }
         });
+
+        // ★ 初期画面（ガイド）を表示する関数
+        function showWelcomeGuide() {
+            allFetchedNotams = [];
+            displayedNotams = [];
+            selectedIds.clear();
+            mapLayers.clearLayers();
+            document.getElementById('fixed-ad-banner').style.display = 'none';
+            document.getElementById('last-update-time').innerText = '--/-- --:--';
+            
+            // ローカルストレージの保持もクリア
+            localStorage.removeItem('last_search_query');
+            localStorage.removeItem('last_notam_data');
+            localStorage.removeItem('last_update_time');
+
+            const listContainer = document.getElementById('notam-list');
+            listContainer.innerHTML = '';
+
+            // 言語に応じた初期ガイド要素をリストエリアに戻す
+            if (isJa) {
+                const introJa = document.getElementById('intro-ja');
+                if (introJa) {
+                    introJa.style.display = 'block';
+                    listContainer.appendChild(introJa);
+                }
+            } else {
+                const introEn = document.getElementById('intro-en');
+                if (introEn) {
+                    introEn.style.display = 'block';
+                    listContainer.appendChild(introEn);
+                }
+            }
+
+            document.getElementById('list-title').innerText = isJa ? 'NOTAMリスト (0件)' : 'NOTAM List (0 items)';
+            document.getElementById('selected-count').innerText = isJa ? '[選択中: 0]' : '[Selected: 0]';
+            document.getElementById('clear-selection-btn').style.display = 'none';
+        }
+
+        // ★ 検索実行（空白の場合は初期画面に戻す）
+        function handleSearchSubmit() {
+            const rawInput = document.getElementById('search-input').value.trim();
+            if (!rawInput) {
+                // 検索窓が空白でSearchボタンが押された場合
+                showWelcomeGuide();
+                return;
+            }
+            fetchNotams(false);
+        }
 
         function clearSelection() {
             selectedIds.clear();
@@ -964,6 +1007,9 @@
         }
 
         function applyFilters() {
+            // データがロードされていない（初期ガイド表示中）の場合はフィルター適用しない
+            if (allFetchedNotams.length === 0) return;
+
             const isFilterEnabled = document.getElementById('filter-toggle').checked;
             const keyword = document.getElementById('keyword-input').value.toUpperCase();
             const dateStr = document.getElementById('date-input').value;
@@ -1021,14 +1067,18 @@
         function showFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; }
         function closeFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'none'; }
 
-        // ★ isAutoLoad パラメータを追加。手動検索時のみカウント・履歴追加を行います
         async function fetchNotams(isAutoLoad = false) {
             let rawInput = document.getElementById('search-input').value.trim().toUpperCase();
-            if (!rawInput) return;
+            if (!rawInput) {
+                showWelcomeGuide();
+                return;
+            }
             const icaos = rawInput.split(/[\s,，、]+/).filter(code => code.length > 0);
-            if (icaos.length === 0) return;
+            if (icaos.length === 0) {
+                showWelcomeGuide();
+                return;
+            }
 
-            // ★ ユーザーが手動で検索した場合のみ履歴を追加し、カウントを増やします
             if (!isAutoLoad) {
                 icaos.forEach(icao => saveToHistory(icao));
                 searchCount++;
@@ -1050,7 +1100,6 @@
                         
                         if (json.lastModified) {
                             const updateDate = new Date(json.lastModified * 1000);
-                            
                             const month = updateDate.getMonth() + 1;
                             const day = updateDate.getDate();
                             const hours = String(updateDate.getHours()).padStart(2, '0');
@@ -1068,7 +1117,6 @@
                     }
                 }
                 
-                // ★ 検索成功時に結果（データそのもの）をローカルストレージに保存
                 try {
                     localStorage.setItem('last_search_query', rawInput);
                     localStorage.setItem('last_notam_data', JSON.stringify(allFetchedNotams));
