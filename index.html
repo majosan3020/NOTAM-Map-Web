@@ -348,20 +348,24 @@
             background-color: #3a2e1f;
         }
 
-        #notam-list {
+        /* 🌟 修正: ガイドとリストをそれぞれ分けてスクロール管理 */
+        #notam-list, #welcome-guide {
             flex: 1;
             overflow-y: auto;
+            min-height: 0; 
+            padding-bottom: 10px;
+        }
+        #notam-list {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            padding-bottom: 10px;
-            min-height: 0; 
+            display: none; /* 初期状態は非表示 */
         }
-
-        #notam-list::-webkit-scrollbar { width: 8px; }
-        #notam-list::-webkit-scrollbar-track { background: transparent; }
-        #notam-list::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
-        #notam-list::-webkit-scrollbar-thumb:hover { background: #777; }
+        
+        #notam-list::-webkit-scrollbar, #welcome-guide::-webkit-scrollbar { width: 8px; }
+        #notam-list::-webkit-scrollbar-track, #welcome-guide::-webkit-scrollbar-track { background: transparent; }
+        #notam-list::-webkit-scrollbar-thumb, #welcome-guide::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+        #notam-list::-webkit-scrollbar-thumb:hover, #welcome-guide::-webkit-scrollbar-thumb:hover { background: #777; }
 
         .notam-card {
             background-color: #333333;
@@ -494,7 +498,6 @@
             line-height: 20px;
         }
 
-        /* 🌟 ナビゲーションメニュー用リンクのスタイル */
         .nav-link {
             display: flex;
             align-items: center;
@@ -532,14 +535,12 @@
             </div>
         </div>
 
-        <!-- ★ エンターキーで検索できるように <form> タグに変更 -->
         <form class="search-row" onsubmit="event.preventDefault(); handleSearchSubmit();">
             <label>ICAO Code</label>
             <input type="text" id="search-input" placeholder="e.g. RJJJ ATFM EGTT KZLA (4-Letter Uppercase)" autocapitalize="characters" inputmode="search" autocomplete="off" autocorrect="off" spellcheck="false">
             <button type="submit" class="search-btn" id="search-btn-el">Search</button>
         </form>
         
-        <!-- 🌟 折りたたみ対象の履歴＆フィルターエリア -->
         <div id="header-collapsible">
             <div class="chip-row" id="history-chips"></div>
 
@@ -563,7 +564,6 @@
     <div id="main-container">
         <div id="map"></div>
         
-        <!-- 🌟 地図フルスクリーントグルボタン -->
         <button id="toggle-panel-btn" onclick="toggleNotamPanel()"></button>
         
         <div id="notam-panel">
@@ -572,7 +572,6 @@
                     <span id="list-title">NOTAM List (0 items)</span>
                     <span id="selected-count" style="font-size: 13px; color: var(--orange-accent);">[Selected: 0]</span>
                 </div>
-                <!-- 🌟 NOTAMリスト並び替えメニューと選択解除ボタン -->
                 <div style="display:flex; gap:6px; align-items: center;">
                     <button id="clear-selection-btn" onclick="clearSelection()">Clear Selection</button>
                     <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
@@ -586,7 +585,8 @@
                 </div>
             </div>
             
-            <div id="notam-list">
+            <!-- 🌟 修正: 初期ガイド用の独立したコンテナを追加（innerHTML=''で消えないように保護） -->
+            <div id="welcome-guide">
                 <!-- 🇯🇵 日本語用の初期表示テキスト -->
                 <div id="intro-ja" style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
                     <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）を地図上で視覚化</h2>
@@ -606,7 +606,7 @@
                     </ul>
                 </div>
                 
-                <!-- 🇬🇧 英語用の初期表示テキスト (JSで切り替え) -->
+                <!-- 🇬🇧 英語用の初期表示テキスト -->
                 <div id="intro-en" style="padding: 20px; color: var(--text-sub); line-height: 1.8; display: none;">
                     <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">Visualize Real-Time NOTAMs on the Map</h2>
                     <p>This site, "NOTAM MAP View", is a specialized tool for aviation professionals and enthusiasts worldwide. It visually maps the latest NOTAMs (Notice to Air Missions) on an interactive map for easy understanding.</p>
@@ -625,6 +625,9 @@
                     </ul>
                 </div>
             </div>
+
+            <!-- 🌟 検索結果リスト用コンテナ -->
+            <div id="notam-list"></div>
         </div>
 
         <div id="loading" class="overlay">
@@ -637,7 +640,6 @@
         Advertisement
     </div>
 
-    <!-- ★ NOTAM詳細用モーダル -->
     <div id="details-modal" class="overlay" style="z-index: 3500;">
         <div class="modal-content">
             <div class="modal-header" id="modal-title"></div>
@@ -648,7 +650,6 @@
         </div>
     </div>
 
-    <!-- ★AdSense対策: 全画面広告用のオーバーレイ -->
     <div id="fullscreen-ad-overlay" class="overlay">
         <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
             <h3>Advertisement</h3>
@@ -659,12 +660,10 @@
         </div>
     </div>
 
-    <!-- 🌟 クローラー向けの明確なリンクを設置したナビゲーションモーダル -->
     <div id="menu-modal" class="overlay" style="z-index: 4000;">
         <div class="modal-content">
             <div class="modal-header" id="menu-header-title">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- ★ IDを付与してJSから言語切り替えできるようにしました -->
                 <a href="/article-notam.html" class="nav-link" target="_blank" id="menu-notam">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
                 <a href="/article-icao.html" class="nav-link" target="_blank" id="menu-icao">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
                 <a href="/about.html" class="nav-link" target="_blank" id="menu-about">ℹ️ About & Guide (概要・使い方)</a>
@@ -684,7 +683,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
-        // 🌟 ユーザーのOS・ブラウザ言語を判定
         const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
 
         let searchCount = 0;
@@ -714,7 +712,7 @@
             if (zoom >= 5) step = 5;
             if (zoom >= 7) step = 2;
             if (zoom >= 9) step = 1;
-            if (zoom >= 11) step = 0.5; // 0.5度 = 30分
+            if (zoom >= 11) step = 0.5;
 
             const bounds = map.getBounds();
             const west = Math.floor(bounds.getWest() / step) * step;
@@ -767,13 +765,10 @@
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // ★ 言語に応じたUIテキストの切り替え
             if (!isJa) {
-                // 初期画面テキストの切り替え
                 document.getElementById('intro-ja').style.display = 'none';
                 document.getElementById('intro-en').style.display = 'block';
 
-                // メニューモーダル内のテキスト切り替え
                 document.getElementById('menu-notam').innerHTML = '📖 [Guide] NOTAM Basics & How to Read';
                 document.getElementById('menu-icao').innerHTML = '📖 [Guide] What is an ICAO Code?';
                 document.getElementById('menu-about').innerHTML = 'ℹ️ About & Guide';
@@ -821,7 +816,6 @@
 
             renderHistory();
             
-            // ★ 前回検索した「結果データ」が保存されていれば、APIを叩かずに一瞬で復元する
             const lastQuery = localStorage.getItem('last_search_query');
             const lastData = localStorage.getItem('last_notam_data');
             const lastTime = localStorage.getItem('last_update_time');
@@ -838,45 +832,37 @@
                     renderUI(true);
                 } catch (e) {
                     console.error("Failed to restore history", e);
-                    // 初期表示（ガイド）の状態にするためクリア
                     showWelcomeGuide();
                 }
             } else {
-                // 初回アクセス時やデータがないときは初期ガイドを表示
                 showWelcomeGuide();
             }
         });
 
-        // ★ 初期画面（ガイド）を表示する関数
+        // 🌟 修正: 独立した「welcome-guide」コンテナの表示・非表示を切り替えるよう変更
         function showWelcomeGuide() {
             allFetchedNotams = [];
             displayedNotams = [];
             selectedIds.clear();
             mapLayers.clearLayers();
+            
             document.getElementById('fixed-ad-banner').style.display = 'none';
             document.getElementById('last-update-time').innerText = '--/-- --:--';
             
-            // ローカルストレージの保持もクリア
             localStorage.removeItem('last_search_query');
             localStorage.removeItem('last_notam_data');
             localStorage.removeItem('last_update_time');
 
-            const listContainer = document.getElementById('notam-list');
-            listContainer.innerHTML = '';
+            // 検索リストを非表示にして、ガイドコンテナを表示
+            document.getElementById('notam-list').style.display = 'none';
+            document.getElementById('welcome-guide').style.display = 'block';
 
-            // 言語に応じた初期ガイド要素をリストエリアに戻す
             if (isJa) {
-                const introJa = document.getElementById('intro-ja');
-                if (introJa) {
-                    introJa.style.display = 'block';
-                    listContainer.appendChild(introJa);
-                }
+                document.getElementById('intro-ja').style.display = 'block';
+                document.getElementById('intro-en').style.display = 'none';
             } else {
-                const introEn = document.getElementById('intro-en');
-                if (introEn) {
-                    introEn.style.display = 'block';
-                    listContainer.appendChild(introEn);
-                }
+                document.getElementById('intro-ja').style.display = 'none';
+                document.getElementById('intro-en').style.display = 'block';
             }
 
             document.getElementById('list-title').innerText = isJa ? 'NOTAMリスト (0件)' : 'NOTAM List (0 items)';
@@ -884,11 +870,9 @@
             document.getElementById('clear-selection-btn').style.display = 'none';
         }
 
-        // ★ 検索実行（空白の場合は初期画面に戻す）
         function handleSearchSubmit() {
             const rawInput = document.getElementById('search-input').value.trim();
             if (!rawInput) {
-                // 検索窓が空白でSearchボタンが押された場合
                 showWelcomeGuide();
                 return;
             }
@@ -1007,7 +991,6 @@
         }
 
         function applyFilters() {
-            // データがロードされていない（初期ガイド表示中）の場合はフィルター適用しない
             if (allFetchedNotams.length === 0) return;
 
             const isFilterEnabled = document.getElementById('filter-toggle').checked;
@@ -1280,7 +1263,12 @@
             return list;
         }
 
+        // 🌟 修正: 検索完了時にガイドを非表示にし、リストを表示するよう変更
         function renderUI(autoZoom = false) {
+            // ガイドを隠して、リストエリアを表示する
+            document.getElementById('welcome-guide').style.display = 'none';
+            document.getElementById('notam-list').style.display = 'flex';
+            
             const listContainer = document.getElementById('notam-list');
             listContainer.innerHTML = '';
             mapLayers.clearLayers();
