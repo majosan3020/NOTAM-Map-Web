@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化 - NOTAM MAP View</title>
+
+    <meta name="description" content="長年利用されてきたAIS Japanの運用終了と、次世代航空情報基盤SWIM（System Wide Information Management）への移行について解説。デジタル化がもたらす航空情報の未来とは。">
+    <link rel="icon" href="/icon.png" type="image/png">
+
+    <style>
+        :root {
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+            --orange-accent: #ff9800;
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --surface-variant: #2a2a2a;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.8; 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+
+        h1 { 
+            color: var(--primary-color); 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            margin-top: 20px; 
+            font-size: 22px;
+        }
+        h2 { 
+            color: var(--primary-color); 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+            margin-top: 35px;
+            font-size: 18px;
+        }
+        h3 {
+            color: var(--orange-accent);
+            font-size: 15px;
+            margin-top: 20px;
+        }
+        p { margin-bottom: 16px; color: #dddddd; }
+        ul, ol { margin-bottom: 20px; padding-left: 20px; }
+        li { margin-bottom: 8px; color: #dddddd; }
+
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            padding: 8px 14px; 
+            background: var(--surface-variant); 
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            color: #fff; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+
+        .highlight-box {
+            background-color: var(--surface-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .nav-box {
+            background-color: var(--surface-variant);
+            border: 1px solid #444;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
+
+    <!-- 🇯🇵 日本語コンテンツ -->
+    <div class="lang-ja">
+        <h1>【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化とデジタル移行</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                日本の航空運用を長年支えてきた国土交通省航空局（JCAB）のウェブサービス「AIS Japan」。その運用終了と、グローバル標準規格である「SWIM（広域情報管理）」基盤への統合・移行は、日本の航空データ活用における大きな転換点です。本コラムでは、移行の背景と技術的意義、そして今後のNOTAM利用への影響を分かりやすく解説します。
+            </p>
+        </div>
+
+        <h2>1. AIS Japanとは何だったのか？</h2>
+        <p>
+            <strong>AIS Japan（Aeronautical Information Service Japan）</strong>は、国土交通省航空局が運用していたWebベースの公式航空情報提供システムです。パイロットや航空会社、事前ブリーフィングを行う関係者が利用し、以下のような重要情報をオンラインで参照・取得することができました。
+        </p>
+        <ul>
+            <li><strong>AIP（Aeronautical Information Publication：航空路誌）</strong>：空港や航空路、無線標識施設などの恒久的な基本データ</li>
+            <li><strong>AIP Supplement（補足書）</strong>：工事やイベントに伴う一時的な運航上の変更事項</li>
+            <li><strong>AIC（Aeronautical Information Circular：航空情報サーキュラー）</strong>：行政上の周知事項や法改正等の案内</li>
+            <li><strong>NOTAM（Notice to Air Missions）</strong>：滑走路閉鎖や空域制限などの突発的・即時的な緊急航空通知</li>
+        </ul>
+        <p>
+            長年にわたり日本のフライトブリーフィングの「唯一無二の公式窓口」として機能してきましたが、システムの老朽化や国際的なデータ交換フォーマットの進化に伴い、次世代基盤への世代交代が求められるようになりました。
+        </p>
+
+        <h2>2. なぜSWIM（System Wide Information Management）へ移行したのか？</h2>
+        <p>
+            ICAO（国際民間航空機関）が推進する次世代航空交通管理（ATM）システム構想の一環として、世界各国の航空局は情報システムの国際統合を進めています。その核となる概念が<strong>SWIM（広域情報管理）</strong>です。
+        </p>
+        <p>
+            従来のAIS Japanをはじめとするシステムには、以下のような技術的課題が存在していました。
+        </p>
+        <ul>
+            <li><strong>テキストデータの限界：</strong> 従来のNOTAMは「TAC（Traditional Alphanumeric Code）」と呼ばれるテキスト形式（大文字英数字の羅列）で配信されており、コンピューターによる自動解析や高度なグラフィック描画が困難でした。</li>
+            <li><strong>システム間の分断：</strong> 各国の航空局や民間システムとのデータ連携において、独自のフォーマットや個別のインターフェース設計が必要となり、リアルタイムな情報共有にタイムラグが生じていました。</li>
+        </ul>
+        <p>
+            これらを解決するため、国際標準のデータモデル（<strong>AIXM</strong>: 航空情報、<strong>FIXM</strong>: フライト情報、<strong>IWXXM</strong>: 航空気象情報）を採用し、APIや共通プロトコルを通じて安全かつシームレスに情報提供を行えるシステム基盤「SWIM」への統一が進められました。
+        </p>
+
+        <h2>3. SWIM導入がもたらす3つのメリット</h2>
+        <h3>① 情報の構造化と自動ビジュアル化の実現</h3>
+        <p>
+            SWIMを通じて配信される情報は、XMLやGMLといった構造化データで提供されるため、位置情報（緯度・経度）や制限高度、対象時間などをコンピューターが正確に理解できるようになりました。これにより、手作業での位置確認が不要となり、地図上への自動マッピングが容易になりました。
+        </p>
+
+        <h3>② リアルタイム性と国際相互運用性の飛躍的向上</h3>
+        <p>
+            国際標準APIを通じてデータが即座に配信されるため、日本国内だけでなく、海外の管制機関や国際便の運航者ともミリ秒単位で最新の航空情報が共有されます。
+        </p>
+
+        <h3>③ 民間ツールやシミュレーター等との連携拡大</h3>
+        <p>
+            公式システムからの高度なデータ連携が可能になったことで、サードパーティ製アプリや各種フライトシミュレーター、ドローン運航管理システム（UTM）などでの高度な二次利用が促進されています。
+        </p>
+
+        <h2>4. 当アプリ「NOTAM MAP View」における取り組み</h2>
+        <p>
+            こうした航空データのデジタル改革・SWIM化の流れを受け、当サービス<strong>「NOTAM MAP View」</strong>も開発されました。
+        </p>
+        <p>
+            複雑で解読に手間がかかるテキスト形式のNOTAMデータをバックエンドで自動解析・インデックス化し、世界中の主要な空港や空域の規制・障害物情報をインタラクティブな地図上に即座に描画します。パイロットの事前ブリーフィング補助、バーチャルパイロットのリアルな飛行再現、ドローン操縦者の空域安全確認など、多様なニーズに応える利便性を提供しています。
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 その他のコラム＆ガイド</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ 当アプリの概要と詳細な使い方（About & Guide）</a></li>
+                <li><a href="/privacy.html">🛡️ プライバシーポリシー (Privacy Policy)</a></li>
+                <li><a href="/contact.html">✉️ お問い合わせ (Contact Us)</a></li>
+                <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+                <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 🇺🇸 英語コンテンツ -->
+    <div class="lang-en">
+        <h1>[Guide] From AIS Japan to SWIM! The Evolution of Japan's Aeronautical Information Systems</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                "AIS Japan," a web service managed by the Japan Civil Aviation Bureau (JCAB), has supported aviation operations for many years. The termination of this system and the transition to the global standard "SWIM" (System Wide Information Management) represent a major turning point. This article explains the background, technical significance, and future impact of this transition.
+            </p>
+        </div>
+
+        <h2>1. What was AIS Japan?</h2>
+        <p>
+            <strong>AIS Japan (Aeronautical Information Service Japan)</strong> was an official web-based aeronautical information provision system operated by the JCAB. It was used by pilots, airlines, and dispatchers to access crucial information online, such as:
+        </p>
+        <ul>
+            <li><strong>AIP (Aeronautical Information Publication):</strong> Permanent basic data such as airports, airways, and radio navigation aids.</li>
+            <li><strong>AIP Supplement:</strong> Temporary operational changes due to construction or events.</li>
+            <li><strong>AIC (Aeronautical Information Circular):</strong> Administrative notices and legal amendments.</li>
+            <li><strong>NOTAM (Notice to Air Missions):</strong> Urgent notices like runway closures or airspace restrictions.</li>
+        </ul>
+        <p>
+            Although it functioned as the sole official portal for flight briefings in Japan for years, aging system architecture and the evolution of global data exchange formats necessitated a shift to a next-generation platform.
+        </p>
+
+        <h2>2. Why the Transition to SWIM?</h2>
+        <p>
+            As part of the Next-Generation Air Traffic Management (ATM) system envisioned by ICAO, civil aviation authorities worldwide are integrating their information systems. The core concept of this is <strong>SWIM (System Wide Information Management)</strong>.
+        </p>
+        <p>
+            Traditional systems like AIS Japan faced several technical challenges:
+        </p>
+        <ul>
+            <li><strong>Limitations of Text Data:</strong> Traditional NOTAMs were distributed in "TAC" (Traditional Alphanumeric Code) text format, making automatic computer parsing and graphical rendering extremely difficult.</li>
+            <li><strong>System Fragmentation:</strong> Data integration with foreign aviation authorities and private systems required unique formats and custom interfaces, causing time lags in real-time information sharing.</li>
+        </ul>
+        <p>
+            To resolve these issues, the industry adopted international standard data models (<strong>AIXM</strong> for aeronautical info, <strong>FIXM</strong> for flight info, <strong>IWXXM</strong> for weather info). The transition to SWIM unified the infrastructure, allowing safe and seamless data provision via APIs and common protocols.
+        </p>
+
+        <h2>3. Three Benefits of Introducing SWIM</h2>
+        <h3>1. Structured Information and Automated Visualization</h3>
+        <p>
+            Data distributed through SWIM is provided in structured formats like XML and GML. This allows computers to accurately interpret location data (latitude/longitude), altitude limits, and effective times. This eliminates the need for manual location checking and facilitates automatic mapping.
+        </p>
+
+        <h3>2. Dramatic Improvements in Real-Time Updates and Interoperability</h3>
+        <p>
+            Because data is delivered instantly via standard APIs, the latest aeronautical information is shared in milliseconds not only domestically but also with overseas ATC facilities and international operators.
+        </p>
+
+        <h3>3. Expanded Integration with Private Tools and Simulators</h3>
+        <p>
+            Advanced data linkage from official systems promotes secondary use in third-party apps, flight simulators, and Unmanned Aircraft System Traffic Management (UTM) platforms.
+        </p>
+
+        <h2>4. Our Approach at NOTAM MAP View</h2>
+        <p>
+            In response to this wave of digital reform and the transition to SWIM, our service, <strong>NOTAM MAP View</strong>, was developed.
+        </p>
+        <p>
+            By automatically parsing and indexing complex text-based NOTAM data on the backend, we instantly draw restrictions and hazard information for major airports and airspaces worldwide on an interactive map. We provide convenience that meets diverse needs, supporting pilots with pre-flight briefings, helping virtual pilots recreate realistic flights, and assisting drone operators in verifying airspace safety.
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 Other Columns & Guides</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ About & Guide</a></li>
+                <li><a href="/privacy.html">🛡️ Privacy Policy</a></li>
+                <li><a href="/contact.html">✉️ Contact Us</a></li>
+                <li><a href="/article-notam.html">📖 [Guide] NOTAM Basics & How to Read</a></li>
+                <li><a href="/article-icao.html">📖 [Guide] What is an ICAO Code?</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+            if (!isJa) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+                document.getElementById('btn-back').innerText = '← Back to Map App';
+                document.title = '[Guide] From AIS Japan to SWIM! - NOTAM MAP View';
+            }
+        });
+    </script>
+</body>
+</html>
