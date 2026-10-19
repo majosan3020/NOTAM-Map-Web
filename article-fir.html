@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方 - NOTAM MAP View</title>
+
+    <meta name="description" content="航空情報で頻繁に登場するFIR（Flight Information Region：飛行情報区）の基本概念と、FIR単位でNOTAMを確認すべき理由（広域障害、火山灰、演習空域など）を分かりやすく解説。">
+    <link rel="icon" href="/icon.png" type="image/png">
+
+    <style>
+        :root {
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+            --orange-accent: #ff9800;
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --surface-variant: #2a2a2a;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.8; 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+
+        h1 { 
+            color: var(--primary-color); 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            margin-top: 20px; 
+            font-size: 22px;
+        }
+        h2 { 
+            color: var(--primary-color); 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+            margin-top: 35px;
+            font-size: 18px;
+        }
+        h3 {
+            color: var(--orange-accent);
+            font-size: 15px;
+            margin-top: 20px;
+        }
+        p { margin-bottom: 16px; color: #dddddd; }
+        ul, ol { margin-bottom: 20px; padding-left: 20px; }
+        li { margin-bottom: 8px; color: #dddddd; }
+
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            padding: 8px 14px; 
+            background: var(--surface-variant); 
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            color: #fff; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+
+        .highlight-box {
+            background-color: var(--surface-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .nav-box {
+            background-color: var(--surface-variant);
+            border: 1px solid #444;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
+
+    <!-- 🇯🇵 日本語コンテンツ -->
+    <div class="lang-ja">
+        <h1>【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                NOTAM MAP Viewで「RJJJ」と検索すると、特定の空港ではなく日本全体の巨大なエリアに関する情報が表示されます。これは「FIR（飛行情報区）」のコードを指定しているためです。本コラムでは、FIRの基本的な役割と、なぜフライト前にFIRのNOTAMをチェックする必要があるのかを解説します。
+            </p>
+        </div>
+
+        <h2>1. FIR（飛行情報区）とは？</h2>
+        <p>
+            <strong>FIR（Flight Information Region：飛行情報区）</strong>とは、航空機の安全かつ効率的な運航のために「飛行情報業務（Flight Information Service）」および「警報業務（Alerting Service）」が提供される、明確に区切られた空域のことです。
+        </p>
+        <p>
+            国境とは必ずしも一致せず、国際民間航空機関（ICAO）の取り決めに基づいて、各国の航空当局が管理責任を分担しています。地球上のすべての空域は、いずれかのFIRに属するようにパズルのように分割されています。
+        </p>
+
+        <h2>2. 日本のFIR「RJJJ（福岡FIR）」</h2>
+        <p>
+            日本が管轄する空域全体を<strong>「福岡FIR（Fukuoka FIR）」</strong>と呼び、ICAOコードは<strong>「RJJJ」</strong>です。名前は福岡ですが、北海道から沖縄、そして日本の周辺に広がる太平洋上の広大な洋上空域（かつては東京FIRや那覇FIRとして分かれていましたが、現在は福岡FIRに統合）までをカバーしています。
+        </p>
+        <p>
+            つまり、「RJJJ」のNOTAMを検索することは、「日本の空域全体に関わる情報」を検索することと同義になります。
+        </p>
+
+        <h2>3. なぜFIRのNOTAMを確認するのか？</h2>
+        <p>
+            出発空港と到着空港のNOTAMを調べるだけでは不十分です。飛行中（エンルート）に遭遇する障害を避けるため、通過するFIRの広域NOTAMを必ず確認する必要があります。主に以下のような情報がFIR単位で発出されます。
+        </p>
+        <ul>
+            <li><strong>軍事演習やミサイル発射：</strong> 特定の洋上や空域に設定される広大な立ち入り禁止エリア（Danger Area / Restricted Area）。</li>
+            <li><strong>火山灰（Volcanic Ash）：</strong> 火山噴火によって上空に拡散する火山灰はエンジン停止の危険があるため、広範囲の空域に警告が出ます。</li>
+            <li><strong>GPS・GNSSの障害：</strong> 広範囲での衛星電波のジャミングやシステム障害情報。</li>
+            <li><strong>航空路（Airway）の閉鎖や変更：</strong> 悪天候や通信施設のメンテナンスによる特定のルートの一時的な使用不可。</li>
+            <li><strong>通信・管制レーダーの障害：</strong> 広域をカバーするVHF通信や管制用レーダーシステムの一時的な機能低下。</li>
+        </ul>
+
+        <h2>4. アプリでのFIR検索のコツ</h2>
+        <p>
+            当アプリ「NOTAM MAP View」を利用する際は、出発地・目的地の空港コード（例：RJTT, ROAHなど）に加えて、必ずルート上のFIRコード（例：RJJJ）をスペース区切りで入力して検索してください。
+            <br>
+            <strong>【検索例】</strong> <code>RJTT ROAH RJJJ</code> （羽田、那覇、および日本全体の広域情報を同時に検索）
+        </p>
+        <p>
+            広大なFIR情報を視覚的に地図上にマッピングすることで、自分の飛行ルートに危険エリアが重なっていないかを一目で確認することが可能になります。
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 その他のコラム＆ガイド</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ 当アプリの概要と詳細な使い方（About & Guide）</a></li>
+                <li><a href="/privacy.html">🛡️ プライバシーポリシー (Privacy Policy)</a></li>
+                <li><a href="/contact.html">✉️ お問い合わせ (Contact Us)</a></li>
+                <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+                <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+                <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 🇺🇸 英語コンテンツ -->
+    <div class="lang-en">
+        <h1>[Guide] What is a FIR? Understanding Flight Information Regions</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                When you search for "RJJJ" in NOTAM MAP View, it displays information for a massive area covering all of Japan rather than a specific airport. This is because "RJJJ" is the code for a FIR. This column explains the basic role of a FIR and why checking FIR NOTAMs is crucial before a flight.
+            </p>
+        </div>
+
+        <h2>1. What is a FIR (Flight Information Region)?</h2>
+        <p>
+            A <strong>FIR (Flight Information Region)</strong> is an airspace of defined dimensions within which Flight Information Service and Alerting Service are provided to ensure safe and efficient aircraft operations.
+        </p>
+        <p>
+            FIR boundaries do not always align with national borders. Under the International Civil Aviation Organization (ICAO) agreements, national aviation authorities share management responsibilities. The entire global airspace is divided into FIRs, much like a jigsaw puzzle.
+        </p>
+
+        <h2>2. Japan's FIR: "RJJJ (Fukuoka FIR)"</h2>
+        <p>
+            The entire airspace under Japan's jurisdiction is called the <strong>"Fukuoka FIR"</strong>, and its ICAO code is <strong>RJJJ</strong>. Despite being named after the city of Fukuoka, it covers airspace from Hokkaido to Okinawa, as well as vast oceanic regions over the Pacific (previously divided into Tokyo and Naha FIRs, but now consolidated).
+        </p>
+        <p>
+            Therefore, searching for RJJJ NOTAMs is equivalent to checking notices that affect the entire Japanese airspace.
+        </p>
+
+        <h2>3. Why Check FIR NOTAMs?</h2>
+        <p>
+            Checking NOTAMs only for your departure and arrival airports is insufficient. To avoid en-route hazards, you must check the broad-area NOTAMs for the FIRs you will fly through. The following critical information is usually issued per FIR:
+        </p>
+        <ul>
+            <li><strong>Military Exercises and Missile Launches:</strong> Vast restricted or danger areas established over oceans or specific airspaces.</li>
+            <li><strong>Volcanic Ash:</strong> Ash spreading at high altitudes poses a severe risk of engine failure, prompting warnings across extensive airspaces.</li>
+            <li><strong>GPS/GNSS Outages:</strong> Information regarding widespread satellite signal jamming or system degradation.</li>
+            <li><strong>Airway Closures:</strong> Temporary unavailability of specific routes due to severe weather or navigation aid maintenance.</li>
+            <li><strong>Communication and Radar Outages:</strong> Temporary degradation of VHF radio coverage or ATC radar systems covering wide areas.</li>
+        </ul>
+
+        <h2>4. Tips for Searching FIRs in the App</h2>
+        <p>
+            When using "NOTAM MAP View", make sure to enter the FIR code(s) (e.g., RJJJ) along with your departure and destination airport codes, separated by spaces.
+            <br>
+            <strong>[Search Example]</strong> <code>RJTT ROAH RJJJ</code> (Simultaneously searches Haneda, Naha, and Japan's en-route airspace).
+        </p>
+        <p>
+            By visually mapping vast FIR information on the map, you can instantly confirm whether any hazardous areas overlap with your planned flight route.
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 Other Columns & Guides</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ About & Guide</a></li>
+                <li><a href="/privacy.html">🛡️ Privacy Policy</a></li>
+                <li><a href="/contact.html">✉️ Contact Us</a></li>
+                <li><a href="/article-notam.html">📖 [Guide] NOTAM Basics & How to Read</a></li>
+                <li><a href="/article-icao.html">📖 [Guide] What is an ICAO Code?</a></li>
+                <li><a href="/article-swim.html">📖 [Guide] Evolution of Japan Aeronautical Info: AIS Japan to SWIM</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+            if (!isJa) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+                document.getElementById('btn-back').innerText = '← Back to Map App';
+                document.title = '[Guide] What is a FIR? - NOTAM MAP View';
+            }
+        });
+    </script>
+</body>
+</html>

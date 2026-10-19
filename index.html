@@ -591,7 +591,7 @@
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">NOTAM（Notice to Air Missions）とは？</h3>
                     <p>NOTAMとは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害など）を関係者に通知するためのシステムです。かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当ツールは、その複雑なテキストデータを解析し、ポリゴンやラインとして地図上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">基本的な使い方</h3>
-                    <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>KZLA</strong>（ロサンゼルス）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、マップ上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
+                    <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>RJJJ</strong>（福岡FIR）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、マップ上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
                     
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">関連ガイド・コラム</h3>
                     <p>当ツールの詳しい活用方法やNOTAM・航空システムに関する解説については、以下のページをご参照ください。</p>
@@ -603,6 +603,7 @@
                         <li><a href="/article-notam.html" style="color: var(--orange-accent);" target="_blank">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
                         <li><a href="/article-icao.html" style="color: var(--orange-accent);" target="_blank">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
                         <li><a href="/article-swim.html" style="color: var(--orange-accent);" target="_blank">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
+                        <li><a href="/article-fir.html" style="color: var(--orange-accent);" target="_blank">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
                     </ul>
                 </div>
                 
@@ -613,7 +614,7 @@
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">What is a NOTAM?</h3>
                     <p>A NOTAM is a system used to notify those concerned with aircraft operations about essential information such as runway closures, airspace restrictions, and navigation aid outages. Previously known as "Notice to Airmen," the more inclusive term "Notice to Air Missions" is now officially adopted. Since these are usually distributed in a cryptic text format, it was difficult to intuitively grasp their location and extent. This tool parses that complex text data and maps it as polygons and lines, dramatically improving the efficiency of flight planning and airspace verification.</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Basic Usage</h3>
-                    <p>Enter the ICAO code of the airport or airspace you want to check (e.g., <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>KZLA</strong>) in the search bar at the top of the screen and press the "Search" button. The latest data will be fetched from the server, and restricted areas and routes will be highlighted on the map. You can also search for multiple ICAO codes simultaneously by separating them with a space.</p>
+                    <p>Enter the ICAO code of the airport or airspace you want to check (e.g., <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>RJJJ</strong>) in the search bar at the top of the screen and press the "Search" button. The latest data will be fetched from the server, and restricted areas and routes will be highlighted on the map. You can also search for multiple ICAO codes simultaneously by separating them with a space.</p>
                     
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Related Columns and Guides</h3>
                     <p>For more detailed explanations on reading NOTAMs and ICAO codes, as well as how to use this tool, please refer to the specialized columns and guide pages below.</p>
@@ -625,6 +626,7 @@
                         <li><a href="/article-notam.html" style="color: var(--orange-accent);" target="_blank">📖 [Guide] NOTAM Basics & How to Read</a></li>
                         <li><a href="/article-icao.html" style="color: var(--orange-accent);" target="_blank">📖 [Guide] What is an ICAO Code?</a></li>
                         <li><a href="/article-swim.html" style="color: var(--orange-accent);" target="_blank">📖 [Guide] Evolution of Japan Aeronautical Info: AIS Japan to SWIM</a></li>
+                        <li><a href="/article-fir.html" style="color: var(--orange-accent);" target="_blank">📖 [Guide] What is a FIR? Understanding Flight Information Regions</a></li>
                     </ul>
                 </div>
             </div>
@@ -678,6 +680,7 @@
                 <a href="/article-notam.html" class="nav-link" target="_blank" id="menu-notam">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
                 <a href="/article-icao.html" class="nav-link" target="_blank" id="menu-icao">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
                 <a href="/article-swim.html" class="nav-link" target="_blank" id="menu-swim">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a>
+                <a href="/article-fir.html" class="nav-link" target="_blank" id="menu-fir">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a>
                 
                 <button onclick="closeMenuModal()" class="nav-link" id="menu-close" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
                     ⬅ マップ画面に戻る (Close Menu)
@@ -784,6 +787,7 @@
                 document.getElementById('menu-notam').innerHTML = '📖 [Guide] NOTAM Basics & How to Read';
                 document.getElementById('menu-icao').innerHTML = '📖 [Guide] What is an ICAO Code?';
                 document.getElementById('menu-swim').innerHTML = '📖 [Guide] Evolution of Japan Aeronautical Info: AIS Japan to SWIM';
+                document.getElementById('menu-fir').innerHTML = '📖 [Guide] What is a FIR? Understanding Flight Information Regions';
                 document.getElementById('menu-close').innerHTML = '⬅ Return to Map (Close Menu)';
             }
 
@@ -825,19 +829,15 @@
 
             renderHistory();
             
-            // ★AdSense対策の最重要ポイント★
-            // 初回アクセス（リロード時）は、過去のキャッシュデータを**絶対に無視**し、
-            // クローラーが読み取れるように「About & Guide」のテキスト画面を**必ず強制表示**させます。
+            // 初回アクセス時はキャッシュを無視してAboutガイドを強制表示（AdSense対策）
             showWelcomeGuide();
             
-            // 利便性のため、検索窓のキーワード「だけ」は復元してあげます
             const lastQuery = localStorage.getItem('last_search_query');
             if (lastQuery) {
                 document.getElementById('search-input').value = lastQuery;
             }
         });
 
-        // 🌟 初期テキストガイド表示（キャッシュを完全に破棄して画面をリセットする処理）
         function showWelcomeGuide() {
             allFetchedNotams = [];
             displayedNotams = [];
@@ -847,7 +847,6 @@
             document.getElementById('fixed-ad-banner').style.display = 'none';
             document.getElementById('last-update-time').innerText = '--/-- --:--';
             
-            // キャッシュは破棄してクリーンな状態を保つ
             localStorage.removeItem('last_notam_data');
             localStorage.removeItem('last_update_time');
 
