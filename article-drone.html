@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】ドローンの法律改正（イエローゾーン1000m）とNOTAM表記 - NOTAM MAP View</title>
+
+    <meta name="description" content="小型無人機等飛行禁止法の改正によるイエローゾーン1000m拡大のポイントと、航空情報（NOTAM）上でドローン（UAV、UNMANNED ACFT等）がどのように表記されるかを解説します。">
+    <link rel="icon" href="/icon.png" type="image/png">
+
+    <style>
+        :root {
+            --primary-color: #d0bcff; 
+            --primary-dark: #381e72;
+            --orange-accent: #ff9800;
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --surface-variant: #2a2a2a;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            line-height: 1.8; 
+            padding: 20px; 
+            max-width: 800px; 
+            margin: 0 auto; 
+        }
+
+        h1 { 
+            color: var(--primary-color); 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 10px; 
+            margin-top: 20px; 
+            font-size: 22px;
+        }
+        h2 { 
+            color: var(--primary-color); 
+            border-bottom: 1px solid #333; 
+            padding-bottom: 8px; 
+            margin-top: 35px;
+            font-size: 18px;
+        }
+        h3 {
+            color: var(--orange-accent);
+            font-size: 15px;
+            margin-top: 20px;
+        }
+        p { margin-bottom: 16px; color: #dddddd; }
+        ul, ol { margin-bottom: 20px; padding-left: 20px; }
+        li { margin-bottom: 8px; color: #dddddd; }
+
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            padding: 8px 14px; 
+            background: var(--surface-variant); 
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            color: #fff; 
+            font-weight: bold; 
+            font-size: 14px;
+        }
+
+        .highlight-box {
+            background-color: var(--surface-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .nav-box {
+            background-color: var(--surface-variant);
+            border: 1px solid #444;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+        
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+
+    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
+
+    <!-- 🇯🇵 日本語コンテンツ -->
+    <div class="lang-ja">
+        <h1>【コラム】ドローンの法律改正（イエローゾーン1000m拡大）とNOTAMでの表記</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                近年、ドローン（小型無人機）の普及に伴い、航空法や関連法令のアップデートが頻繁に行われています。特に重要なのが「小型無人機等飛行禁止法」の改正による規制エリアの大幅な拡大です。本コラムでは、法改正のポイントと、航空情報（NOTAM）上でドローンがどのように表記されるかについて解説します。
+            </p>
+        </div>
+
+        <h2>1. 「小型無人機等飛行禁止法」の改正とイエローゾーンの拡大</h2>
+        <p>
+            警察庁の<a href="https://www.npa.go.jp/bureau/security/kogatamujinki/index.html" target="_blank" rel="noopener noreferrer">公式サイト</a>でも周知されている通り、国会議事堂、自衛隊基地、原子力事業所などの重要施設に対する危険を未然に防ぐため、「小型無人機等飛行禁止法」が改正・強化されました。
+        </p>
+        <p>
+            操縦者が最も注意すべき変更点は、重要施設周辺の飛行制限区域である<strong>「イエローゾーン」の範囲が、従来のおおむね300mから「おおむね1000m」へと大幅に拡大</strong>されたことです。
+        </p>
+        <ul>
+            <li><strong>レッドゾーン：</strong> 対象施設の敷地・区域の上空（飛行禁止）</li>
+            <li><strong>イエローゾーン：</strong> 対象施設の周囲おおむね1000m以内の上空（飛行禁止・直罰化の対象）</li>
+        </ul>
+        <p>
+            これにより、これまで問題なく飛行できていた撮影スポットや業務エリアが、突如として飛行禁止エリア（イエローゾーン）に含まれる可能性があります。また、イエローゾーンでの違法飛行に対する罰則も強化されており、事前の空域確認がこれまで以上に重要となっています。
+        </p>
+
+        <h2>2. NOTAMにおける「ドローン」の表記方法</h2>
+        <p>
+            ドローンを飛行させる際、または有人機のパイロットがドローンの空域を避ける際、最新のNOTAMを確認することが不可欠です。しかし、NOTAMのテキスト内に私たちが普段使う「DRONE（ドローン）」という単語がそのまま書かれているとは限りません。
+        </p>
+        <p>
+            公的な航空情報では、ドローンや無人航空機は以下のような専門用語（略語）で表記されることが一般的です。検索時にはこれらのキーワードに注意して読み解く必要があります。
+        </p>
+        <ul>
+            <li><strong>UAV</strong> (Unmanned Aerial Vehicle)：無人航空機</li>
+            <li><strong>UAS</strong> (Unmanned Aircraft System)：無人航空機システム</li>
+            <li><strong>UNMANNED ACFT</strong> (Unmanned Aircraft)：無人機全般</li>
+        </ul>
+        <p>
+            <strong>【NOTAMの記載例】</strong><br>
+            <code>Q) RJJJ/QWULW/IV/BO/W/000/010/3530N13945E001</code><br>
+            <code>E) UAV FLT WEF 2611012300 TO 2611020800 ...</code><br>
+            <span style="font-size: 13px; color: var(--text-sub);">※Qコードの「WU」は無人航空機（Unmanned Aircraft）の飛行制限や警告を表します。</span>
+        </p>
+
+        <h2>3. 当アプリでの活用方法</h2>
+        <p>
+            NOTAM MAP Viewを活用すれば、複雑なテキストで配信される「UAV」や「UNMANNED ACFT」の飛行制限エリアも、地図上で視覚的に確認することができます。法改正により1000mに拡大された重要施設周辺の規制エリアの確認と併せて、突発的なドローン関連のNOTAMを視覚的に捉え、安全なフライトプランニングにお役立てください。
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 その他のコラム＆ガイド</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ 当アプリの概要と詳細な使い方（About & Guide）</a></li>
+                <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+                <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+                <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
+                <li><a href="/article-fir.html">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 🇺🇸 英語コンテンツ -->
+    <div class="lang-en">
+        <h1>[Guide] Drone Law Updates (1000m Yellow Zone) & NOTAM Terminology</h1>
+
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                With the rapid popularization of drones, aviation laws and related regulations are frequently updated. A critical recent change in Japan is the significant expansion of restricted areas under the "Act on Prohibition of Flight of Small Unmanned Aircrafts." This column explains the key legal updates and how drones are represented in NOTAMs.
+            </p>
+        </div>
+
+        <h2>1. Revision of the Drone Flight Prohibition Act (Expansion of the Yellow Zone)</h2>
+        <p>
+            As announced on the <a href="https://www.npa.go.jp/bureau/security/kogatamujinki/index.html" target="_blank" rel="noopener noreferrer">National Police Agency website</a>, regulations have been tightened to prevent risks to important facilities such as the National Diet Building, JSDF bases, and nuclear power plants.
+        </p>
+        <p>
+            The most crucial change for operators is that the <strong>"Yellow Zone" (the restricted flight area surrounding important facilities) has been drastically expanded from approximately 300 meters to "approximately 1,000 meters."</strong>
+        </p>
+        <ul>
+            <li><strong>Red Zone:</strong> Airspace directly above the facility's premises (Flight Prohibited).</li>
+            <li><strong>Yellow Zone:</strong> Airspace within approximately 1,000m around the facility (Flight Prohibited, subject to immediate penalties).</li>
+        </ul>
+        <p>
+            As a result, areas that were previously legal for drone flights may now fall within the prohibited Yellow Zone. Penalties for illegal flights in this zone have also been strengthened, making pre-flight airspace checks more critical than ever.
+        </p>
+
+        <h2>2. How Drones are Represented in NOTAMs</h2>
+        <p>
+            Checking NOTAMs is essential for drone operators ensuring compliance, as well as manned aircraft pilots avoiding drone activity. However, you will rarely find the word "DRONE" explicitly written in official NOTAM text.
+        </p>
+        <p>
+            In official aeronautical information, drones and unmanned aircraft are generally referred to using the following specialized acronyms. You must look for these keywords when parsing NOTAMs:
+        </p>
+        <ul>
+            <li><strong>UAV</strong> (Unmanned Aerial Vehicle)</li>
+            <li><strong>UAS</strong> (Unmanned Aircraft System)</li>
+            <li><strong>UNMANNED ACFT</strong> (Unmanned Aircraft)</li>
+        </ul>
+        <p>
+            <strong>[NOTAM Example]</strong><br>
+            <code>Q) RJJJ/QWULW/IV/BO/W/000/010/3530N13945E001</code><br>
+            <code>E) UAV FLT WEF 2611012300 TO 2611020800 ...</code><br>
+            <span style="font-size: 13px; color: var(--text-sub);">* The Q-code "WU" generally indicates navigation warnings related to Unmanned Aircraft.</span>
+        </p>
+
+        <h2>3. Utilizing NOTAM MAP View</h2>
+        <p>
+            By using NOTAM MAP View, flight restriction areas for "UAV" or "UNMANNED ACFT", which are normally distributed as complex text, can be visually confirmed on the map. Combined with checking the new 1,000m facility restrictions, visualizing these dynamic NOTAMs will greatly enhance the safety and efficiency of your flight planning.
+        </p>
+
+        <div class="nav-box">
+            <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 Other Columns & Guides</p>
+            <ul>
+                <li><a href="/about.html">ℹ️ About & Guide</a></li>
+                <li><a href="/article-notam.html">📖 [Guide] NOTAM Basics & How to Read</a></li>
+                <li><a href="/article-icao.html">📖 [Guide] What is an ICAO Code?</a></li>
+                <li><a href="/article-swim.html">📖 [Guide] Evolution of Japan Aeronautical Info: AIS Japan to SWIM</a></li>
+                <li><a href="/article-fir.html">📖 [Guide] What is a FIR? Understanding Flight Information Regions</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+            if (!isJa) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+                document.getElementById('btn-back').innerText = '← Back to Map App';
+                document.title = '[Guide] Drone Law Updates & NOTAM Terminology - NOTAM MAP View';
+            }
+        });
+    </script>
+</body>
+</html>
