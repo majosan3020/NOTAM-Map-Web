@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】海外のNOTAMはどう違う？FAAフォーマットとICAO基準 - NOTAM MAP View</title>
+    <meta name="description" content="世界共通規格であるICAOフォーマットのNOTAMと、アメリカ連邦航空局（FAA）が発行する国内独自フォーマット（FDC NOTAM等）の違いと構造を解説します。">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <style>
+        :root { --primary-color: #d0bcff; --primary-dark: #381e72; --orange-accent: #ff9800; --bg-color: #121212; --surface-color: #1e1e1e; --surface-variant: #2a2a2a; --text-main: #ffffff; --text-sub: #aaaaaa; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { color: var(--primary-color); border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 20px; font-size: 22px; }
+        h2 { color: var(--primary-color); border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 35px; font-size: 18px; }
+        p, li { margin-bottom: 16px; color: #dddddd; }
+        ul { margin-bottom: 20px; padding-left: 20px; }
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 14px; background: var(--surface-variant); border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; font-size: 14px; }
+        .highlight-box { background-color: var(--surface-color); border-left: 4px solid var(--primary-color); padding: 16px; border-radius: 6px; margin: 20px 0; }
+        .nav-box { background-color: var(--surface-variant); border: 1px solid #444; padding: 16px; border-radius: 8px; margin-top: 40px; }
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
+
+    <!-- 🇯🇵 日本語 -->
+    <div class="lang-ja">
+        <h1>【コラム】海外のNOTAMはどう違う？FAAフォーマットとICAO基準の落とし穴</h1>
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                航空システムは世界共通であるべきですが、国によっては独自のローカルルールが存在します。その代表例がアメリカの「FAAフォーマット」です。本記事では、国際標準のICAO形式と、アメリカ国内で使われるFAA形式のNOTAMの違いについて解説します。
+            </p>
+        </div>
+
+        <h2>1. 世界標準の「ICAOフォーマット」</h2>
+        <p>
+            日本を含む世界中の多くの国で採用されているのが、国際民間航空機関（ICAO）が定めたフォーマットです。最大の特徴は、情報がQ)からG)までのアルファベット項目に美しく整理されている点です。
+        </p>
+        <ul>
+            <li><strong>Q行（Q-line）：</strong> コンピュータが解析しやすいように、影響範囲や対象をコード化（Qコード）したもの。</li>
+            <li><strong>A〜G行：</strong> 対象空港(A)、開始日時(B)、終了日時(C)、詳細テキスト(E)など、ルールに沿って記載されます。</li>
+        </ul>
+        <p>当アプリがポリゴンやラインを正確に地図上に描画できるのは、この高度に構造化されたICAO基準のデータ仕様があるからです。</p>
+
+        <h2>2. アメリカ独自の「FAAフォーマット」の構造</h2>
+        <p>
+            一方、航空大国であるアメリカは、連邦航空局（FAA）が発行する独自の国内向けフォーマット（Domestic NOTAM）を多用します。
+        </p>
+        <p>
+            FAAフォーマットは、Qコードのようなコンピュータ向けの厳密な構造よりも、「RWY 09/27 CLSD（滑走路09/27閉鎖）」のように、人間が読んで即座に理解しやすいキーワード駆動のテキストになっているのが特徴です。また、距離の単位が海里（NM）だけでなく法定マイル（SM）で記載されたり、FDC NOTAM（飛行データセンターNOTAM）として計器飛行方式のチャート改訂が大量に流れてきたりと、ICAO基準に慣れたパイロットには解読のハードルとなります。
+        </p>
+
+        <h2>3. NOTAM MAP Viewのバックエンド技術</h2>
+        <p>
+            フォーマットが異なると、世界中のNOTAMを一つの地図に統合するのは非常に困難になります。
+        </p>
+        <p>
+            そこで当サイト「NOTAM MAP View」のバックエンドシステムは、FAAが提供する公式のデータ連携用API（NMS-API）を利用しています。このシステムは、アメリカ独自のFAAフォーマットを含む複雑な文字列を解析し、プログラムが地図上に描画可能な構造化データ（GeoJSON等）へと変換・正規化する役割を果たしています。これにより、ユーザーは形式の違いを意識することなく、シームレスに空域情報を確認できるのです。
+        </p>
+    </div>
+
+    <!-- 🇺🇸 English -->
+    <div class="lang-en">
+        <h1>[Guide] Overseas NOTAMs: FAA Format vs. ICAO Standard Pitfalls</h1>
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                While aviation heavily relies on global standardization, distinct local rules still exist. A prime example is the U.S. Federal Aviation Administration (FAA) NOTAM format. This article highlights the differences between the global ICAO standard and the U.S. domestic FAA format.
+            </p>
+        </div>
+
+        <h2>1. The Global Standard: ICAO Format</h2>
+        <p>
+            Most countries, including Japan and European nations, utilize the format defined by the International Civil Aviation Organization (ICAO). Its key feature is a highly structured layout ranging from Item Q) to G).
+        </p>
+        <ul>
+            <li><strong>Q-Line:</strong> Contains standardized "Q-codes" allowing computer systems to parse the subject and condition easily.</li>
+            <li><strong>A to G Lines:</strong> Organizes the Location (A), Start Time (B), End Time (C), and detailed plain text (E) logically.</li>
+        </ul>
+        <p>Our app's ability to draw precise polygons and restricted circles on the map is largely thanks to the structured nature of this ICAO standard.</p>
+
+        <h2>2. The U.S. Specific "FAA Format"</h2>
+        <p>
+            The United States, managing massive air traffic, frequently uses its own FAA domestic formats (such as FDC NOTAMs and D NOTAMs) for flights within the U.S.
+        </p>
+        <p>
+            Unlike the machine-readable Q-codes, FAA domestic NOTAMs are often keyword-driven, prioritizing human readability (e.g., "RWY 09/27 CLSD"). Furthermore, they may use Statute Miles (SM) instead of Nautical Miles (NM) for distance, and issue FDC NOTAMs for instrument approach chart amendments. For pilots accustomed strictly to ICAO, FAA NOTAMs can present a decoding challenge.
+        </p>
+
+        <h2>3. The Backend Tech Powering NOTAM MAP View</h2>
+        <p>
+            Merging different global formats onto a single map is technically challenging due to these structural discrepancies.
+        </p>
+        <p>
+            To solve this, the backend of "NOTAM MAP View" leverages the official FAA NMS-API data stream. This advanced system parses complex strings—including unique FAA domestic layouts—and normalizes them into structured data formats (like GeoJSON) that can be programmatically rendered on our map. As a result, users can seamlessly view global airspace restrictions without ever worrying about underlying format differences.
+        </p>
+    </div>
+
+    <div class="nav-box">
+        <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 コラム・記事一覧</p>
+        <ul>
+            <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+            <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+            <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
+            <li><a href="/article-fir.html">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
+            <li><a href="/article-drone.html">📖 【コラム】ドローンの法律改正（イエローゾーン1000m）とNOTAM表記</a></li>
+            <li><a href="/article-military.html">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a></li>
+            <li><a href="/article-weather.html">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a></li>
+            <li><a href="/article-faa.html">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!(navigator.language || navigator.userLanguage).startsWith('ja')) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+                document.getElementById('btn-back').innerText = '← Back to Map App';
+                document.title = '[Guide] FAA vs ICAO NOTAMs - NOTAM MAP View';
+            }
+        });
+    </script>
+</body>
+</html>

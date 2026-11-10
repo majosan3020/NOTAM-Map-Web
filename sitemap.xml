@@ -33,7 +33,19 @@
     <priority>0.9</priority>
   </url>
   <url>
-  <loc>https://notam-map-web.vercel.app/article-drone.html</loc>
-  <priority>0.9</priority>
-</url>
+    <loc>https://notam-map-web.vercel.app/article-drone.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://notam-map-web.proven.vercel.app/article-military.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://notam-map-web.vercel.app/article-weather.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://notam-map-web.vercel.app/article-faa.html</loc>
+    <priority>0.9</priority>
+  </url>
 </urlset>

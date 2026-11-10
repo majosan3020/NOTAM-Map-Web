@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【コラム】METAR・TAF（航空気象情報）とNOTAMの違い - NOTAM MAP View</title>
+    <meta name="description" content="パイロットが飛行前に確認する「METAR・TAF（気象情報）」と「NOTAM（運用情報）」の違いと、安全なフライトプラン構築のための組み合わせ方を解説します。">
+    <link rel="icon" href="/icon.png" type="image/png">
+    <style>
+        :root { --primary-color: #d0bcff; --primary-dark: #381e72; --orange-accent: #ff9800; --bg-color: #121212; --surface-color: #1e1e1e; --surface-variant: #2a2a2a; --text-main: #ffffff; --text-sub: #aaaaaa; }
+        body { background-color: var(--bg-color); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; padding: 20px; max-width: 800px; margin: 0 auto; }
+        h1 { color: var(--primary-color); border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 20px; font-size: 22px; }
+        h2 { color: var(--primary-color); border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 35px; font-size: 18px; }
+        p, li { margin-bottom: 16px; color: #dddddd; }
+        ul { margin-bottom: 20px; padding-left: 20px; }
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 14px; background: var(--surface-variant); border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; font-size: 14px; }
+        .highlight-box { background-color: var(--surface-color); border-left: 4px solid var(--primary-color); padding: 16px; border-radius: 6px; margin: 20px 0; }
+        .nav-box { background-color: var(--surface-variant); border: 1px solid #444; padding: 16px; border-radius: 8px; margin-top: 40px; }
+        .lang-en { display: none; }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
+
+    <!-- 🇯🇵 日本語 -->
+    <div class="lang-ja">
+        <h1>【コラム】METAR・TAF（航空気象情報）とNOTAMの違いと組み合わせ方</h1>
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                パイロットがフライトプランを作成し、離陸の判断（Go/No-Go）を下すためのプレフライトブリーフィングにおいて、確認必須なのが「気象情報」と「航空情報」です。本コラムでは、混同されがちなMETAR/TAFとNOTAMの役割の違いを解説します。
+            </p>
+        </div>
+
+        <h2>1. METARとTAF：刻々と変わる「天気」を知る</h2>
+        <p>
+            空港の気象状況を伝えるためのフォーマットが、<strong>METAR（定時航空気象実況）</strong>と<strong>TAF（運航用飛行場予報）</strong>です。
+        </p>
+        <ul>
+            <li><strong>METAR（実況）：</strong> 現在の空港の風向、風速、視程、雲の高さ、気温、気圧などを30分または1時間ごとに報告するものです。</li>
+            <li><strong>TAF（予報）：</strong> むこう24時間〜30時間の気象の変化を予報するもので、目的地の天候が悪化しないかを確認するために使われます。</li>
+        </ul>
+        <p>
+            これらは自然現象（天候）のみを対象としており、滑走路が工事で閉鎖されているかなどの「設備」に関する情報は含まれません。
+        </p>
+
+        <h2>2. NOTAM：人間の活動による「運用制限」を知る</h2>
+        <p>
+            一方、<strong>NOTAM（Notice to Air Missions）</strong>は、天候以外の「運用に関わるすべての制限や変更」を通知します。
+        </p>
+        <p>
+            たとえば、「視界は良好（METARは快晴）」でも、「計器着陸装置（ILS）がメンテナンス中で使えない（NOTAM）」場合、計器飛行方式での進入手順が変更になります。また、移動式クレーンが空港周辺に立っている、ドローンの飛行訓練が行われているといった、地上や空中の「物理的な障害物」を把握するのもNOTAMの役割です。
+        </p>
+
+        <h2>3. 効率的なプレフライトの手順（組み合わせ方）</h2>
+        <p>
+            実際のフライト準備や、フライトシミュレーターでのリアルな運用では、以下のように情報を組み合わせます。
+        </p>
+        <ol>
+            <li><strong>METAR/TAFの確認：</strong> まず出発地、目的地、代替空港の天候をチェックし、物理的に離発着可能かを判断します。</li>
+            <li><strong>NOTAM MAP Viewでの確認：</strong> 次に当アプリにICAOコードを入力し、ルート上の空域制限（軍事演習など）や、目的地の滑走路・誘導路の閉鎖状況を地図上で視覚的にチェックします。</li>
+        </ol>
+        <p>
+            気象データで「空のご機嫌」を伺い、NOTAM MAP Viewで「地上の設備と空域のルール」を確認する。この両輪を回すことで、安全で完璧なフライトプランが完成します。
+        </p>
+    </div>
+
+    <!-- 🇺🇸 English -->
+    <div class="lang-en">
+        <h1>[Guide] METAR/TAF vs. NOTAMs: The Perfect Pre-Flight Briefing</h1>
+        <div class="highlight-box">
+            <p style="margin:0; font-size:14px; color: var(--text-sub);">
+                During a pre-flight briefing for Go/No-Go decisions, pilots must review both "weather data" and "operational aeronautical data." This column breaks down the distinct roles of METAR/TAF and NOTAMs, and how to combine them for safe flight planning.
+            </p>
+        </div>
+
+        <h2>1. METAR and TAF: Understanding the Weather</h2>
+        <p>
+            Airport meteorological conditions are communicated globally through <strong>METAR (Aviation Routine Weather Report)</strong> and <strong>TAF (Terminal Aerodrome Forecast)</strong> formats.
+        </p>
+        <ul>
+            <li><strong>METAR (Current):</strong> Reports the current wind, visibility, cloud ceiling, temperature, and altimeter settings, usually updated every 30 to 60 minutes.</li>
+            <li><strong>TAF (Forecast):</strong> Predicts weather changes for the next 24 to 30 hours, crucial for determining if your destination will remain VFR/IFR.</li>
+        </ul>
+        <p>
+            These formats deal strictly with natural phenomena (weather) and contain zero information about broken lights or closed runways.
+        </p>
+
+        <h2>2. NOTAMs: Understanding Operational Restrictions</h2>
+        <p>
+            <strong>NOTAMs (Notice to Air Missions)</strong> cover everything else—specifically, "operational limitations and changes" driven by human activity or equipment status.
+        </p>
+        <p>
+            For example, the weather might be perfectly clear (METAR), but if the Instrument Landing System (ILS) is down for maintenance, or a massive crane is erected near the runway threshold, you will only know this by reading the NOTAMs. Unmanned drone flights and airspace closures are also found exclusively in NOTAMs.
+        </p>
+
+        <h2>3. The Ideal Pre-Flight Workflow</h2>
+        <p>
+            Whether flying a real aircraft or planning a VATSIM/MSFS session, the workflow combines both data streams:
+        </p>
+        <ol>
+            <li><strong>Check METAR/TAF:</strong> Assess departure, destination, and alternate airports to ensure the weather meets your minimums.</li>
+            <li><strong>Check NOTAM MAP View:</strong> Enter the ICAO codes into our app to visually inspect route restrictions, closed taxiways, and temporary flight restrictions (TFRs) on the map.</li>
+        </ol>
+        <p>
+            Use weather data to check "Mother Nature," and use NOTAM MAP View to verify "infrastructure and airspace rules." Together, they create a flawless flight plan.
+        </p>
+    </div>
+
+    <div class="nav-box">
+        <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 コラム・記事一覧</p>
+        <ul>
+            <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
+            <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
+            <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
+            <li><a href="/article-fir.html">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
+            <li><a href="/article-drone.html">📖 【コラム】ドローンの法律改正（イエローゾーン1000m）とNOTAM表記</a></li>
+            <li><a href="/article-military.html">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a></li>
+            <li><a href="/article-weather.html">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a></li>
+            <li><a href="/article-faa.html">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!(navigator.language || navigator.userLanguage).startsWith('ja')) {
+                document.querySelector('.lang-ja').style.display = 'none';
+                document.querySelector('.lang-en').style.display = 'block';
+                document.getElementById('btn-back').innerText = '← Back to Map App';
+                document.title = '[Guide] METAR/TAF vs NOTAMs - NOTAM MAP View';
+            }
+        });
+    </script>
+</body>
+</html>
