@@ -344,9 +344,21 @@
             display: none;
             font-weight: bold;
         }
-        #clear-selection-btn:hover {
-            background-color: #3a2e1f;
+        #clear-selection-btn:hover { background-color: #3a2e1f; }
+
+        /* 🌟 View All (Unhide) ボタン */
+        #show-all-btn {
+            background-color: var(--surface-color);
+            color: #4CAF50;
+            border: 1px solid #4CAF50;
+            border-radius: 4px;
+            font-size: 11px;
+            padding: 4px 8px;
+            cursor: pointer;
+            display: none;
+            font-weight: bold;
         }
+        #show-all-btn:hover { background-color: #1e3a1f; }
 
         #notam-list, #welcome-guide {
             flex: 1;
@@ -373,12 +385,20 @@
             cursor: pointer;
             border: 1px solid transparent;
             position: relative;
+            transition: opacity 0.2s;
         }
         .notam-card:active { background-color: #444; }
         .notam-card.selected {
             border-color: var(--orange-accent);
             background-color: #3a2e1f;
         }
+        /* 🌟 非表示状態のカードデザイン */
+        .notam-card.hidden {
+            opacity: 0.4;
+            border: 1px dashed #666;
+            background-color: #222;
+        }
+
         .notam-id {
             font-size: 14px;
             color: var(--primary-color);
@@ -476,6 +496,7 @@
             padding: 10px 20px 20px 20px;
             display: flex;
             justify-content: flex-end;
+            gap: 10px; /* ボタン間の余白 */
         }
         .modal-btn {
             background: none;
@@ -485,6 +506,10 @@
             font-weight: bold;
             cursor: pointer;
             padding: 8px 16px;
+        }
+        .modal-btn:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
         }
 
         .graticule-label {
@@ -572,6 +597,8 @@
                     <span id="selected-count" style="font-size: 13px; color: var(--orange-accent);">[Selected: 0]</span>
                 </div>
                 <div style="display:flex; gap:6px; align-items: center;">
+                    <!-- 🌟 追加: Show All ボタン -->
+                    <button id="show-all-btn" onclick="showAllNotams()">View All</button>
                     <button id="clear-selection-btn" onclick="clearSelection()">Clear Selection</button>
                     <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
                         <option value="id" id="opt-sort-id"></option>
@@ -658,6 +685,8 @@
             <div class="modal-header" id="modal-title"></div>
             <div class="modal-body" id="modal-text"></div>
             <div class="modal-footer">
+                <!-- 🌟 追加: 個別Hideボタン -->
+                <button class="modal-btn" id="details-modal-hide" onclick="toggleHideCurrentNotam()"></button>
                 <button class="modal-btn" id="details-modal-close" onclick="closeDetailsModal()"></button>
             </div>
         </div>
@@ -678,14 +707,10 @@
         <div class="modal-content">
             <div class="modal-header" id="menu-header-title">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- 基本情報 -->
                 <a href="/about.html" class="nav-link" target="_blank" id="menu-about">ℹ️ About & Guide (概要・使い方)</a>
                 <a href="/privacy.html" class="nav-link" target="_blank" id="menu-privacy">🛡️ Privacy Policy (プライバシーポリシー)</a>
                 <a href="/contact.html" class="nav-link" target="_blank" id="menu-contact">✉️ Contact Us (お問い合わせ)</a>
-                
                 <hr style="border: 0; border-top: 1px solid #444; margin: 4px 0;">
-                
-                <!-- コラム・記事類 -->
                 <a href="/article-notam.html" class="nav-link" target="_blank" id="menu-notam">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a>
                 <a href="/article-icao.html" class="nav-link" target="_blank" id="menu-icao">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a>
                 <a href="/article-swim.html" class="nav-link" target="_blank" id="menu-swim">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a>
@@ -694,7 +719,6 @@
                 <a href="/article-military.html" class="nav-link" target="_blank" id="menu-military">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a>
                 <a href="/article-weather.html" class="nav-link" target="_blank" id="menu-weather">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a>
                 <a href="/article-faa.html" class="nav-link" target="_blank" id="menu-faa">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a>
-                
                 <button onclick="closeMenuModal()" class="nav-link" id="menu-close" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
                     ⬅ マップ画面に戻る (Close Menu)
                 </button>
@@ -713,9 +737,13 @@
         let searchCount = 0;
         let allFetchedNotams = []; 
         let displayedNotams = [];  
-        let selectedIds = new Set();
-        let isMapExpanded = false;
         
+        let selectedIds = new Set();
+        // 🌟 追加: 非表示にしたNOTAMのIDを管理するSet
+        let hiddenIds = new Set();
+        let currentModalNotamId = null;
+
+        let isMapExpanded = false;
         let searchHistory = JSON.parse(localStorage.getItem('notam_history') || '[]');
 
         const map = L.map('map', { 
@@ -726,13 +754,11 @@
         L.control.zoom({ position: 'topleft' }).addTo(map);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
         let mapLayers = L.layerGroup().addTo(map);
-
         const graticuleLayer = L.layerGroup().addTo(map);
 
         function drawGraticule() {
             graticuleLayer.clearLayers();
             const zoom = map.getZoom();
-            
             let step = 10;
             if (zoom >= 5) step = 5;
             if (zoom >= 7) step = 2;
@@ -745,10 +771,7 @@
             const south = Math.max(-89.9, Math.floor(bounds.getSouth() / step) * step);
             const north = Math.min(89.9, Math.ceil(bounds.getNorth() / step) * step);
 
-            const lineStyle = { 
-                color: '#888888', weight: 1, opacity: 0.5, dashArray: '5, 5', interactive: false
-            };
-
+            const lineStyle = { color: '#888888', weight: 1, opacity: 0.5, dashArray: '5, 5', interactive: false };
             const edgeWest = bounds.getWest();
             const edgeSouth = bounds.getSouth();
 
@@ -815,8 +838,12 @@
             document.getElementById('opt-sort-desc').innerText = isJa ? '降順' : 'Desc';
             document.getElementById('keyword-input').placeholder = isJa ? 'キーワード' : 'Keyword';
             document.getElementById('loading-text').innerText = isJa ? 'NOTAMを取得中...' : 'Fetching NOTAMs...';
+            
             document.getElementById('details-modal-close').innerText = isJa ? '閉じる' : 'Close';
+            document.getElementById('details-modal-hide').innerText = isJa ? '非表示 (Hide)' : 'Hide';
+            
             document.getElementById('clear-selection-btn').innerText = isJa ? '選択解除' : 'Clear Selection';
+            document.getElementById('show-all-btn').innerText = isJa ? '全て表示 (View All)' : 'View All';
             
             document.getElementById('last-update-label').innerText = 'Data Time:';
             document.getElementById('about-modal-close').innerText = isJa ? '閉じる' : 'Close';
@@ -845,8 +872,6 @@
             }
 
             renderHistory();
-            
-            // 初回アクセス時はキャッシュを無視してAboutガイドを強制表示（AdSense対策）
             showWelcomeGuide();
             
             const lastQuery = localStorage.getItem('last_search_query');
@@ -859,6 +884,7 @@
             allFetchedNotams = [];
             displayedNotams = [];
             selectedIds.clear();
+            hiddenIds.clear(); // 🌟 リセット時にHide状態もクリア
             mapLayers.clearLayers();
             
             document.getElementById('fixed-ad-banner').style.display = 'none';
@@ -881,6 +907,7 @@
             document.getElementById('list-title').innerText = isJa ? 'NOTAMリスト (0件)' : 'NOTAM List (0 items)';
             document.getElementById('selected-count').innerText = isJa ? '[選択中: 0]' : '[Selected: 0]';
             document.getElementById('clear-selection-btn').style.display = 'none';
+            document.getElementById('show-all-btn').style.display = 'none';
         }
 
         function handleSearchSubmit() {
@@ -894,6 +921,12 @@
 
         function clearSelection() {
             selectedIds.clear();
+            renderUI(false);
+        }
+
+        // 🌟 追加: 一括で全て再表示する関数
+        function showAllNotams() {
+            hiddenIds.clear();
             renderUI(false);
         }
 
@@ -941,12 +974,39 @@
         }
 
         function openDetailsModal(id, text) {
+            currentModalNotamId = id; // 現在表示中のIDを保存
             document.getElementById('modal-title').innerText = `[${id}]`;
             document.getElementById('modal-text').innerText = text;
+            
+            // 🌟 Hide状態に応じてボタンの色と文字を切り替え
+            const hideBtn = document.getElementById('details-modal-hide');
+            if (hiddenIds.has(id)) {
+                hideBtn.innerText = isJa ? '再表示 (Show)' : 'Show';
+                hideBtn.style.color = '#4CAF50';
+            } else {
+                hideBtn.innerText = isJa ? '非表示 (Hide)' : 'Hide';
+                hideBtn.style.color = '#ff5252';
+            }
+
             document.getElementById('details-modal').style.display = 'flex';
         }
+        
         function closeDetailsModal() {
             document.getElementById('details-modal').style.display = 'none';
+            currentModalNotamId = null;
+        }
+
+        // 🌟 追加: モーダルから単体でHide/Showを切り替える関数
+        function toggleHideCurrentNotam() {
+            if (currentModalNotamId) {
+                if (hiddenIds.has(currentModalNotamId)) {
+                    hiddenIds.delete(currentModalNotamId);
+                } else {
+                    hiddenIds.add(currentModalNotamId);
+                }
+                closeDetailsModal();
+                renderUI(false); // 画面を再描画
+            }
         }
 
         function toggleFilter() {
@@ -1087,6 +1147,7 @@
             document.getElementById('loading').style.display = 'flex';
             allFetchedNotams = [];
             selectedIds.clear();
+            hiddenIds.clear(); // 🌟 検索時にHide状態もクリア
 
             try {
                 for (const icao of icaos) {
@@ -1208,7 +1269,6 @@
                         let finalString = raw;
 
                         if (!finalString || !finalString.includes('B)')) {
-                            
                             function fmtDate(dStr) {
                                 if (!dStr) return "";
                                 const d = new Date(dStr);
@@ -1294,20 +1354,26 @@
             
             document.getElementById('clear-selection-btn').style.display = selectedIds.size > 0 ? 'inline-block' : 'none';
             
+            // 🌟 追加: Hideされているものがあれば View All ボタンを表示
+            document.getElementById('show-all-btn').style.display = hiddenIds.size > 0 ? 'inline-block' : 'none';
+            
             const bounds = L.latLngBounds();
             let hasPoints = false;
 
+            // 🌟 修正: targetNotams から hiddenIds を除外する
             const targetNotams = selectedIds.size > 0 
-                ? displayedNotams.filter(item => selectedIds.has(item.id))
-                : displayedNotams;
+                ? displayedNotams.filter(item => selectedIds.has(item.id) && !hiddenIds.has(item.id))
+                : displayedNotams.filter(item => !hiddenIds.has(item.id));
 
             const fragment = document.createDocumentFragment();
 
             displayedNotams.forEach(item => {
                 const isSelected = selectedIds.has(item.id);
+                const isHidden = hiddenIds.has(item.id); // 🌟 追加: Hide状態の判定
                 
                 const card = document.createElement('div');
-                card.className = `notam-card ${isSelected ? 'selected' : ''}`;
+                // 🌟 追加: class に 'hidden' を付与して半透明デザインにする
+                card.className = `notam-card ${isSelected ? 'selected' : ''} ${isHidden ? 'hidden' : ''}`;
                 card.innerHTML = `
                     <div class="notam-id">[${item.id}]</div>
                     <div class="notam-text">${item.text}</div>
