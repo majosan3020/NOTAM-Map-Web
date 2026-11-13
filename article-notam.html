@@ -1,280 +1,136 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google Search Console / AdSense -->
-    <meta name="google-site-verification" content="qAs5C_HIV--J1RTbZB0OC53woMWOL0ZaIFP2a8SGWw8" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>初心者向け NOTAMの基礎知識と読み方 - NOTAM MAP View</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初心者向け NOTAMの基礎知識と読み方 | NOTAM MAP View</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
     <link rel="icon" href="/icon.png" type="image/png" sizes="any">
-    <link rel="apple-touch-icon" href="/icon.png">
-
+    <meta name="description" content="Aviation knowledge base for NOTAM MAP View. Information on ICAO, FIR, SWIM, and flight safety.">
     <style>
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --surface-variant: #2a2a2a;
-            --primary-color: #d0bcff; 
-            --primary-dark: #381e72;
-            --text-main: #ffffff;
-            --text-sub: #aaaaaa;
-            --orange-accent: #ff9800;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.8;
-        }
-
-        /* ヘッダー */
-        .header {
-            background-color: var(--bg-color);
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #333;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-        .brand-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            object-fit: cover;
-        }
-        .brand-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        /* 記事コンテナ */
-        .article-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
-        h2 {
-            color: #ffffff;
-            font-size: 18px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 8px;
-            margin-top: 40px;
-        }
-        
-        p {
-            color: var(--text-sub);
-            margin-bottom: 16px;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background-color: var(--surface-variant);
-            color: var(--text-main);
-            text-decoration: none;
-            border-radius: 8px;
-            border: 1px solid #444;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-        .back-btn:hover {
-            background-color: #333;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        code {
-            background-color: #000;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #a8c7fa;
-        }
+        :root { --bg-color: #121212; --surface-color: #1e1e1e; --primary-color: #d0bcff; --text-main: #ffffff; --text-sub: #dddddd; --orange-accent: #ff9800; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; }
+        .header { background-color: var(--surface-color); padding: 12px 20px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+        .header img { width: 32px; height: 32px; border-radius: 6px; }
+        .header a { color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 18px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: var(--primary-color); font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 32px; line-height: 1.4; }
+        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 40px; margin-bottom: 16px; border-left: 4px solid var(--orange-accent); padding-left: 12px; }
+        p { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; letter-spacing: 0.03em; }
+        .footer { text-align: center; padding: 24px; color: #888; font-size: 14px; margin-top: 60px; border-top: 1px solid #333; background-color: var(--surface-color); }
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background-color: var(--surface-color); border: 1px solid #444; border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: bold; transition: background-color 0.2s; }
+        .back-btn:hover { background-color: #333; }
+        ul, ol { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; line-height: 1.8; }
+        li { margin-bottom: 10px; }
+        .lang-switch { text-align: right; margin-bottom: 20px; }
+        .lang-switch button { background: var(--surface-color); color: var(--text-main); border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 14px; transition: all 0.2s; }
+        .lang-switch button:hover, .lang-switch button.active { background: var(--primary-color); color: #000; border-color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <a href="/" class="brand">
-            <img src="/icon.png" alt="Logo" class="brand-icon">
-            <span class="brand-title">NOTAM MAP View</span>
-        </a>
-        <a href="/" class="back-btn" id="btn-back-header" style="padding: 6px 12px; font-size: 12px;">マップへ戻る</a>
-    </header>
-
-    <!-- 🇯🇵 日本語用コンテンツ -->
-    <div class="article-container" id="content-ja">
-        <h1>【コラム】初心者向け NOTAMの基礎知識と読み方</h1>
-
-        <p>航空機を安全に運航するためには、天候や機体の状態だけでなく、出発地・経路・目的地の「最新の空域状況」を把握することが不可欠です。そのための重要な情報源が**NOTAM（Notice to Air Missions：航空情報）**です。</p>
-
-        <h2>NOTAM（Notice to Air Missions）とは？</h2>
-        <p>NOTAMは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害、射撃訓練の実施など）を関係者に通知するためのシステムです。</p>
-        <p>かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当サイト「NOTAM MAP View」は、その複雑なテキストデータを解析し、ポリゴンやラインとして地図上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
-
-        <h2 style="color: var(--primary-color); border-bottom: 1px solid #444; padding-bottom: 8px; margin-top: 40px;">NOTAMのフォーマット（各項目の詳細）</h2>
-        <p>NOTAMは国際民間航空機関（ICAO）の基準に基づき、Q行およびA〜Gの各項目（Item）で構成されています。特にフライトプランニングにおいては、対象エリアだけでなく「いつ（D行）」「どの高度で（F/G行）」規制が行われるかの確認が不可欠です。</p>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item Q (Qualifier: 修飾語・要約データ)</h4>
-            <p style="margin-bottom: 0;">NOTAMのメタデータとも言える重要な行です。システムが自動処理するための情報がスラッシュ（/）区切りで格納されています。<br>
-            <span style="color: var(--text-sub); font-size: 13px;">例: <code>Q) RJJJ/QWMLW/IV/BO/W/000/150/3530N13945E005</code></span><br>
-            ここには対象FIR、NOTAMコード（Qコード）、対象トラフィック（VFR/IFR）、目的、影響範囲、高度の上下限、中心座標と半径が含まれます。<br>
-            ※当アプリ「NOTAM MAP View」がマップ上に円を描画する際も、このQ行の座標と半径データを解析して表示しています。</p>
-        </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item A (Affected Facility: 対象施設・空域)</h4>
-            <p style="margin-bottom: 0;">影響を受ける空港や空域のICAO 4レターコード（例: RJTT、RJJJ）が記載されます。複数のFIRにまたがる場合は複数記載されることもあります。</p>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item B (Start Time: 開始日時)</h4>
-                <p style="margin-bottom: 0;">NOTAMの有効開始日時。協定世界時（UTC）で、<code>YYMMDDHHMM</code>（年2桁・月・日・時・分）の形式で記載されます。</p>
-            </div>
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item C (End Time: 終了日時)</h4>
-                <p style="margin-bottom: 0;">NOTAMの有効終了日時。書式はItem Bと同じです。恒久的な変更の場合は「<code>PERM</code>」、予定日時の場合は末尾に「<code>EST</code>」が付くことがあります。</p>
-            </div>
-        </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item D (Schedule: スケジュール・有効時間帯)</h4>
-            <p style="margin-bottom: 0;"><strong>【重要】</strong> Item BからCの期間内で、実際に規制や活動が行われる「具体的な時間帯や曜日」を指定します。<br>
-            <span style="color: var(--text-sub); font-size: 13px;">例: <code>D) DAILY 0100-0900</code> や <code>D) MON WED FRI 2200-0200</code></span><br>
-            期間中ずっと有効なのではなく、特定の時間のみ射撃訓練や落下傘降下が行われる場合などに使用されます。このD行を見落とすと、実際には活動していない時間帯に不要な迂回をしてしまう可能性があります。</p>
-        </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item E (Text: 詳細内容)</h4>
-            <p style="margin-bottom: 0;">NOTAMの具体的な内容が、英語の平文や標準的な航空略語（ICAO Abbreviations）を用いて記載されます。実際の規制内容や障害物の詳細などはここで確認します。当アプリでポリゴンを描画するための複雑な座標（LINE JOINING...など）も、主にこの行のテキストから抽出しています。</p>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item F (Lower Limit: 下限高度)</h4>
-                <p style="margin-bottom: 0;"><strong>【重要】</strong> 規制や活動の影響が及ぶ空間の「下限」を示します。<br>
-                <span style="color: var(--text-sub); font-size: 13px;">例: <code>SFC</code>（Surface: 地表面）、<code>GND</code>（Ground）、<code>3000FT AMSL</code>（海抜3000フィート）など。</span></p>
-            </div>
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item G (Upper Limit: 上限高度)</h4>
-                <p style="margin-bottom: 0;"><strong>【重要】</strong> 規制や活動の影響が及ぶ空間の「上限」を示します。<br>
-                <span style="color: var(--text-sub); font-size: 13px;">例: <code>10000FT AMSL</code>、<code>FL290</code>（フライトレベル290）、<code>UNL</code>（Unlimited: 無制限）など。</span><br>
-                自機の飛行高度がF行とG行の間に含まれていなければ、その空域を安全に通過できる場合があるため、D行と並んで極めて重要な情報です。</p>
-            </div>
-        </div>
+    <div class="header">
+        <img src="/icon.png" alt="Logo">
+        <a href="/">NOTAM MAP View</a>
     </div>
-
-    <!-- 🇬🇧 英語用コンテンツ -->
-    <div class="article-container" id="content-en" style="display: none;">
-        <h1>[Guide] NOTAM Basics and How to Read</h1>
-
-        <p>To operate an aircraft safely, it is essential to grasp the "latest airspace conditions" along your departure, route, and destination, in addition to weather and aircraft status. A critical source of this information is the **NOTAM (Notice to Air Missions)**.</p>
-
-        <h2>What is a NOTAM (Notice to Air Missions)?</h2>
-        <p>A NOTAM is a system used to notify stakeholders of critical information affecting aircraft operations (such as runway closures, airspace restrictions, navigation radio outages, and firing exercises).</p>
-        <p>Formerly known as "Notice to Airmen," the more inclusive term "Notice to Air Missions" is now officially adopted. Since they are usually distributed in a cryptic text format, it was difficult to intuitively grasp their location and extent. This tool, "NOTAM MAP View," parses that complex text data and maps it as polygons and lines on a map, dramatically improving the efficiency of flight planning and airspace verification.</p>
-
-        <h2 style="color: var(--primary-color); border-bottom: 1px solid #444; padding-bottom: 8px; margin-top: 40px;">NOTAM Format (Detailed Breakdown)</h2>
-        <p>NOTAMs are structured based on ICAO standards, featuring the Q-line and Items A through G. For flight planning, it is vital to check not only the affected area but also "when" (Item D) and "at what altitude" (Items F/G) the restriction applies.</p>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item Q (Qualifier: Summary Data)</h4>
-            <p style="margin-bottom: 0;">Serves as metadata for the NOTAM. It contains slash-separated information intended for automated system processing.<br>
-            <span style="color: var(--text-sub); font-size: 13px;">Example: <code>Q) RJJJ/QWMLW/IV/BO/W/000/150/3530N13945E005</code></span><br>
-            This includes the affected FIR, NOTAM code (Q-code), traffic (VFR/IFR), purpose, scope, lower/upper limits, and center coordinates with radius.<br>
-            * Our app "NOTAM MAP View" parses the coordinates and radius data from this Q-line to draw circles on the map.</p>
+    <div class="container">
+        <div class="lang-switch">
+            <button id="btn-ja" onclick="switchLang('ja')">日本語</button>
+            <button id="btn-en" onclick="switchLang('en')">English</button>
         </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item A (Affected Facility/Airspace)</h4>
-            <p style="margin-bottom: 0;">The 4-letter ICAO code of the affected airport or airspace (e.g., RJTT, RJJJ). If it spans multiple FIRs, multiple codes may be listed.</p>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item B (Start Time)</h4>
-                <p style="margin-bottom: 0;">The effective start time of the NOTAM in Coordinated Universal Time (UTC), formatted as <code>YYMMDDHHMM</code>.</p>
-            </div>
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px;">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item C (End Time)</h4>
-                <p style="margin-bottom: 0;">The effective end time of the NOTAM. The format is the same as Item B. <code>PERM</code> is used for permanent changes, and <code>EST</code> indicates an estimated end time.</p>
-            </div>
-        </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item D (Schedule)</h4>
-            <p style="margin-bottom: 0;"><strong>[CRITICAL]</strong> Specifies the specific times or days of the week the restriction or activity actually takes place within the B-to-C period.<br>
-            <span style="color: var(--text-sub); font-size: 13px;">Example: <code>D) DAILY 0100-0900</code> or <code>D) MON WED FRI 2200-0200</code></span><br>
-            Used when firing exercises or parachute jumps only occur at specific times rather than being continuously active. If you overlook Item D, you might detour unnecessarily during inactive hours.</p>
-        </div>
-
-        <div style="background-color: var(--surface-variant); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item E (Text)</h4>
-            <p style="margin-bottom: 0;">The main body of the NOTAM written in plain English and standard ICAO Abbreviations. You check here for actual restriction details or obstacles. Our app extracts complex coordinates (like LINE JOINING...) primarily from this text to draw polygons.</p>
-        </div>
-
-        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item F (Lower Limit)</h4>
-                <p style="margin-bottom: 0;"><strong>[CRITICAL]</strong> The lower boundary of the affected airspace.<br>
-                <span style="color: var(--text-sub); font-size: 13px;">Example: <code>SFC</code> (Surface), <code>GND</code> (Ground), <code>3000FT AMSL</code> (Above Mean Sea Level).</span></p>
-            </div>
-            <div style="flex: 1; min-width: 250px; background-color: var(--surface-variant); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
-                <h4 style="color: var(--orange-accent); margin-top: 0; font-size: 16px;">Item G (Upper Limit)</h4>
-                <p style="margin-bottom: 0;"><strong>[CRITICAL]</strong> The upper boundary of the affected airspace.<br>
-                <span style="color: var(--text-sub); font-size: 13px;">Example: <code>10000FT AMSL</code>, <code>FL290</code> (Flight Level 290), <code>UNL</code> (Unlimited).</span><br>
-                If your flight altitude does not fall between Item F and Item G, you may be able to safely transit the area, making this just as important as Item D.</p>
-            </div>
-        </div>
-    </div>
-
-    <div style="text-align: center; margin-top: 50px;">
-        <a href="/" class="back-btn" id="btn-back-footer">⬅ マップ画面に戻る</a>
-    </div>
-
-    <script>
-        // 🌟 ブラウザの言語を判定し、日本語以外なら英語表示に切り替え
-        const isJaArticle = (navigator.language || navigator.userLanguage).startsWith('ja');
         
-        if (!isJaArticle) {
-            document.title = "[Guide] NOTAM Basics & How to Read - NOTAM MAP View";
+        <div id="content-ja" style="display: none;">
+            <h1>初心者向け NOTAMの基礎知識と読み方</h1>
             
-            document.getElementById('content-ja').style.display = 'none';
-            document.getElementById('content-en').style.display = 'block';
+            <h2>NOTAM（ノータム）とは何か？航空の安全を根本から支える不可欠な情報網</h2>
+            <p>NOTAM（Notice to Air Missions）は、航空機の運航に直接関わるパイロット、ディスパッチャー（運航管理者）、航空管制官などに向けた、安全確保のための極めて重要な通知システムです。航空機は時速数百キロメートルから千キロメートル近い高速で空を移動します。そのため、目的地の空港の滑走路が急な工事で閉鎖されていたり、航法無線施設が故障していたり、あるいは飛行経路上で軍事訓練による空域制限が行われていたりすると、事前の準備がなければ大事故に直結しかねません。こうした「日常とは異なる変更点」や「一時的な危険情報」を、フライト前に確実に把握し、回避策を講じるためのシステムがNOTAMなのです。国際民間航空機関（ICAO）の基準に基づいてフォーマット化されており、世界中どこでも共通のルールで情報が配信されています。</p>
+            <p>かつて、このシステムは「Notice to Airmen（航空操縦士への通知）」と呼ばれていました。しかし、近年におけるドローン（無人航空機）の爆発的な普及や、宇宙空間へのロケット打ち上げなど、空域を利用するミッションが多様化したことに伴い、より包括的で現代的な「Notice to Air Missions」へと国際的に名称が変更されました。これにより、有人機のパイロットだけでなく、無人機のオペレーターにとっても欠かせない公式な情報源として再定義されています。</p>
             
-            document.getElementById('btn-back-header').innerText = 'Return to Map';
-            document.getElementById('btn-back-footer').innerText = '⬅ Return to Map';
+            <h2>テレタイプ時代の名残である独特なフォーマットと「Qコード」の秘密</h2>
+            <p>NOTAMを初めて見る人が最も戸惑い、ハードルを感じるのは、その暗号のようなフォーマットです。「Q) RJJJ/QWMLW/IV/BO/W/000/999/3530N13945E005」といったアルファベットと数字の羅列が並んでいるため、専門的な訓練を受けていなければ全く解読できません。これは、かつて世界中の航空機関がテレタイプ端末（非常に低速な文字通信網）で情報をやり取りしていた時代の名残です。限られた通信帯域と文字数の中で、最大限の情報を正確かつ一意に伝えるために考案されたのがこのフォーマットなのです。この冒頭の「Q行（Q-line）」には、情報処理システムが自動的に仕分けをするためのメタデータがすべて凝縮されています。</p>
+            <ul>
+                <li><strong>FIR（飛行情報区）:</strong> どの地域の情報かを示します（例：RJJJは日本の福岡FIRを指します）。</li>
+                <li><strong>Qコード:</strong> 対象となる事象を4文字のアルファベットで表します（例：QWMLWは実弾射撃訓練、QMRLCは滑走路閉鎖などを意味します）。</li>
+                <li><strong>トラフィック:</strong> 計器飛行（I）に影響するのか、有視界飛行（V）に影響するのか、あるいは両方（IV）か。</li>
+                <li><strong>目的:</strong> プレフライトブリーフィング用（B）か、直ちに行動が必要（O）かなど。</li>
+                <li><strong>範囲と高度:</strong> 影響が及ぶ下限高度と上限高度（例：000/999は地表から無制限の高高度まで）。</li>
+                <li><strong>座標と半径:</strong> 影響が及ぶ中心の緯度経度と、そこからの影響半径（海里ベース）。</li>
+            </ul>
+            <p>Q行に続く「A) から G)」までの各項目にも、それぞれ明確な役割があります。A) は対象となる施設や空域のICAOコード。B) はそのNOTAMの有効開始日時（UTC：協定世界時で表記）。C) は有効終了日時。D) は特定のスケジュール（例えば「毎日午前9時から午後5時まで」など）。E) がNOTAMのメインとなる詳細なテキスト情報です。ここは平文ベースですが、文字数を節約するために独特の略語（Abbreviation）が多用されます。F) と G) は、それぞれ影響が及ぶ具体的な下限高度と上限高度を示しています。この構造的ルールを理解することが、NOTAMを解読するための第一歩となります。</p>
+
+            <h2>膨大な情報から必要なものを抽出するブリーフィングの技術と法的義務</h2>
+            <p>航空法上、機長は出発前に必ず経路や目的地に関する最新の情報を確認する義務を負っています。これを「プレフライト・ブリーフィング」と呼びますが、その中核をなすのが気象情報（METAR/TAF）と並んでNOTAMの確認です。しかし、実際の運用において大きな壁となるのが「情報のノイズ」です。大規模な国際空港や広大なFIR（例：日本の福岡FIRや米国のオークランドFIRなど）を検索すると、一度に数百件から千件以上のNOTAMが出力されることも決して珍しくありません。出発前の限られた時間内に、これらすべてに目を通すことは人間の能力的に現実的ではありません。</p>
+            <p>そのため、パイロットやディスパッチャーには「自分たちのフライトの経路・高度・時間帯に本当に関連するもの」だけを素早くフィルタリングして読み解くスキルが求められます。例えば、VFR（有視界飛行方式）で小型のセスナ機を低高度で飛ばす場合、高度な計器着陸システム（ILS）の不具合情報は直接的な影響を及ぼしません。逆に、低高度でドローンを飛ばす場合は、同じ空域でドクターヘリの低空離発着訓練が行われないか、あるいは近隣で花火大会やクレーン建設による障害物が発生していないかを示すNOTAMが、生死を分けるクリティカルな情報となります。情報の取捨選択（トリアージ）こそが、安全で効率的な運航の鍵を握っているのです。</p>
+
+            <h2>NOTAM MAP Viewがもたらす情報の視覚化とフライトプランニングの革新</h2>
+            <p>これまで、パイロットはテキストで羅列された緯度経度（例：3530N13945E）を頭の中で地図上の座標に変換するか、定規とコンパスを使って手作業で紙の航空図（チャート）にプロットするという、非常に非効率でミスが起こりやすい作業を強いられていました。特に、多数の座標点を結んで複雑な多角形（ポリゴン）を描く軍事訓練空域や一時的な飛行制限区域などは、テキストの羅列だけではその正確な形状を直感的に把握することがほぼ不可能です。この長年の航空業界の課題を根本から解決するために開発されたのが、当サイト「NOTAM MAP View」です。</p>
+            <p>当システムは、入力された難解なNOTAMのテキストデータをリアルタイムで自動解析（パース）し、影響範囲を円やポリゴンとしてデジタルマップ上にグラフィカルに描画します。これにより、「自分がこれから飛ぶ飛行ルート上に、危険エリアが被っているかどうか」が一目瞭然となり、ブリーフィングにかかる時間が劇的に短縮されます。人間は文字情報よりも視覚的な情報を圧倒的に早く、そして正確に処理できる生き物です。空の安全は、確実でミスのない情報収集から始まります。NOTAMの基本的な読み方と構造を理解した上で、最先端のデジタル視覚化ツールを活用し、より安全で確実なフライトプランニングを実現してください。</p>
+        </div>
+
+        <div id="content-en" style="display: none;">
+            <h1>Beginner's Guide to NOTAMs: Basics and How to Read Them</h1>
+            
+            <h2>What is a NOTAM? The Essential Information Network Supporting Aviation Safety</h2>
+            <p>A NOTAM (Notice to Air Missions) is a highly critical safety notification system directed at pilots, flight dispatchers, air traffic controllers, and anyone directly involved in flight operations. Aircraft travel through the sky at high speeds ranging from hundreds to nearly a thousand kilometers per hour. Consequently, if a runway at the destination airport is suddenly closed for emergency repairs, a vital navigational radio beacon fails, or military training exercises restrict airspace along the intended flight route, a lack of prior knowledge can directly lead to a catastrophic accident. NOTAMs act as the official system to ensure that operators reliably grasp these "deviations from the norm" and "temporary hazards" prior to flight, allowing them to formulate contingency plans. Standardized by the International Civil Aviation Organization (ICAO), this information is distributed globally under a uniform set of rules.</p>
+            <p>Historically, this acronym stood for "Notice to Airmen." However, driven by the explosive proliferation of drones (Unmanned Aircraft Systems) and the diversification of airspace utilization—such as commercial space rocket launches—the terminology was internationally updated to the more inclusive and modern "Notice to Air Missions." Through this change, NOTAMs have been redefined as an indispensable and legally binding information source not only for manned aircraft pilots but also for unmanned aircraft operators.</p>
+            
+            <h2>The Secret of "Q Codes" and the Relics of the Teletype Era</h2>
+            <p>The biggest hurdle for beginners encountering NOTAMs for the first time is their highly cryptic format. Confronted with a string of alphanumeric characters like "Q) RJJJ/QWMLW/IV/BO/W/000/999/3530N13945E005," it appears entirely undecipherable without specialized training. This format is a direct legacy of an era when global aviation authorities exchanged information using teletype machines (extremely slow, text-only communication networks). It was ingeniously designed to convey the maximum amount of precise, unambiguous information within severely limited bandwidths and character limits. The opening "Q-line" condenses all the vital metadata required for automated computer systems to sort and filter the information.</p>
+            <ul>
+                <li><strong>FIR (Flight Information Region):</strong> Indicates the region the information applies to (e.g., RJJJ represents the Fukuoka FIR in Japan).</li>
+                <li><strong>Q Code:</strong> A 4-letter code representing the subject and condition (e.g., QWMLW indicates live firing exercises, QMRLC means a runway is closed).</li>
+                <li><strong>Traffic:</strong> Indicates whether the hazard affects Instrument Flight Rules (I), Visual Flight Rules (V), or both (IV).</li>
+                <li><strong>Purpose:</strong> Specifies if the NOTAM is for pre-flight briefing (B) or requires immediate operational attention (O).</li>
+                <li><strong>Scope and Limits:</strong> The lower and upper altitude limits (e.g., 000/999 denotes surface to unlimited altitude).</li>
+                <li><strong>Coordinates and Radius:</strong> The exact latitude and longitude of the hazard's center, along with the radius of influence in nautical miles.</li>
+            </ul>
+            <p>Following the Q-line, items labeled A) through G) each carry specific operational meanings. A) specifies the ICAO code of the affected facility or airspace. B) represents the valid start time of the NOTAM in UTC (Coordinated Universal Time). C) is the valid end time. D) outlines specific recurring schedules (e.g., "Daily from 09:00 to 17:00"). E) contains the primary textual description of the hazard, heavily utilizing standardized abbreviations to save space. F) and G) denote the precise lower and upper altitude limits in plain text. Mastering this structural logic is the first fundamental step in decoding NOTAMs.</p>
+
+            <h2>The Art of Briefing and the Legal Duty to Filter Massive Data</h2>
+            <p>Under global aviation laws, the pilot-in-command bears a strict legal obligation to review all current information concerning the intended route and destination prior to departure. This process, known as the "pre-flight briefing," centers around analyzing weather reports (METAR/TAF) alongside NOTAMs. However, the greatest operational challenge is overcoming "information noise." When querying a major international hub or a vast FIR (such as Japan's Fukuoka FIR or the US's Oakland Oceanic FIR), it is entirely common to receive hundreds or even over a thousand active NOTAMs at once. It is physically impossible to read every single line within a limited pre-flight window.</p>
+            <p>Therefore, pilots and dispatchers must develop the critical skill of quickly filtering out irrelevant data and extracting only the information pertinent to their specific route, altitude, and timeframe. For instance, if flying a small Cessna under VFR at 3,000 feet, an out-of-service high-altitude Instrument Landing System (ILS) holds no relevance. Conversely, for a drone operator flying at 400 feet, a NOTAM detailing low-altitude helicopter rescue training, temporary crane construction, or fireworks in the vicinity becomes critical, life-saving intelligence. This process of information triage is the absolute key to maintaining both safety and efficiency in flight operations.</p>
+
+            <h2>How NOTAM MAP View Revolutionizes Flight Planning Through Visualization</h2>
+            <p>For decades, pilots were forced to endure the highly inefficient and error-prone process of mentally translating text-based latitude and longitude coordinates (e.g., 3530N13945E) into geographical map locations, or manually plotting them on paper aeronautical charts using rulers and compasses. Grasping the exact shape of complex military training areas or temporary flight restrictions—which often consist of numerous coordinates forming complex polygons—is virtually impossible using text alone. "NOTAM MAP View" was developed specifically to solve this persistent industry-wide challenge.</p>
+            <p>Our system automatically parses complex, hard-to-read NOTAM text data in real-time, graphically rendering the exact hazard areas as intuitive circles or polygons directly on a digital map. This visual approach makes it instantly obvious whether a danger zone intersects with your planned flight path, drastically reducing pre-flight briefing times and cognitive load. The human brain processes visual spatial information exponentially faster and more accurately than raw text. Aviation safety begins with flawless information gathering. By understanding the fundamentals of NOTAMs and leveraging cutting-edge digital visualization tools like ours, operators can achieve the highest standard of safe and confident flight planning.</p>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center;">
+            <a href="/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p><a href="/privacy.html">Privacy Policy</a> | <a href="/contact.html">Contact Us</a> | <a href="/about.html">About & Guide</a></p>
+        © 2026 NOTAM MAP View. All rights reserved.
+    </div>
+    <script>
+        function switchLang(lang) {
+            if (lang === 'ja') {
+                document.getElementById('content-ja').style.display = 'block';
+                document.getElementById('content-en').style.display = 'none';
+                document.getElementById('btn-ja').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+                document.title = "初心者向け NOTAMの基礎知識と読み方 | NOTAM MAP View";
+                document.documentElement.lang = "ja";
+            } else {
+                document.getElementById('content-ja').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-ja').classList.remove('active');
+                document.title = "Beginner's Guide to NOTAMs: Basics and How to Read Them | NOTAM MAP View";
+                document.documentElement.lang = "en";
+            }
         }
+        
+        window.onload = function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('ja')) {
+                switchLang('ja');
+            } else {
+                switchLang('en');
+            }
+        };
     </script>
 </body>
 </html>
