@@ -1,245 +1,120 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Google Search Console / AdSense -->
-    <meta name="google-site-verification" content="qAs5C_HIV--J1RTbZB0OC53woMWOL0ZaIFP2a8SGWw8" />
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ICAOコードとは？空港を識別する4文字の秘密 - NOTAM MAP View</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICAO（国際民間航空機関）とは？ | NOTAM MAP View</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
     <link rel="icon" href="/icon.png" type="image/png" sizes="any">
-    <link rel="apple-touch-icon" href="/icon.png">
-
+    <meta name="description" content="Aviation knowledge base for NOTAM MAP View. Information on ICAO, FIR, SWIM, and flight safety.">
     <style>
-        :root {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --surface-variant: #2a2a2a;
-            --primary-color: #d0bcff; 
-            --primary-dark: #381e72;
-            --text-main: #ffffff;
-            --text-sub: #aaaaaa;
-            --orange-accent: #ff9800;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.8;
-        }
-
-        /* ヘッダー */
-        .header {
-            background-color: var(--bg-color);
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #333;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-        }
-        .brand-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            object-fit: cover;
-        }
-        .brand-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        /* 記事コンテナ */
-        .article-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
-        h2 {
-            color: #ffffff;
-            font-size: 18px;
-            border-bottom: 1px solid #444;
-            padding-bottom: 8px;
-            margin-top: 40px;
-        }
-        
-        p {
-            color: var(--text-sub);
-            margin-bottom: 16px;
-        }
-
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background-color: var(--surface-variant);
-            color: var(--text-main);
-            text-decoration: none;
-            border-radius: 8px;
-            border: 1px solid #444;
-            font-weight: bold;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-        .back-btn:hover {
-            background-color: #333;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        code {
-            background-color: #000;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #a8c7fa;
-        }
-        
-        .code-box {
-            background-color: var(--surface-variant);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
+        :root { --bg-color: #121212; --surface-color: #1e1e1e; --primary-color: #d0bcff; --text-main: #ffffff; --text-sub: #dddddd; --orange-accent: #ff9800; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; }
+        .header { background-color: var(--surface-color); padding: 12px 20px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+        .header img { width: 32px; height: 32px; border-radius: 6px; }
+        .header a { color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 18px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: var(--primary-color); font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 32px; line-height: 1.4; }
+        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 40px; margin-bottom: 16px; border-left: 4px solid var(--orange-accent); padding-left: 12px; }
+        p { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; letter-spacing: 0.03em; }
+        .footer { text-align: center; padding: 24px; color: #888; font-size: 14px; margin-top: 60px; border-top: 1px solid #333; background-color: var(--surface-color); }
+        a { color: var(--orange-accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background-color: var(--surface-color); border: 1px solid #444; border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: bold; transition: background-color 0.2s; }
+        .back-btn:hover { background-color: #333; }
+        ul, ol { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; line-height: 1.8; }
+        li { margin-bottom: 10px; }
+        .lang-switch { text-align: right; margin-bottom: 20px; }
+        .lang-switch button { background: var(--surface-color); color: var(--text-main); border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 14px; transition: all 0.2s; }
+        .lang-switch button:hover, .lang-switch button.active { background: var(--primary-color); color: #000; border-color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <header class="header">
-        <a href="/" class="brand">
-            <img src="/icon.png" alt="Logo" class="brand-icon">
-            <span class="brand-title">NOTAM MAP View</span>
-        </a>
-        <a href="/" class="back-btn" id="btn-back-header" style="padding: 6px 12px; font-size: 12px;">マップへ戻る</a>
-    </header>
-
-    <!-- 🇯🇵 日本語用コンテンツ -->
-    <div class="article-container" id="content-ja">
-        <h1>【コラム】ICAOコードとは？空港を識別する4文字の秘密</h1>
-
-        <p>NOTAMを検索する際、必ず入力するのが「<strong>ICAOコード（アイカオ・コード）</strong>」です。私たちが普段の旅行で目にする空港コードとは少し違うこの4文字には、世界中の空を安全に管理するための規則的な意味が込められています。</p>
-
-        <h2>IATAコードとICAOコードの違い</h2>
-        <p>空港を表すコードには、大きく分けて2種類あります。</p>
-        <ul>
-            <li><span style="color: var(--orange-accent); font-weight: bold;">IATAコード（3文字）：</span> 主に旅客（一般の乗客）や荷物の管理に使われます。航空券や手荷物タグに印字されるもので、例えば羽田空港は「HND」、成田空港は「NRT」です。</li>
-            <li><span style="color: var(--orange-accent); font-weight: bold;">ICAOコード（4文字）：</span> 主にパイロットや航空管制官など、航空業務のために使われます。フライトプランや<strong>NOTAMの検索</strong>では必ずこちらを使用します。羽田空港は「RJTT」、成田空港は「RJAA」となります。</li>
-        </ul>
-
-        <h2>4文字の構成ルール</h2>
-        <p>ICAOコードは適当に割り当てられているわけではなく、地球上の「どこにあるか」を論理的に示しています。日本の「RJTT（羽田）」を例に分解してみましょう。</p>
-
-        <div class="code-box">
-            <h4 style="color: var(--orange-accent); margin-top: 0;">1文字目：「航空エリア（地域）」</h4>
-            <p>世界を大きく分けたエリアを示します。<br>
-            ・<strong>R</strong> = 西北太平洋地域（日本、韓国、台湾など）<br>
-            ・<strong>E</strong> = 北部ヨーロッパ（イギリス、ドイツなど）<br>
-            ・<strong>K</strong> = アメリカ合衆国（本土）</p>
-
-            <h4 style="color: var(--orange-accent); margin-top: 0;">2文字目：「国・領域」</h4>
-            <p>1文字目で指定されたエリア内の、どの国かを示します。<br>
-            ・R<strong>J</strong> = 日本 (Japan)<br>
-            ・R<strong>K</strong> = 韓国 (Korea)<br>
-            ・E<strong>G</strong> = イギリス (Great Britain)</p>
-
-            <h4 style="color: var(--orange-accent); margin-top: 0;">3・4文字目：「個別の空港・施設」</h4>
-            <p>その国の中での特定の空港や飛行情報区（FIR）を示します。<br>
-            ・RJ<strong>TT</strong> = 東京国際空港（羽田）<br>
-            ・RJ<strong>BB</strong> = 関西国際空港<br>
-            ・RJ<strong>JJ</strong> = 福岡FIR（日本全体の空域情報を検索する際によく使われます）</p>
+    <div class="header">
+        <img src="/icon.png" alt="Logo">
+        <a href="/">NOTAM MAP View</a>
+    </div>
+    <div class="container">
+        <div class="lang-switch">
+            <button id="btn-ja" onclick="switchLang('ja')">日本語</button>
+            <button id="btn-en" onclick="switchLang('en')">English</button>
         </div>
-
-        <p>※アメリカ合衆国（K）など一部の国では、1文字目の「K」の後にそのまま3文字のIATAコードを繋げてICAOコードとする例外的なルール（例：ロサンゼルス IATA:LAX → ICAO:KLAX）もあります。</p>
-
-        <h2>NOTAM検索のコツ</h2>
-        <p>当アプリで特定空港のNOTAMを調べたい場合は、その空港のICAOコード（例: <code>RJTT</code>）を入力します。<br>
-        しかし、空港ピンポイントではなく「日本周辺の空域全体」にかかるエンルート上の制限やミサイル発射警報などを調べたい場合は、FIR（飛行情報区）のコードである <code>RJJJ</code> を検索すると、より広域の情報をカバーすることができます。</p>
-    </div>
-
-    <!-- 🇬🇧 英語用コンテンツ -->
-    <div class="article-container" id="content-en" style="display: none;">
-        <h1>[Guide] What is an ICAO Code? The Secret of the 4-Letter Identifier</h1>
-
-        <p>When searching for NOTAMs, you always need to enter an "<strong>ICAO Code</strong>". Unlike the 3-letter airport codes we usually see when booking flights, these 4-letter codes follow a strict geographical logic designed for aviation safety and air traffic control worldwide.</p>
-
-        <h2>IATA vs. ICAO Codes</h2>
-        <p>There are two main types of airport identifier codes:</p>
-        <ul>
-            <li><span style="color: var(--orange-accent); font-weight: bold;">IATA Codes (3 letters):</span> Primarily used for passengers, ticketing, and baggage handling. For example, Tokyo Haneda is "HND" and London Heathrow is "LHR".</li>
-            <li><span style="color: var(--orange-accent); font-weight: bold;">ICAO Codes (4 letters):</span> Used by pilots, air traffic controllers, and aviation professionals. Flight plans and <strong>NOTAM searches</strong> rely exclusively on these codes. Tokyo Haneda is "RJTT" and London Heathrow is "EGLL".</li>
-        </ul>
-
-        <h2>The 4-Letter Structure</h2>
-        <p>ICAO codes are not assigned randomly; they logically indicate "where on Earth" the facility is located. Let's break down "RJTT" (Tokyo Haneda) as an example.</p>
-
-        <div class="code-box">
-            <h4 style="color: var(--orange-accent); margin-top: 0;">1st Letter: Aviation Region</h4>
-            <p>Indicates a broad geographic region of the world.<br>
-            - <strong>R</strong> = Western North Pacific (Japan, South Korea, Taiwan, etc.)<br>
-            - <strong>E</strong> = Northern Europe (UK, Germany, etc.)<br>
-            - <strong>K</strong> = Contiguous United States</p>
-
-            <h4 style="color: var(--orange-accent); margin-top: 0;">2nd Letter: Country</h4>
-            <p>Indicates the specific country within that region.<br>
-            - R<strong>J</strong> = Japan<br>
-            - R<strong>K</strong> = South Korea<br>
-            - E<strong>G</strong> = Great Britain</p>
-
-            <h4 style="color: var(--orange-accent); margin-top: 0;">3rd & 4th Letters: Specific Airport / FIR</h4>
-            <p>Assigned to a specific airport or Flight Information Region (FIR) within that country.<br>
-            - RJ<strong>TT</strong> = Tokyo International Airport (Haneda)<br>
-            - RJ<strong>BB</strong> = Kansai International Airport<br>
-            - RJ<strong>JJ</strong> = Fukuoka FIR (Often used to search for en-route NOTAMs covering Japanese airspace)</p>
-        </div>
-
-        <p>* Note: Some countries have different conventions. For example, in the contiguous United States, the ICAO code is often simply the letter "K" followed by the 3-letter IATA code (e.g., Los Angeles IATA: LAX &rarr; ICAO: KLAX).</p>
-
-        <h2>Tips for NOTAM Searching</h2>
-        <p>If you want to check NOTAMs for a specific airport in our app, simply enter its ICAO code (e.g., <code>EGLL</code>).<br>
-        However, if you want to find en-route restrictions, GPS anomalies, or airspace warnings that cover a vast area rather than a specific runway, try searching the Flight Information Region (FIR) code (e.g., <code>EGTT</code> for London FIR or <code>RJJJ</code> for Fukuoka FIR). This will provide a broader operational overview.</p>
-    </div>
-
-    <div style="text-align: center; margin-top: 50px;">
-        <a href="/" class="back-btn" id="btn-back-footer">⬅ マップ画面に戻る</a>
-    </div>
-
-    <script>
-        // 🌟 ブラウザの言語を判定し、日本語以外なら英語表示に切り替え
-        const isJaArticle = (navigator.language || navigator.userLanguage).startsWith('ja');
         
-        if (!isJaArticle) {
-            document.title = "[Guide] What is an ICAO Code? - NOTAM MAP View";
+        <div id="content-ja" style="display: none;">
+            <h1>ICAO（国際民間航空機関）とは？世界の空を一つにする国連専門機関</h1>
             
-            document.getElementById('content-ja').style.display = 'none';
-            document.getElementById('content-en').style.display = 'block';
+            <h2>世界の空に共通のルールをもたらした「シカゴ条約」</h2>
+            <p>現代において、私たちが当たり前のようにパスポートを持ち、国境を越えて海外へ飛び、安全かつスムーズに目的地へ到着できるのは、「世界中で共通の航空ルール」が厳密に機能しているからです。もし、国ごとに航空管制の言語が異なったり、飛行機の設計基準がバラバラだったりすれば、国際線の運航は絶望的なほど危険で非効率なものになってしまいます。この世界共通のルールを策定し、世界の空を一つにまとめているのが、ICAO（International Civil Aviation Organization：国際民間航空機関）です。</p>
+            <p>ICAOは、第二次世界大戦終結間近の1944年にアメリカのシカゴで開催された国際民間航空会議において採択された「シカゴ条約（国際民間航空条約）」に基づいて設立されました。現在は国際連合（UN）の専門機関の一つとして位置づけられており、カナダのモントリオールに本部を置いています。190を超える加盟国が協力し、民間航空の安全、セキュリティ、効率性、そして環境保護に関するグローバルな方針を決定しています。</p>
             
-            document.getElementById('btn-back-header').innerText = 'Return to Map';
-            document.getElementById('btn-back-footer').innerText = '⬅ Return to Map';
+            <h2>SARPs（国際標準と勧告方式）と19の附属書が定める厳格な基準</h2>
+            <p>ICAOの最も重要かつ中核的な役割は、SARPs（Standards and Recommended Practices：国際標準と勧告方式）と呼ばれる技術的・運用的な基準を定めることです。これは、航空機の設計・製造基準から、パイロットや整備士のライセンス要件、航空管制のルール、空港の滑走路の設計、テロ対策に至るまで、航空に関するありとあらゆる事項をカバーしています。これらのルールは、シカゴ条約を補完する「19の附属書（Annexes）」としてまとめられています。</p>
+            <p>例えば、NOTAM（Notice to Air Missions）やAIP（航空路誌）といった航空情報の提供に関するグローバルなルールは、主に「第15附属書（Annex 15: Aeronautical Information Services）」において詳細に規定されています。このAnnex 15のおかげで、日本の管制官が発出したNOTAMを、アメリカやヨーロッパのパイロットがシステム上で即座に同じフォーマットで読み取り、理解することができるのです。情報フォーマットの統一は、ヒューマンエラーを防ぐための最大の防御策です。</p>
+            
+            <h2>なぜICAO空港コードが必要なのか？IATAコードとの決定的な違い</h2>
+            <p>航空業界には、空港を表す2種類の異なるコードが存在し、初心者を混乱させることがあります。私たちが旅行会社のサイトで航空券を予約したり、空港で預けた手荷物のタグに印字されている「HND（羽田）」や「JFK（ニューヨーク）」といった3文字のアルファベットは、IATA（国際航空運送協会）が定めた「IATA空港コード」です。これは主に旅客サービスや商業目的で使用されます。</p>
+            <p>一方、ICAOが定めた「ICAO空港コード」は4文字のアルファベットで構成され、地理的な法則に基づいて体系的に割り当てられています。例えば、日本の羽田空港は「RJTT」、成田空港は「RJAA」、アメリカのJFK空港は「KJFK」となります。パイロットが提出する飛行計画（フライトプラン）や、NOTAMの検索、航空管制システム間のデータ通信においては、商業用のIATAコードではなく、一意性が高くシステマチックなICAO空港コードが例外なく使用されます。NOTAM MAP Viewで特定の空港の情報を検索する際にも、このICAOコードの入力が基本となります。</p>
+            
+            <h2>航空業界のデジタル化を牽引するICAOの次なるビジョン</h2>
+            <p>設立から数十年にわたり、航空情報のやり取りは紙ベースの書類や、テレタイプによるレガシーな通信網（AFTNなど）に依存してきました。しかし、現代の空域はかつてないほど過密化しており、古い通信規格では限界を迎えています。そこでICAOは現在、「ASBU（Aviation System Block Upgrades）」と呼ばれる長期的なロードマップを掲げ、世界の航空インフラの完全なデジタル化とネットワーク化を推進しています。</p>
+            <p>その中核となるのがSWIM（System Wide Information Management）という新しいデータ交換の概念であり、NOTAMも単なるテキストの羅列から、コンピュータが自動処理できるデジタルデータ（AIXMなど）へと進化しようとしています。ICAOは単にルールを作るだけでなく、ドローンの空域統合やサイバーセキュリティ対策、環境負荷低減といった、未来の航空業界が直面する課題に対しても、グローバルなリーダーシップを発揮し続けています。</p>
+        </div>
+
+        <div id="content-en" style="display: none;">
+            <h1>What is ICAO? The UN Specialized Agency Uniting the World's Skies</h1>
+            
+            <h2>The "Chicago Convention" That Established Common Rules for the Skies</h2>
+            <p>Today, we take it for granted that we can grab a passport, cross international borders, and arrive safely and smoothly at our overseas destinations. This seamless global travel is entirely made possible because "common global aviation rules" function strictly worldwide. If every country had a different language for air traffic control or completely different design standards for aircraft, international flight would be disastrously dangerous and inefficient. The organization responsible for formulating these universal rules and uniting the global skies is ICAO (International Civil Aviation Organization).</p>
+            <p>ICAO was established based on the "Chicago Convention" (Convention on International Civil Aviation), drafted during the International Civil Aviation Conference held in Chicago in 1944, near the end of World War II. Today, it operates as a specialized agency of the United Nations (UN), with its headquarters located in Montreal, Canada. Over 190 member states collaborate within ICAO to determine global policies regarding aviation safety, security, operational efficiency, and environmental protection.</p>
+            
+            <h2>The Strict Standards Set by SARPs and the 19 Annexes</h2>
+            <p>The most vital and core function of ICAO is the establishment of technical and operational benchmarks known as SARPs (Standards and Recommended Practices). These comprehensive standards cover virtually every aspect of civil aviation—ranging from aircraft design and manufacturing criteria, pilot and mechanic licensing requirements, and air traffic control procedures, to runway design specifications and anti-terrorism security protocols. These globally agreed-upon rules are organized into "19 Annexes" that supplement the Chicago Convention.</p>
+            <p>For instance, global rules concerning the provision of aeronautical information, such as NOTAMs (Notice to Air Missions) and AIPs (Aeronautical Information Publications), are heavily detailed in "Annex 15: Aeronautical Information Services." It is thanks to Annex 15 that a NOTAM issued by an air traffic controller in Japan can be instantly read and understood in the exact same format by pilots in the United States or Europe via digital systems. The standardization of information formats is the ultimate defense against human error.</p>
+            
+            <h2>Why Do We Need ICAO Airport Codes? The Difference from IATA Codes</h2>
+            <p>The aviation industry utilizes two distinct types of airport codes, which can often confuse beginners. The 3-letter codes you see when booking flights online or printed on your baggage tags—such as "HND" for Haneda or "JFK" for New York—are "IATA Airport Codes," designated by the International Air Transport Association. These are primarily used for passenger services, ticketing, and commercial purposes.</p>
+            <p>In contrast, "ICAO Airport Codes" consist of 4 letters and are systematically assigned based on geographical regions. For example, Japan's Haneda Airport is "RJTT", Narita is "RJAA", and the US's JFK Airport is "KJFK". When pilots file flight plans, search for NOTAMs, or when air traffic control systems exchange data, the highly systematic and unique ICAO codes are used without exception, rather than the commercial IATA codes. When searching for specific airport hazards on platforms like NOTAM MAP View, utilizing these ICAO codes is essential.</p>
+            
+            <h2>ICAO's Next Vision: Driving Digitalization in Aviation</h2>
+            <p>For decades since its inception, the exchange of aeronautical information relied heavily on paper-based documents and legacy teletype communication networks (such as AFTN). However, modern airspace has become increasingly congested, and older communication standards have reached their absolute limits. In response, ICAO is currently promoting a long-term strategic roadmap known as "ASBU (Aviation System Block Upgrades)," pushing for the complete digitalization and networking of the world's aviation infrastructure.</p>
+            <p>At the heart of this transition is the new data exchange concept known as SWIM (System Wide Information Management). Under SWIM, NOTAMs are evolving from mere strings of text into machine-readable digital data (such as AIXM). ICAO does more than just establish historical rules; it continues to demonstrate global leadership in tackling future industry challenges, including the integration of drones (UAS) into civil airspace, cybersecurity measures, and the reduction of aviation's environmental impact.</p>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center;">
+            <a href="/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
+        </div>
+    </div>
+    <div class="footer">
+        <p><a href="/privacy.html">Privacy Policy</a> | <a href="/contact.html">Contact Us</a> | <a href="/about.html">About & Guide</a></p>
+        © 2026 NOTAM MAP View. All rights reserved.
+    </div>
+    <script>
+        function switchLang(lang) {
+            if (lang === 'ja') {
+                document.getElementById('content-ja').style.display = 'block';
+                document.getElementById('content-en').style.display = 'none';
+                document.getElementById('btn-ja').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+                document.title = "ICAO（国際民間航空機関）とは？ | NOTAM MAP View";
+                document.documentElement.lang = "ja";
+            } else {
+                document.getElementById('content-ja').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-ja').classList.remove('active');
+                document.title = "What is ICAO? | NOTAM MAP View";
+                document.documentElement.lang = "en";
+            }
         }
+        
+        window.onload = function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('ja')) {
+                switchLang('ja');
+            } else {
+                switchLang('en');
+            }
+        };
     </script>
 </body>
 </html>
