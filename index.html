@@ -266,7 +266,6 @@
             position: relative;
             flex-direction: column;
             overflow: hidden; 
-            margin-bottom: 50px; /* 最下部広告の高さ分の余白（PC用） */
         }
         #map {
             width: 100%;
@@ -306,19 +305,25 @@
             overflow: hidden; 
         }
 
-        /* 🌟 スマホ表示時のレイアウト調整（広告にリストが隠れないように bottom を 50px に設定） */
+        /* 🌟 スマホ用とPC用でレイアウト・余白を完全に分離 */
         @media (max-width: 768px) {
-            #main-container { flex-direction: column; margin-bottom: 50px; }
+            #main-container { 
+                flex-direction: column; 
+                margin-bottom: 50px; /* スマホのみ最下部広告分の余白を空ける */
+            }
             #notam-panel {
                 position: absolute;
                 bottom: 50px; /* 固定バナー広告の高さ分上に浮かせる */
                 left: 0; 
                 right: 0;
-                height: 35vh; /* 高さを調整してリストが見えるようにする */
+                height: 28vh; /* スマホでリストが大きくなりすぎないようコンパクトに調整 */
             }
         }
         @media (min-width: 769px) {
-            #main-container { flex-direction: row; }
+            #main-container { 
+                flex-direction: row; 
+                margin-bottom: 0; /* PCでは最下部広告による余白をなくし、スッキリした元の高さに戻す */
+            }
             #notam-panel {
                 position: relative;
                 width: 400px;
@@ -434,7 +439,7 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
-        /* 🌟 スマホでもはみ出さないレスポンシブな最下部固定バナー広告 */
+        /* 🌟 画面最下部に固定表示するバナー広告 */
         #fixed-ad-banner {
             position: fixed;
             bottom: 0;
@@ -680,7 +685,7 @@
         </div>
     </div>
 
-    <!-- 🌟 スマホの画面幅に合わせて自動調整（レスポンシブ）される最下部固定バナー広告 -->
+    <!-- 🌟 最下部固定バナー広告 -->
     <div id="fixed-ad-banner">
         <ins class="adsbygoogle"
              style="display:block; width:100%; height:50px;"
