@@ -37,14 +37,14 @@
             --orange-accent: #ff9800;
         }
 
-        /* 🌟 画面全体を縦方向のフレックスコンテナにしてレイアウト崩れを完全に防止 */
+        /* 🌟 画面全体のレイアウト構造（上下固定 ＋ 中央メイン領域） */
         body {
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            height: 100dvh; /* スマホのアドレスバー伸縮に対応 */
+            height: 100dvh;
             background-color: var(--bg-color);
             color: var(--text-main);
             overflow: hidden;
@@ -262,18 +262,20 @@
             display: none;
         }
 
-        /* 🌟 マップとリストを収めるメインエリア（残りの高さを自動で埋める） */
+        /* 🌟 メインコンテナ（絶対配置で地図とリストを安定して重ね合わせる） */
         #main-container {
             flex: 1;
-            display: flex;
             position: relative;
             overflow: hidden; 
             width: 100%;
         }
         #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
             width: 100%;
             height: 100%;
-            flex: 1;
         }
 
         #toggle-panel-btn {
@@ -303,30 +305,34 @@
             padding: 12px;
             box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
             z-index: 1000;
-            border-top-left-radius: 16px;
-            border-top-right-radius: 16px;
             overflow: hidden; 
         }
 
-        /* 🌟 スマホ用とPC用の表示切り替え */
+        /* 🌟 スマホ（下部ドロワー）とPC（右サイドバー）の絶対配置切り替え */
         @media (max-width: 768px) {
-            #main-container { 
-                flex-direction: column; 
+            #map {
+                right: 0;
             }
             #notam-panel {
                 position: absolute;
                 bottom: 0; 
                 left: 0; 
                 right: 0;
-                height: 35vh; 
+                height: 38vh; 
+                border-top-left-radius: 16px;
+                border-top-right-radius: 16px;
+                border-top: 1px solid #444;
             }
         }
         @media (min-width: 769px) {
-            #main-container { 
-                flex-direction: row; 
+            #map {
+                right: 400px;
             }
             #notam-panel {
-                position: relative;
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
                 width: 400px;
                 height: 100%;
                 border-radius: 0;
@@ -341,6 +347,7 @@
             margin-bottom: 12px;
             font-size: 14px;
             font-weight: bold;
+            flex-shrink: 0;
         }
         
         #clear-selection-btn {
@@ -440,7 +447,7 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
-        /* 🌟 最下部に固定配置するバナー広告（縦方向flexの最下段に配置するため絶対に崩れません） */
+        /* 🌟 最下部に固定配置するバナー広告 */
         #fixed-ad-banner {
             flex-shrink: 0;
             width: 100%;
@@ -594,7 +601,7 @@
         </div>
     </div>
 
-    <!-- 🌟 メインコンテンツ（ヘッダーと最下部広告の間に自動でぴったり収まります） -->
+    <!-- 🌟 メインコンテナ（地図とリストを重ならないよう絶対配置で綺麗に分割） -->
     <div id="main-container">
         <div id="map"></div>
         
@@ -685,7 +692,7 @@
         </div>
     </div>
 
-    <!-- 🌟 画面最下部に固定表示するバナー広告（縦方向flexの最下段に確実に固定） -->
+    <!-- 🌟 画面最下部に固定表示するバナー広告 -->
     <div id="fixed-ad-banner">
         <ins class="adsbygoogle"
              style="display:block; width:100%; height:50px;"
