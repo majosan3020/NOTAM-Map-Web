@@ -269,11 +269,12 @@
             overflow: hidden; 
             width: 100%;
         }
+        
+        /* 🌟 マップの共通ベース指定 */
         #map {
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
         }
 
         #toggle-panel-btn {
@@ -310,7 +311,7 @@
         @media (max-width: 768px) {
             #map {
                 right: 0;
-                bottom: 38vh; /* 地図の下端をリストパネルの高さ分空けて、確実に表示させる */
+                bottom: 38vh; /* リストパネルの高さ分を空けて、地図を確実に表示 */
             }
             #notam-panel {
                 position: absolute;
