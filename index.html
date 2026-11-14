@@ -37,19 +37,21 @@
             --orange-accent: #ff9800;
         }
 
+        /* 🌟 画面全体を縦方向のフレックスコンテナにしてレイアウト崩れを完全に防止 */
         body {
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            height: 100dvh; /* スマホのアドレスバー伸縮に対応 */
             background-color: var(--bg-color);
             color: var(--text-main);
             overflow: hidden;
         }
 
         #header-container {
+            flex-shrink: 0;
             background-color: var(--bg-color);
             padding: 8px 12px;
             display: flex;
@@ -260,12 +262,13 @@
             display: none;
         }
 
+        /* 🌟 マップとリストを収めるメインエリア（残りの高さを自動で埋める） */
         #main-container {
             flex: 1;
             display: flex;
             position: relative;
-            flex-direction: column;
             overflow: hidden; 
+            width: 100%;
         }
         #map {
             width: 100%;
@@ -305,24 +308,22 @@
             overflow: hidden; 
         }
 
-        /* 🌟 デバイス別のレイアウト調整（最下部固定バナー広告と被らないように余白を確保） */
+        /* 🌟 スマホ用とPC用の表示切り替え */
         @media (max-width: 768px) {
             #main-container { 
                 flex-direction: column; 
-                margin-bottom: 50px; /* スマホ用固定バナーの高さ分を空ける */
             }
             #notam-panel {
                 position: absolute;
-                bottom: 50px; 
+                bottom: 0; 
                 left: 0; 
                 right: 0;
-                height: 32vh; 
+                height: 35vh; 
             }
         }
         @media (min-width: 769px) {
             #main-container { 
                 flex-direction: row; 
-                margin-bottom: 50px; /* PC用固定バナーの高さ分を空ける */
             }
             #notam-panel {
                 position: relative;
@@ -439,11 +440,9 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
-        /* 🌟 画面最下部に固定表示するバナー広告（AdSense公式レスポンシブ仕様） */
+        /* 🌟 最下部に固定配置するバナー広告（縦方向flexの最下段に配置するため絶対に崩れません） */
         #fixed-ad-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            flex-shrink: 0;
             width: 100%;
             height: 50px;
             background-color: #1e1e1e;
@@ -595,6 +594,7 @@
         </div>
     </div>
 
+    <!-- 🌟 メインコンテンツ（ヘッダーと最下部広告の間に自動でぴったり収まります） -->
     <div id="main-container">
         <div id="map"></div>
         
@@ -685,7 +685,7 @@
         </div>
     </div>
 
-    <!-- 🌟 画面最下部に固定表示するバナー広告（標準レスポンシブ） -->
+    <!-- 🌟 画面最下部に固定表示するバナー広告（縦方向flexの最下段に確実に固定） -->
     <div id="fixed-ad-banner">
         <ins class="adsbygoogle"
              style="display:block; width:100%; height:50px;"
@@ -1433,7 +1433,7 @@
                         locs.forEach(ll => bounds.extend(ll));
                         hasPoints = true;
                     } else if (item.isCircle && locs.length === 1 && item.radiusMeters > 0) {
-                        layer = L.circle(locs[0], {radius: item.radiusMters, color: '#ff9800', fillOpacity: 0.13});
+                        layer = L.circle(locs[0], {radius: item.radiusMeters, color: '#ff9800', fillOpacity: 0.13});
                         bounds.extend(locs[0]);
                         hasPoints = true;
                     }
