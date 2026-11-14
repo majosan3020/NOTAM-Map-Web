@@ -305,15 +305,15 @@
             overflow: hidden; 
         }
 
-        /* 🌟 スマホ用とPC用でレイアウト・余白を分離（広告を極小化したためマージンも削減） */
+        /* 🌟 デバイス別のレイアウト調整（最下部固定バナー広告と被らないように余白を確保） */
         @media (max-width: 768px) {
             #main-container { 
                 flex-direction: column; 
-                margin-bottom: 25px; /* 極小化した最下部広告（高さ25px）の分だけ余白を空ける */
+                margin-bottom: 50px; /* スマホ用固定バナーの高さ分を空ける */
             }
             #notam-panel {
                 position: absolute;
-                bottom: 25px; 
+                bottom: 50px; 
                 left: 0; 
                 right: 0;
                 height: 32vh; 
@@ -322,7 +322,7 @@
         @media (min-width: 769px) {
             #main-container { 
                 flex-direction: row; 
-                margin-bottom: 0; 
+                margin-bottom: 50px; /* PC用固定バナーの高さ分を空ける */
             }
             #notam-panel {
                 position: relative;
@@ -439,13 +439,13 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
-        /* 🌟 最下部固定バナー広告（高さを25pxにして約5分の1に縮小） */
+        /* 🌟 画面最下部に固定表示するバナー広告（AdSense公式レスポンシブ仕様） */
         #fixed-ad-banner {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 25px;
+            height: 50px;
             background-color: #1e1e1e;
             display: flex; 
             align-items: center;
@@ -453,11 +453,6 @@
             border-top: 1px solid #444;
             z-index: 2000; 
             overflow: hidden;
-        }
-        #fixed-ad-banner ins {
-            transform: scale(0.3);
-            transform-origin: center;
-            max-height: 25px;
         }
 
         .overlay {
@@ -690,13 +685,13 @@
         </div>
     </div>
 
-    <!-- 🌟 最下部固定バナー広告（高さ25pxに縮小） -->
+    <!-- 🌟 画面最下部に固定表示するバナー広告（標準レスポンシブ） -->
     <div id="fixed-ad-banner">
         <ins class="adsbygoogle"
-             style="display:block; width:100%; height:25px;"
+             style="display:block; width:100%; height:50px;"
              data-ad-client="ca-pub-9711360644462159"
              data-ad-slot="9969479962"
-             data-ad-format="auto"
+             data-format="auto"
              data-full-width-responsive="true"></ins>
     </div>
 
@@ -711,19 +706,19 @@
         </div>
     </div>
 
-    <!-- 🌟 3回検索時のポップアップ広告枠（高さを抑えてコンパクト化） -->
+    <!-- 🌟 3回検索時のポップアップ広告枠 -->
     <div id="fullscreen-ad-overlay" class="overlay">
-        <div style="background:#1e1e1e; color:#fff; padding:15px; border-radius:12px; text-align:center; width:85%; max-width:320px; border:1px solid #444;">
-            <h4 style="margin:0 0 10px 0; color:var(--primary-color);">Advertisement</h4>
-            <div style="margin:10px 0; min-height:100px; max-height:150px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <div style="background:#1e1e1e; color:#fff; padding:20px; border-radius:12px; text-align:center; width:90%; max-width:400px; border:1px solid #444;">
+            <h3 style="margin-top:0; color:var(--primary-color);">Advertisement</h3>
+            <div style="margin:15px 0; min-height:250px; display:flex; align-items:center; justify-content:center;">
                 <ins class="adsbygoogle"
-                     style="display:block; width:100%; height:100px;"
+                     style="display:block; width:100%;"
                      data-ad-client="ca-pub-9711360644462159"
                      data-ad-slot="9969479962"
                      data-format="auto"
                      data-full-width-responsive="true"></ins>
             </div>
-            <button onclick="closeFullScreenAd()" style="padding:6px 16px; background:var(--primary-color); color:var(--primary-dark); font-weight:bold; border:none; border-radius:6px; cursor:pointer; font-size:13px;">Close</button>
+            <button onclick="closeFullScreenAd()" style="padding:10px 24px; background:var(--primary-color); color:var(--primary-dark); font-weight:bold; border:none; border-radius:8px; cursor:pointer;">Close</button>
         </div>
     </div>
 
@@ -1438,7 +1433,7 @@
                         locs.forEach(ll => bounds.extend(ll));
                         hasPoints = true;
                     } else if (item.isCircle && locs.length === 1 && item.radiusMeters > 0) {
-                        layer = L.circle(locs[0], {radius: item.radiusMeters, color: '#ff9800', fillOpacity: 0.13});
+                        layer = L.circle(locs[0], {radius: item.radiusMters, color: '#ff9800', fillOpacity: 0.13});
                         bounds.extend(locs[0]);
                         hasPoints = true;
                     }
