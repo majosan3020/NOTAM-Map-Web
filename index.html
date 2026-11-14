@@ -266,6 +266,7 @@
             position: relative;
             flex-direction: column;
             overflow: hidden; 
+            margin-bottom: 50px; /* 🌟 最下部の固定広告（高さ50px）と被らないための余白 */
         }
         #map {
             width: 100%;
@@ -346,7 +347,6 @@
         }
         #clear-selection-btn:hover { background-color: #3a2e1f; }
 
-        /* 🌟 View All (Unhide) ボタン */
         #show-all-btn {
             background-color: var(--surface-color);
             color: #4CAF50;
@@ -392,7 +392,6 @@
             border-color: var(--orange-accent);
             background-color: #3a2e1f;
         }
-        /* 🌟 非表示状態のカードデザイン */
         .notam-card.hidden {
             opacity: 0.4;
             border: 1px dashed #666;
@@ -432,17 +431,20 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
+        /* 🌟 画面最下部に固定表示するバナー広告のスタイル */
         #fixed-ad-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             height: 50px;
-            background-color: #222;
-            display: none; 
+            background-color: #1e1e1e;
+            display: flex; 
             align-items: center;
             justify-content: center;
             border-top: 1px solid #444;
-            color: #888;
-            font-size: 12px;
             z-index: 2000; 
+            overflow: hidden;
         }
 
         .overlay {
@@ -597,7 +599,6 @@
                     <span id="selected-count" style="font-size: 13px; color: var(--orange-accent);">[Selected: 0]</span>
                 </div>
                 <div style="display:flex; gap:6px; align-items: center;">
-                    <!-- 🌟 追加: Show All ボタン -->
                     <button id="show-all-btn" onclick="showAllNotams()">View All</button>
                     <button id="clear-selection-btn" onclick="clearSelection()">Clear Selection</button>
                     <select id="sort-type" onchange="applyFilters()" style="background: var(--surface-color); color: var(--text-main); border: 1px solid #444; border-radius: 4px; font-size: 12px; padding: 4px; outline:none; cursor:pointer;">
@@ -676,8 +677,12 @@
         </div>
     </div>
 
+    <!-- 🌟 画面一番下に常時表示するバナー広告（AdSenseタグ組み込み済み） -->
     <div id="fixed-ad-banner">
-        Advertisement
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:50px"
+             data-ad-client="ca-pub-9711360644462159"
+             data-ad-slot="9969479962"></ins>
     </div>
 
     <div id="details-modal" class="overlay" style="z-index: 3500;">
@@ -685,7 +690,6 @@
             <div class="modal-header" id="modal-title"></div>
             <div class="modal-body" id="modal-text"></div>
             <div class="modal-footer">
-                <!-- 🌟 追加: 個別Hideボタン -->
                 <button class="modal-btn" id="details-modal-hide" onclick="toggleHideCurrentNotam()"></button>
                 <button class="modal-btn" id="details-modal-close" onclick="closeDetailsModal()"></button>
             </div>
@@ -694,17 +698,17 @@
 
     <!-- 🌟 3回検索時のポップアップ広告枠 -->
     <div id="fullscreen-ad-overlay" class="overlay">
-        <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
-            <h3>Advertisement</h3>
-            <div style="margin:10px 0; min-height:200px; display:flex; align-items:center; justify-content:center;">
+        <div style="background:#1e1e1e; color:#fff; padding:20px; border-radius:12px; text-align:center; width:90%; max-width:400px; border:1px solid #444;">
+            <h3 style="margin-top:0; color:var(--primary-color);">Advertisement</h3>
+            <div style="margin:15px 0; min-height:250px; display:flex; align-items:center; justify-content:center;">
                 <ins class="adsbygoogle"
-                     style="display:block"
+                     style="display:block; width:100%;"
                      data-ad-client="ca-pub-9711360644462159"
                      data-ad-slot="9969479962"
                      data-format="auto"
                      data-full-width-responsive="true"></ins>
             </div>
-            <button onclick="closeFullScreenAd()" style="padding:10px 20px; background:#555; color:#fff; border:none; border-radius:4px; cursor:pointer;">Close</button>
+            <button onclick="closeFullScreenAd()" style="padding:10px 24px; background:var(--primary-color); color:var(--primary-dark); font-weight:bold; border:none; border-radius:8px; cursor:pointer;">Close</button>
         </div>
     </div>
 
@@ -745,7 +749,6 @@
         let displayedNotams = [];  
         
         let selectedIds = new Set();
-        // 🌟 追加: 非表示にしたNOTAMのIDを管理するSet
         let hiddenIds = new Set();
         let currentModalNotamId = null;
 
@@ -819,6 +822,13 @@
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
+            // 🌟 ページ読み込み時にAdSense広告を初期化して配信を促す
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error("AdSense push error", e);
+            }
+
             if (!isJa) {
                 document.getElementById('intro-ja').style.display = 'none';
                 document.getElementById('intro-en').style.display = 'block';
@@ -890,10 +900,9 @@
             allFetchedNotams = [];
             displayedNotams = [];
             selectedIds.clear();
-            hiddenIds.clear(); // 🌟 リセット時にHide状態もクリア
+            hiddenIds.clear();
             mapLayers.clearLayers();
             
-            document.getElementById('fixed-ad-banner').style.display = 'none';
             document.getElementById('last-update-time').innerText = '--/-- --:--';
             
             localStorage.removeItem('last_notam_data');
@@ -930,7 +939,6 @@
             renderUI(false);
         }
 
-        // 🌟 追加: 一括で全て再表示する関数
         function showAllNotams() {
             hiddenIds.clear();
             renderUI(false);
@@ -980,11 +988,10 @@
         }
 
         function openDetailsModal(id, text) {
-            currentModalNotamId = id; // 現在表示中のIDを保存
+            currentModalNotamId = id;
             document.getElementById('modal-title').innerText = `[${id}]`;
             document.getElementById('modal-text').innerText = text;
             
-            // 🌟 Hide状態に応じてボタンの色と文字を切り替え
             const hideBtn = document.getElementById('details-modal-hide');
             if (hiddenIds.has(id)) {
                 hideBtn.innerText = isJa ? '再表示 (Show)' : 'Show';
@@ -1002,7 +1009,6 @@
             currentModalNotamId = null;
         }
 
-        // 🌟 追加: モーダルから単体でHide/Showを切り替える関数
         function toggleHideCurrentNotam() {
             if (currentModalNotamId) {
                 if (hiddenIds.has(currentModalNotamId)) {
@@ -1011,7 +1017,7 @@
                     hiddenIds.add(currentModalNotamId);
                 }
                 closeDetailsModal();
-                renderUI(false); // 画面を再描画
+                renderUI(false);
             }
         }
 
@@ -1154,11 +1160,10 @@
                 }
             }
             
-            document.getElementById('fixed-ad-banner').style.display = 'flex';
             document.getElementById('loading').style.display = 'flex';
             allFetchedNotams = [];
             selectedIds.clear();
-            hiddenIds.clear(); // 🌟 検索時にHide状態もクリア
+            hiddenIds.clear();
 
             try {
                 for (const icao of icaos) {
@@ -1364,14 +1369,11 @@
                 : `[Selected: ${selectedIds.size}]`;
             
             document.getElementById('clear-selection-btn').style.display = selectedIds.size > 0 ? 'inline-block' : 'none';
-            
-            // 🌟 追加: Hideされているものがあれば View All ボタンを表示
             document.getElementById('show-all-btn').style.display = hiddenIds.size > 0 ? 'inline-block' : 'none';
             
             const bounds = L.latLngBounds();
             let hasPoints = false;
 
-            // 🌟 修正: targetNotams から hiddenIds を除外する
             const targetNotams = selectedIds.size > 0 
                 ? displayedNotams.filter(item => selectedIds.has(item.id) && !hiddenIds.has(item.id))
                 : displayedNotams.filter(item => !hiddenIds.has(item.id));
@@ -1380,10 +1382,9 @@
 
             displayedNotams.forEach(item => {
                 const isSelected = selectedIds.has(item.id);
-                const isHidden = hiddenIds.has(item.id); // 🌟 追加: Hide状態の判定
+                const isHidden = hiddenIds.has(item.id);
                 
                 const card = document.createElement('div');
-                // 🌟 追加: class に 'hidden' を付与して半透明デザインにする
                 card.className = `notam-card ${isSelected ? 'selected' : ''} ${isHidden ? 'hidden' : ''}`;
                 card.innerHTML = `
                     <div class="notam-id">[${item.id}]</div>
