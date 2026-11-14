@@ -3,122 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【コラム】海外のNOTAMはどう違う？FAAフォーマットとICAO基準 - NOTAM MAP View</title>
-    <meta name="description" content="世界共通規格であるICAOフォーマットのNOTAMと、アメリカ連邦航空局（FAA）が発行する国内独自フォーマット（FDC NOTAM等）の違いと構造を解説します。">
-    <link rel="icon" href="/icon.png" type="image/png">
+    <title>FAA・EASA・JCABの違い | NOTAM MAP View</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
+    <link rel="icon" href="/icon.png" type="image/png" sizes="any">
+    <meta name="description" content="Aviation knowledge base for NOTAM MAP View. Information on ICAO, FIR, SWIM, and flight safety.">
     <style>
-        :root { --primary-color: #d0bcff; --primary-dark: #381e72; --orange-accent: #ff9800; --bg-color: #121212; --surface-color: #1e1e1e; --surface-variant: #2a2a2a; --text-main: #ffffff; --text-sub: #aaaaaa; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; padding: 20px; max-width: 800px; margin: 0 auto; }
-        h1 { color: var(--primary-color); border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 20px; font-size: 22px; }
-        h2 { color: var(--primary-color); border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 35px; font-size: 18px; }
-        p, li { margin-bottom: 16px; color: #dddddd; }
-        ul { margin-bottom: 20px; padding-left: 20px; }
+        :root { --bg-color: #121212; --surface-color: #1e1e1e; --primary-color: #d0bcff; --text-main: #ffffff; --text-sub: #dddddd; --orange-accent: #ff9800; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; }
+        .header { background-color: var(--surface-color); padding: 12px 20px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+        .header img { width: 32px; height: 32px; border-radius: 6px; }
+        .header a { color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 18px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: var(--primary-color); font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 32px; line-height: 1.4; }
+        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 40px; margin-bottom: 16px; border-left: 4px solid var(--orange-accent); padding-left: 12px; }
+        p { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; letter-spacing: 0.03em; }
+        .footer { text-align: center; padding: 24px; color: #888; font-size: 14px; margin-top: 60px; border-top: 1px solid #333; background-color: var(--surface-color); }
         a { color: var(--orange-accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 14px; background: var(--surface-variant); border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; font-size: 14px; }
-        .highlight-box { background-color: var(--surface-color); border-left: 4px solid var(--primary-color); padding: 16px; border-radius: 6px; margin: 20px 0; }
-        .nav-box { background-color: var(--surface-variant); border: 1px solid #444; padding: 16px; border-radius: 8px; margin-top: 40px; }
-        .lang-en { display: none; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background-color: var(--surface-color); border: 1px solid #444; border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: bold; transition: background-color 0.2s; }
+        .back-btn:hover { background-color: #333; }
+        ul, ol { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; line-height: 1.8; }
+        li { margin-bottom: 10px; }
+        .lang-switch { text-align: right; margin-bottom: 20px; }
+        .lang-switch button { background: var(--surface-color); color: var(--text-main); border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 14px; transition: all 0.2s; }
+        .lang-switch button:hover, .lang-switch button.active { background: var(--primary-color); color: #000; border-color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
-
-    <!-- 🇯🇵 日本語 -->
-    <div class="lang-ja">
-        <h1>【コラム】海外のNOTAMはどう違う？FAAフォーマットとICAO基準の落とし穴</h1>
-        <div class="highlight-box">
-            <p style="margin:0; font-size:14px; color: var(--text-sub);">
-                航空システムは世界共通であるべきですが、国によっては独自のローカルルールが存在します。その代表例がアメリカの「FAAフォーマット」です。本記事では、国際標準のICAO形式と、アメリカ国内で使われるFAA形式のNOTAMの違いについて解説します。
-            </p>
+    <div class="header">
+        <img src="/icon.png" alt="Logo">
+        <a href="/">NOTAM MAP View</a>
+    </div>
+    <div class="container">
+        <div class="lang-switch">
+            <button id="btn-ja" onclick="switchLang('ja')">日本語</button>
+            <button id="btn-en" onclick="switchLang('en')">English</button>
+        </div>
+        
+        <div id="content-ja" style="display: none;">
+            <h1>FAA・EASA・JCABの違い：世界の主要航空局と地域固有ルールの仕組み</h1>
+            
+            <h2>ICAOが定める大枠と、各国・地域の航空局による実践的規制</h2>
+            <p>前述の通り、ICAO（国際民間航空機関）は世界中の空域をつなぐためのグローバルな基本標準（SARPs）を策定する最高機関です。しかし、ICAO自体は国家としての主権を持たないため、実際に領空内の法律を執行したり、細やかな安全規制を定めて航空会社やパイロットを監督したりすることはできません。この実務的な役割を担うのが、各国の国内法に基づいて設立された「国家航空局（Civil Aviation Authority：CAA）」です。世界中の空を行き交う国際線パイロットや運航管理者にとって、ICAOの基本ルールだけでなく、渡航先や自国を管轄する主要な航空局の特色やローカルルールの違いを正確に把握することは、円滑かつ適法な運航を行う上で欠かせない知識となります。</p>
+            <p>世界で最も影響力が大きく、実質的な業界のデファクトスタンダードを作り出している代表的な機関が、アメリカ合衆国の「FAA（Federal Aviation Administration：連邦航空局）」です。FAAは、世界最大規模かつ最も複雑な米国の空域管理を行うだけでなく、ボーイング社をはじめとする巨大な航空機製造産業に対する型式証明（Type Certificate）の発給など、世界の航空技術・安全基準のリーダーとしての役割を果たしてきました。これに対し、ヨーロッパ圏では欧州連合（EU）加盟国全体を一括して管轄する「EASA（European Union Aviation Safety Agency：欧州航空安全機関）」が強力な権限を持っています。そして日本においては、国土交通省の一部局である「JCAB（Japan Civil Aviation Bureau：航空局）」が、国内のすべての空港、航空会社、および領空の安全管理・法執行を担っています。</p>
+            
+            <h2>国際基準の標準化と、各国の国内法（AIP）やローカルルールの共存</h2>
+            <p>「世界中の空はすべて同じルールで動いている」と考えられがちですが、実際には各国の航空局が定める国内法や運用手順書である「AIP（Aeronautical Information Publication：航空路誌）」には、地域ごとの固有のルールや差異（Differences from ICAO Standards）が存在します。例えば、アメリカの空域分類システムはICAOの標準分類とは一部異なる独自のアルファベット区分（Class AからClass Gまでですが、運用規定に細かな違いがあります）を採用していますし、無線通信の運用手順や進入方式の細かいディテールにおいても、FAA管轄域とEASA管轄域、あるいはJCAB管轄域の間にはそれぞれ特有のローカルプラクティスが根付いています。</p>
+            <p>この「国際標準への準拠と、地域固有ルールの混在」という構造は、NOTAMのシステムにおいても明確に現れています。NOTAMはICAOの統一フォーマットに基づいて配信されることが基本原則ですが、実際には各国の航空局が運用するシステムや配信プラットフォームの仕様によって、独自の区分や追加情報が付加されることがあります。特に米国のFAAが発出するNOTAM体系は非常に独特であり、国際標準のNOTAMとは異なるカテゴリーが存在するため、運航者にとって特有の注意が必要とされます。</p>
+            
+            <h2>FAA特有の「FDC NOTAM」と、グローバルなNOTAMシステムへの影響</h2>
+            <p>米国のFAA管轄下における最も顕著なローカルルールの例が、「FDC NOTAM（Flight Data Center NOTAM）」の存在です。国際的な通常のNOTAMが空港の滑走路閉鎖や設備の故障といった物理的・局所的な事象を主に扱うのに対し、FDC NOTAMは、アメリカ国内における計器飛行方式（IFR）のチャート（航法図）の臨時変更、空域全体の重大な規制、大統領専用機（エアフォースワン）の移動に伴う一時的な飛行制限（TFR：Temporary Flight Restrictions）、さらには連邦法に関わる極めて重要な法規制の変更などを網羅的に通知するものです。</p>
+            <p>FDC NOTAMは発行から適用までのスピードが求められることが多く、米国本土を飛行するすべてのパイロット（外国籍の航空会社を含む）にとって、通常のNOTAMと並行して必ず確認しなければならない法的な拘束力を持っています。このように、グローバルなICAOの枠組みの中に、FAAやEASA、JCABといった各国の航空局が持つ国内法規や独自の運用システムが重層的に組み合わさっているのが、現代の国際航空インフラの複雑な実態なのです。</p>
+            
+            <h2>「NOTAM MAP View」が架ける、複雑なグローバル航空情報への架け橋</h2>
+            <p>FAA、EASA、JCABといった世界各国の航空局がそれぞれの管轄エリアから発出する膨大かつ多様なNOTAMデータを、パイロットやドローン操縦者が安全運航のために素早く処理し、正確に理解することは決して容易ではありません。異なるフォーマットのニュアンスや、テキストで羅列された複雑な地理的座標を読み解くには、高度な専門知識と多大な時間が必要となります。</p>
+            <p>当サイト「NOTAM MAP View」は、こうした各国の航空局が提供する生データをシームレスに集約・解析し、世界中のユーザーが直感的なデジタルマップ上で一望できるように設計されています。米国本土の複雑なFDC NOTAMやTFRであっても、日本の空域における各種制限であっても、すべて統一された高精度な地図レイヤー上にポリゴンや円として視覚化されます。世界の主要航空局が形作る複雑な空のルールをテクノロジーの力でシンプルにし、すべての航空従事者に最高の安全性と利便性を提供すること。それこそが私たちの使命です。</p>
         </div>
 
-        <h2>1. 世界標準の「ICAOフォーマット」</h2>
-        <p>
-            日本を含む世界中の多くの国で採用されているのが、国際民間航空機関（ICAO）が定めたフォーマットです。最大の特徴は、情報がQ)からG)までのアルファベット項目に美しく整理されている点です。
-        </p>
-        <ul>
-            <li><strong>Q行（Q-line）：</strong> コンピュータが解析しやすいように、影響範囲や対象をコード化（Qコード）したもの。</li>
-            <li><strong>A〜G行：</strong> 対象空港(A)、開始日時(B)、終了日時(C)、詳細テキスト(E)など、ルールに沿って記載されます。</li>
-        </ul>
-        <p>当アプリがポリゴンやラインを正確に地図上に描画できるのは、この高度に構造化されたICAO基準のデータ仕様があるからです。</p>
-
-        <h2>2. アメリカ独自の「FAAフォーマット」の構造</h2>
-        <p>
-            一方、航空大国であるアメリカは、連邦航空局（FAA）が発行する独自の国内向けフォーマット（Domestic NOTAM）を多用します。
-        </p>
-        <p>
-            FAAフォーマットは、Qコードのようなコンピュータ向けの厳密な構造よりも、「RWY 09/27 CLSD（滑走路09/27閉鎖）」のように、人間が読んで即座に理解しやすいキーワード駆動のテキストになっているのが特徴です。また、距離の単位が海里（NM）だけでなく法定マイル（SM）で記載されたり、FDC NOTAM（飛行データセンターNOTAM）として計器飛行方式のチャート改訂が大量に流れてきたりと、ICAO基準に慣れたパイロットには解読のハードルとなります。
-        </p>
-
-        <h2>3. NOTAM MAP Viewのバックエンド技術</h2>
-        <p>
-            フォーマットが異なると、世界中のNOTAMを一つの地図に統合するのは非常に困難になります。
-        </p>
-        <p>
-            そこで当サイト「NOTAM MAP View」のバックエンドシステムは、FAAが提供する公式のデータ連携用API（NMS-API）を利用しています。このシステムは、アメリカ独自のFAAフォーマットを含む複雑な文字列を解析し、プログラムが地図上に描画可能な構造化データ（GeoJSON等）へと変換・正規化する役割を果たしています。これにより、ユーザーは形式の違いを意識することなく、シームレスに空域情報を確認できるのです。
-        </p>
-    </div>
-
-    <!-- 🇺🇸 English -->
-    <div class="lang-en">
-        <h1>[Guide] Overseas NOTAMs: FAA Format vs. ICAO Standard Pitfalls</h1>
-        <div class="highlight-box">
-            <p style="margin:0; font-size:14px; color: var(--text-sub);">
-                While aviation heavily relies on global standardization, distinct local rules still exist. A prime example is the U.S. Federal Aviation Administration (FAA) NOTAM format. This article highlights the differences between the global ICAO standard and the U.S. domestic FAA format.
-            </p>
+        <div id="content-en" style="display: none;">
+            <h1>FAA, EASA, and JCAB: Major Global Civil Aviation Authorities and Local Rules</h1>
+            
+            <h2>ICAO Frameworks Versus Practical Regulations by National Aviation Authorities</h2>
+            <p>As established, ICAO (International Civil Aviation Organization) serves as the supreme body formulating foundational global standards (SARPs) to interconnect skies worldwide. However, because ICAO holds no sovereign state power, it cannot directly enforce domestic airspace laws or establish granular safety regulations to oversee airlines and pilots. This practical responsibility falls upon "Civil Aviation Authorities (CAAs)" established under the domestic laws of individual nations. For international flight crews and dispatchers traversing global skies, thoroughly understanding the characteristics and local rule variations of major national aviation authorities—both in destination countries and their home jurisdictions—is indispensable knowledge for conducting smooth, legally compliant operations.</p>
+            <p>The agency wielding the most global influence and effectively setting industry de facto standards is the United States' "FAA (Federal Aviation Administration)." Beyond managing the largest and most complex airspace system in the world, the FAA plays a leading role in global aviation technology and safety benchmarks, including issuing Type Certificates for massive manufacturing giants like Boeing. Meanwhile, in Europe, the "EASA (European Union Aviation Safety Agency)" holds sweeping regulatory authority, collectively governing all EU member states. In Japan, the "JCAB (Japan Civil Aviation Bureau)," operating as an internal bureau of the Ministry of Land, Infrastructure, Transport and Tourism, manages the safety oversight and legal enforcement of all domestic airports, airlines, and sovereign airspace.</p>
+            
+            <h2>The Coexistence of International Standardization and Domestic AIP Rules</h2>
+            <p>While a common assumption is that "the sky operates under identical rules everywhere," domestic aviation laws and operational manuals—known as "AIPs (Aeronautical Information Publications)"—promulgated by individual national authorities contain region-specific rules and "Differences from ICAO Standards." For instance, the US airspace classification system employs unique alphabetic distinctions that diverge slightly from standard ICAO classifications (Classes A through G exist globally, but internal operational regulations differ). Subtle local practices also govern radio communication procedures and instrument approach details across FAA, EASA, and JCAB jurisdictions.</p>
+            <p>This structural duality—comprising global standard compliance mixed with regional local rules—is prominently reflected in NOTAM systems. While NOTAMs fundamentally adhere to uniform ICAO formatting guidelines, specific national aviation authority platforms and system architectures frequently incorporate unique distribution categories and supplementary metadata. Notably, the FAA's NOTAM architecture is highly distinct, featuring unique classifications that differ from standard international formats, demanding specialized vigilance from operators.</p>
+            
+            <h2>FAA-Specific "FDC NOTAMs" and Their Global Operational Impact</h2>
+            <p>A prime example of local rules operating under FAA jurisdiction is the existence of "FDC NOTAMs (Flight Data Center NOTAMs)." Whereas standard international NOTAMs primarily address physical, localized events like runway closures or equipment outages, FDC NOTAMs comprehensively communicate emergency regulatory changes to Instrument Flight Rules (IFR) charts, sweeping airspace restrictions, Temporary Flight Restrictions (TFRs) associated with VIP movements like Air Force One, and critical federal regulatory amendments.</p>
+            <p>FDC NOTAMs frequently demand immediate compliance upon issuance and carry strict legal binding force that all pilots operating within US airspace (including foreign-registered commercial carriers) must review alongside standard NOTAMs. Modern international aviation infrastructure thus consists of a complex, layered synthesis where global ICAO frameworks intersect with the domestic laws and proprietary operational systems of national authorities like the FAA, EASA, and JCAB.</p>
+            
+            <h2>Bridging Complex Global Aviation Data Through "NOTAM MAP View"</h2>
+            <p>Rapidly processing and accurately comprehending the massive, diverse volume of NOTAM data issued across respective jurisdictions by global aviation authorities like the FAA, EASA, and JCAB is no small feat for pilots and drone operators striving to maintain safety. Deciphering varying formatting nuances and complex geographical coordinates expressed purely in text requires advanced professional expertise and substantial time.</p>
+            <p>Our platform, "NOTAM MAP View," is engineered to seamlessly aggregate and parse raw data provided by these international aviation authorities, empowering users worldwide to visualize everything on an intuitive digital map interface. Whether navigating complex US domestic FDC NOTAMs and TFRs or local restrictions across Japanese airspace, all data is uniformly rendered as precise polygons and circles across high-accuracy map layers. Simplifying the complex rules of the skies shaped by the world's leading aviation agencies through the power of technology—and delivering ultimate safety and convenience to all aviation professionals—remains our core mission.</p>
         </div>
 
-        <h2>1. The Global Standard: ICAO Format</h2>
-        <p>
-            Most countries, including Japan and European nations, utilize the format defined by the International Civil Aviation Organization (ICAO). Its key feature is a highly structured layout ranging from Item Q) to G).
-        </p>
-        <ul>
-            <li><strong>Q-Line:</strong> Contains standardized "Q-codes" allowing computer systems to parse the subject and condition easily.</li>
-            <li><strong>A to G Lines:</strong> Organizes the Location (A), Start Time (B), End Time (C), and detailed plain text (E) logically.</li>
-        </ul>
-        <p>Our app's ability to draw precise polygons and restricted circles on the map is largely thanks to the structured nature of this ICAO standard.</p>
-
-        <h2>2. The U.S. Specific "FAA Format"</h2>
-        <p>
-            The United States, managing massive air traffic, frequently uses its own FAA domestic formats (such as FDC NOTAMs and D NOTAMs) for flights within the U.S.
-        </p>
-        <p>
-            Unlike the machine-readable Q-codes, FAA domestic NOTAMs are often keyword-driven, prioritizing human readability (e.g., "RWY 09/27 CLSD"). Furthermore, they may use Statute Miles (SM) instead of Nautical Miles (NM) for distance, and issue FDC NOTAMs for instrument approach chart amendments. For pilots accustomed strictly to ICAO, FAA NOTAMs can present a decoding challenge.
-        </p>
-
-        <h2>3. The Backend Tech Powering NOTAM MAP View</h2>
-        <p>
-            Merging different global formats onto a single map is technically challenging due to these structural discrepancies.
-        </p>
-        <p>
-            To solve this, the backend of "NOTAM MAP View" leverages the official FAA NMS-API data stream. This advanced system parses complex strings—including unique FAA domestic layouts—and normalizes them into structured data formats (like GeoJSON) that can be programmatically rendered on our map. As a result, users can seamlessly view global airspace restrictions without ever worrying about underlying format differences.
-        </p>
+        <div style="margin-top: 60px; text-align: center;">
+            <a href="/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
+        </div>
     </div>
-
-    <div class="nav-box">
-        <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 コラム・記事一覧</p>
-        <ul>
-            <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
-            <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
-            <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
-            <li><a href="/article-fir.html">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
-            <li><a href="/article-drone.html">📖 【コラム】ドローンの法律改正（イエローゾーン1000m）とNOTAM表記</a></li>
-            <li><a href="/article-military.html">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a></li>
-            <li><a href="/article-weather.html">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a></li>
-            <li><a href="/article-faa.html">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a></li>
-        </ul>
+    <div class="footer">
+        <p><a href="/privacy.html">Privacy Policy</a> | <a href="/contact.html">Contact Us</a> | <a href="/about.html">About & Guide</a></p>
+        © 2026 NOTAM MAP View. All rights reserved.
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!(navigator.language || navigator.userLanguage).startsWith('ja')) {
-                document.querySelector('.lang-ja').style.display = 'none';
-                document.querySelector('.lang-en').style.display = 'block';
-                document.getElementById('btn-back').innerText = '← Back to Map App';
-                document.title = '[Guide] FAA vs ICAO NOTAMs - NOTAM MAP View';
+        function switchLang(lang) {
+            if (lang === 'ja') {
+                document.getElementById('content-ja').style.display = 'block';
+                document.getElementById('content-en').style.display = 'none';
+                document.getElementById('btn-ja').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+                document.title = "FAA・EASA・JCABの違い | NOTAM MAP View";
+                document.documentElement.lang = "ja";
+            } else {
+                document.getElementById('content-ja').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-ja').classList.remove('active');
+                document.title = "FAA, EASA, and JCAB | NOTAM MAP View";
+                document.documentElement.lang = "en";
             }
-        });
+        }
+        
+        window.onload = function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('ja')) {
+                switchLang('ja');
+            } else {
+                switchLang('en');
+            }
+        };
     </script>
 </body>
 </html>

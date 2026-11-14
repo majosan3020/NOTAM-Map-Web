@@ -3,120 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【コラム】民間と軍事で違う？特殊なNOTAMと空域制限 - NOTAM MAP View</title>
-    <meta name="description" content="自衛隊や米軍の訓練空域、ALTRV（高度留保）、軍民共用空港におけるアレスティング・ワイヤーなど、特殊な軍事関連NOTAMの読み解き方を解説します。">
-    <link rel="icon" href="/icon.png" type="image/png">
+    <title>軍事訓練空域と民間機の関係 | NOTAM MAP View</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
+    <link rel="icon" href="/icon.png" type="image/png" sizes="any">
+    <meta name="description" content="Aviation knowledge base for NOTAM MAP View. Information on ICAO, FIR, SWIM, and flight safety.">
     <style>
-        :root { --primary-color: #d0bcff; --primary-dark: #381e72; --orange-accent: #ff9800; --bg-color: #121212; --surface-color: #1e1e1e; --surface-variant: #2a2a2a; --text-main: #ffffff; --text-sub: #aaaaaa; }
-        body { background-color: var(--bg-color); color: var(--text-main); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; padding: 20px; max-width: 800px; margin: 0 auto; }
-        h1 { color: var(--primary-color); border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 20px; font-size: 22px; }
-        h2 { color: var(--primary-color); border-bottom: 1px solid #333; padding-bottom: 8px; margin-top: 35px; font-size: 18px; }
-        p, li { margin-bottom: 16px; color: #dddddd; }
-        ul { margin-bottom: 20px; padding-left: 20px; }
+        :root { --bg-color: #121212; --surface-color: #1e1e1e; --primary-color: #d0bcff; --text-main: #ffffff; --text-sub: #dddddd; --orange-accent: #ff9800; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; }
+        .header { background-color: var(--surface-color); padding: 12px 20px; border-bottom: 1px solid #333; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 100; }
+        .header img { width: 32px; height: 32px; border-radius: 6px; }
+        .header a { color: var(--primary-color); text-decoration: none; font-weight: bold; font-size: 18px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: var(--primary-color); font-size: 26px; border-bottom: 2px solid #333; padding-bottom: 12px; margin-bottom: 32px; line-height: 1.4; }
+        h2 { color: var(--orange-accent); font-size: 20px; margin-top: 40px; margin-bottom: 16px; border-left: 4px solid var(--orange-accent); padding-left: 12px; }
+        p { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; letter-spacing: 0.03em; }
+        .footer { text-align: center; padding: 24px; color: #888; font-size: 14px; margin-top: 60px; border-top: 1px solid #333; background-color: var(--surface-color); }
         a { color: var(--orange-accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        .back-link { display: inline-block; margin-bottom: 20px; padding: 8px 14px; background: var(--surface-variant); border-radius: 8px; border: 1px solid #444; color: #fff; font-weight: bold; font-size: 14px; }
-        .highlight-box { background-color: var(--surface-color); border-left: 4px solid var(--primary-color); padding: 16px; border-radius: 6px; margin: 20px 0; }
-        .nav-box { background-color: var(--surface-variant); border: 1px solid #444; padding: 16px; border-radius: 8px; margin-top: 40px; }
-        .lang-en { display: none; }
+        .back-btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background-color: var(--surface-color); border: 1px solid #444; border-radius: 8px; text-decoration: none; color: var(--primary-color); font-weight: bold; transition: background-color 0.2s; }
+        .back-btn:hover { background-color: #333; }
+        ul, ol { color: var(--text-sub); font-size: 16px; margin-bottom: 24px; line-height: 1.8; }
+        li { margin-bottom: 10px; }
+        .lang-switch { text-align: right; margin-bottom: 20px; }
+        .lang-switch button { background: var(--surface-color); color: var(--text-main); border: 1px solid #555; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px; font-size: 14px; transition: all 0.2s; }
+        .lang-switch button:hover, .lang-switch button.active { background: var(--primary-color); color: #000; border-color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
-    <a href="/" class="back-link" id="btn-back">← NOTAM MAP View マップアプリに戻る</a>
-
-    <!-- 🇯🇵 日本語 -->
-    <div class="lang-ja">
-        <h1>【コラム】民間と軍事（自衛隊・米軍）で違う？特殊なNOTAMと空域制限</h1>
-        <div class="highlight-box">
-            <p style="margin:0; font-size:14px; color: var(--text-sub);">
-                空は一つですが、その利用者は民間機だけではありません。自衛隊や米軍などの軍用機も同じ空域を飛行しており、それに伴う特殊な空域制限や設備情報がNOTAMとして発令されます。本コラムでは、軍事訓練や軍民共用空港特有のNOTAMについて解説します。
-            </p>
+    <div class="header">
+        <img src="/icon.png" alt="Logo">
+        <a href="/">NOTAM MAP View</a>
+    </div>
+    <div class="container">
+        <div class="lang-switch">
+            <button id="btn-ja" onclick="switchLang('ja')">日本語</button>
+            <button id="btn-en" onclick="switchLang('en')">English</button>
+        </div>
+        
+        <div id="content-ja" style="display: none;">
+            <h1>軍事訓練空域と民間機の関係：空の安全を保つ空域調整の仕組み</h1>
+            
+            <h2>民間の空と軍事の空：特殊な運用が求められる防衛空域の現実</h2>
+            <p>世界の空域は、定期航空路線を飛ぶ旅客機や貨物機、ジェネラル・アビエーション（一般航空）の小型機だけでなく、国家防衛や国土警備を担う軍用機にとっても共有の舞台です。しかし、戦闘機による超音速飛行、空中戦（ドッグファイト）の訓練、実弾射撃演習、ミサイル発射試験、あるいは大型輸送機の低空編隊飛行などは、通常の民間航空機の運航とは全く異なる高いリスクや特殊な運用条件を伴います。これら軍事的な活動が民間機と偶発的に交錯し、重大な空中衝突事故を引き起こすことを防ぐために設定されているのが、各種の制限空域や軍事訓練空域（MOA：Military Operations Area）です。</p>
+            <p>平時においても、各国は防衛上の必要性から特定の空域を訓練エリアとして指定しています。しかし、その空域を恒久的に一般の民間機が一切飛行できない禁止空域（Prohibited Area）にしてしまうと、航空路の効率が著しく低下し、燃料の無駄遣いや大規模な迂回運航を強制されることになります。そのため、多くの場合、軍事訓練空域は「特定の時間帯や曜日のみ一時的に閉鎖・制限する」という運用がとられており、その動的なスケジュール変更をタイムリーにパイロットへ伝える手段としてNOTAM（Notice to Air Missions）が絶対不可欠な役割を果たしているのです。</p>
+            
+            <h2>高度予約（ALTRV）と複雑なポリゴン空域が持つ運航上の課題</h2>
+            <p>大規模な軍事演習や特殊なミッションが行われる際によく用いられる仕組みの一つに、「ALTRV（Altitude Reservation：高度予約）」があります。これは、特定の高度帯と地理的範囲を一定時間、軍の作戦行動のために完全に予約・確保するものであり、その期間中は原則として一般の航空機やドローンの進入が固く禁じられます。こうした軍事関連のNOTAMの最大の特徴は、その形状が単純な円形ではなく、無数の緯度経度の座標点を直線で結んだ「非常に複雑な多角形（ポリゴン）」として定義されることが多い点にあります。</p>
+            <p>例えば、広大な洋上や山岳地帯の上空に設定された演習エリアのNOTAMテキストを覗くと、数十個もの緯度経度のデータが延々と羅列されています。従来のパイロットや運航管理者は、これら膨大な座標データを一つひとつ手作業で紙の航空図上にプロットし、定規を使って多角形の境界線を引くという途方もない作業を行っていました。少しでもプロットの値を読み違えれば、知らず知らずのうちに危険な訓練空域の境界を侵犯してしまうリスクがあり、現場のクルーにとって精神的な負担が非常に大きい作業でした。</p>
+            
+            <h2>テキストの限界を超え、視覚化によって安全を担保するデジタルアプローチ</h2>
+            <p>軍事訓練空域に関するNOTAMを誤解釈すること、あるいは見落とすことは、国家の安全保障に関わるトラブルだけでなく、民間機の安全運航を脅かす重大なインシデントに直結します。だからこそ、現代の航空運航においては、テキストベースの情報を人間が脳内で地図に変換するアナログな手法から脱却し、デジタルテクノロジーによって完全かつ正確に視覚化するアプローチへの転換が急務とされてきました。</p>
+            <p>軍事演習のポリゴンや高度制限の範囲をデジタルマップ上に正確にレンダリングできれば、「自機の飛行ルートが訓練空域の制限高度とどこでクロスしているのか」「何時何分にそのエリアを通過するのか」を一目瞭然で確認することができます。特に近年急増しているドローン操縦者にとっても、自衛隊や米軍の基地周辺、あるいは洋上の訓練区域でいつどのような演習が予定されているかを正確に把握することは、予期せぬトラブルを防ぐ上で極めて重要です。</p>
+            
+            <h2>「NOTAM MAP View」が実現する、安全で透明性の高いフライトプランニング</h2>
+            <p>当サイト「NOTAM MAP View」は、こうした複雑な軍事訓練空域や一時的な高度予約（ALTRV）を含むあらゆるNOTAMデータを自動解析し、地図上に鮮明なポリゴンとしてグラフィカルに描き出す機能を備えています。ユーザーは、テキストの暗号解読に頭を悩ませることなく、直感的なマップインターフェース上で危険エリアと飛行ルートの位置関係を完全にコントロールすることができます。</p>
+            <p>空の安全は、ミリタリーとシビリアン（民間）の正確で透明性の高い情報共有と相互理解の上に成り立っています。NOTAMの構造と軍事訓練空域の特性を正しく理解し、「NOTAM MAP View」のような最先端の視覚化ツールをフル活用することで、あらゆる空のプロフェッショナルおよび愛好家が、より安全で確実なフライトプランニングを実践できる環境を築いていきましょう。</p>
         </div>
 
-        <h2>1. ALTRV（高度留保）と広域な訓練空域</h2>
-        <p>
-            軍事演習や大規模な編隊飛行が行われる際、特定の高度と空域を軍用機専用として確保することがあります。これを<strong>ALTRV（Altitude Reservation：高度留保）</strong>と呼びます。
-        </p>
-        <p>
-            通常の民間機が飛行する航空路（Airway）と交差する場合、NOTAMにて「〇月〇日の〇時〜〇時まで、特定の空域（高度〇〇〜〇〇）への進入禁止」といった形で告知されます。これらの制限エリアは非常に広大になることが多く、文字情報だけで頭の中に3Dの空間を描くのは困難です。
-        </p>
-
-        <h2>2. 軍民共用空港ならではの設備NOTAM</h2>
-        <p>
-            日本国内には、民間機と自衛隊・米軍が滑走路を共用している空港（千歳、三沢、岩国、徳島、那覇など）が多数存在します。こうした空港のNOTAMには、民間専用空港では見られない特殊な設備に関する情報が含まれます。
-        </p>
-        <ul>
-            <li><strong>アレスティング・ケーブル（拘束ワイヤー）：</strong> 戦闘機が緊急着陸時にフックを引っ掛けて止まるためのワイヤー。民間機にとっては障害物となるため、滑走路上に設置されている（UP状態）か、撤去されている（DOWN状態）かがNOTAMで厳密に通知されます。</li>
-            <li><strong>バリアー：</strong> 同様にオーバーランを防ぐためのネット状の設備。これらの作動状況もフライトの安全性に直結します。</li>
-        </ul>
-
-        <h2>3. マップアプリで軍事制限空域を可視化するメリット</h2>
-        <p>
-            軍事訓練や特殊空域のNOTAMは、多数の緯度経度座標を結んだ「ポリゴン（多角形）」として発令されることが一般的です。NOTAM MAP Viewを活用すれば、これらの広大で複雑な制限空域が地図上に自動で描画されます。
-        </p>
-        <p>
-            VFR（有視界飛行方式）で飛ぶ小型機や、フライトシミュレーターでリアルなルート構築を楽しみたい航空ファンにとって、民間と軍事の境界線を視覚的に把握できることは、非常に大きなメリットとなります。
-        </p>
-    </div>
-
-    <!-- 🇺🇸 English -->
-    <div class="lang-en">
-        <h1>[Guide] Civil vs. Military: Understanding Special NOTAMs & Airspace Restrictions</h1>
-        <div class="highlight-box">
-            <p style="margin:0; font-size:14px; color: var(--text-sub);">
-                The sky is shared by both civil and military aircraft. Consequently, special airspace restrictions and facility updates related to military operations are frequently published as NOTAMs. This column explains how to read NOTAMs involving military training and joint-use airports.
-            </p>
+        <div id="content-en" style="display: none;">
+            <h1>Military Training Airspace and Civil Aviation: The Mechanics of Airspace Coordination for Safety</h1>
+            
+            <h2>Civil Skies vs. Military Skies: The Reality of Defense Airspace Operations</h2>
+            <p>The global airspace serves as a shared stage not only for commercial airliners and general aviation small aircraft flying established routes, but also for military aircraft tasked with national defense and territorial security. However, supersonic flights by fighter jets, dogfighting combat training, live-firing exercises, missile tests, or low-altitude formation flights by large transport planes involve high risks and specialized operational conditions entirely distinct from normal civil aviation operations. To prevent these military activities from accidentally intersecting with civil air traffic and causing catastrophic mid-air collisions, various restricted areas and Military Operations Areas (MOAs) are established.</p>
+            <p>Even during peacetime, nations designate specific airspaces as training areas out of defensive necessity. However, permanently designating such airspaces as prohibited areas where civil aircraft can never fly would severely degrade airway efficiency, forcing operators into wasteful fuel consumption and massive detours. Consequently, military training airspaces are frequently designed to be "temporarily closed or restricted only during specific times and days," relying on NOTAMs (Notice to Air Missions) as the essential mechanism to communicate these dynamic schedule changes to pilots in a timely manner.</p>
+            
+            <h2>Altitude Reservations (ALTRV) and the Challenges of Complex Polygon Airspace</h2>
+            <p>A mechanism frequently utilized during large-scale military exercises or specialized missions is the "ALTRV (Altitude Reservation)." This reserves and secures a specific band of altitude and geographical scope for a designated duration strictly for military operational use, during which entry by general aircraft and drones is strictly prohibited. The defining characteristic of these military-related NOTAMs is that their shapes are rarely simple circles; instead, they are frequently defined as "highly complex polygons connecting numerous latitude and longitude coordinate points with straight lines."</p>
+            <p>Examining the NOTAM text for an exercise area established over a vast ocean expanse or mountainous terrain reveals a continuous string of dozens of coordinate data points. Historically, traditional pilots and dispatchers had to manually plot every single coordinate value onto paper aeronautical charts, using rulers and compasses to draw the boundaries of these polygons. Misreading a single plot value risked inadvertently breaching the boundaries of hazardous training airspace, imposing a heavy psychological burden on flight crews.</p>
+            
+            <h2>Moving Beyond Text Limits: The Digital Approach to Visualizing Safety</h2>
+            <p>Misinterpreting or overlooking NOTAMs concerning military training airspaces can directly lead to serious incidents threatening civil aviation safety. For this reason, modern aviation operations urgently require a shift away from analog methods—where humans mentally translate text-based data into maps—toward digital technologies that fully and accurately visualize information.</p>
+            <p>If military exercise polygons and altitude restriction boundaries can be accurately rendered on digital maps, operators can instantly determine "where their flight route intersects with the restricted altitudes of a training airspace" and "at what exact time they will transit that area." For the rapidly increasing number of drone operators in recent years, accurately grasping when and what exercises are scheduled near Self-Defense Force or US military bases—or over offshore training zones—is vital to preventing unexpected incidents.</p>
+            
+            <h2>Transparent and Safe Flight Planning Enabled by "NOTAM MAP View"</h2>
+            <p>Our platform, "NOTAM MAP View," is engineered to automatically parse all NOTAM data, including complex military training airspaces and temporary Altitude Reservations (ALTRV), graphically rendering them as sharp polygons directly on a digital map. Users can entirely bypass the headache of decrypting cryptic text strings, utilizing an intuitive map interface to completely control the spatial relationship between hazard zones and flight routes.</p>
+            <p>Airspace safety relies entirely on accurate, transparent information sharing and mutual understanding between military and civilian sectors. By properly understanding the structure of NOTAMs and the characteristics of military training airspaces, and fully leveraging cutting-edge visualization tools like "NOTAM MAP View," aviation professionals and enthusiasts alike can build an environment for safer and more confident flight planning.</p>
         </div>
 
-        <h2>1. ALTRV (Altitude Reservation) and Training Areas</h2>
-        <p>
-            During military exercises or large formation flights, specific altitudes and airspaces are often reserved exclusively for military use, known as an <strong>ALTRV (Altitude Reservation)</strong>.
-        </p>
-        <p>
-            When these areas intersect with civil airways, NOTAMs are issued to prohibit entry into the specified 3D block of airspace. Because these restricted areas are usually vast and complex, mentally visualizing the coordinates provided in the raw text is highly challenging for pilots.
-        </p>
-
-        <h2>2. Unique NOTAMs at Joint-Use Airports</h2>
-        <p>
-            Many airports globally (and specifically in Japan, such as Misawa, Iwakuni, and Naha) are joint-use facilities shared by civil airlines and military forces. NOTAMs for these airports contain specific operational information rarely seen at purely civil airports.
-        </p>
-        <ul>
-            <li><strong>Arresting Cables:</strong> Wires spanning the runway used to catch fighter jets with tailhooks during emergencies. For civil aircraft, these are obstacles. NOTAMs explicitly state whether cables are raised (UP) or lowered/removed (DOWN).</li>
-            <li><strong>Barriers:</strong> Net systems designed to prevent overruns, whose operational status is critical for safe civil landings and takeoffs.</li>
-        </ul>
-
-        <h2>3. Visualizing Military Restrictions with the Map App</h2>
-        <p>
-            Military training sectors and special airspace restrictions are typically issued as polygons defined by numerous latitude and longitude coordinates. By using NOTAM MAP View, these massive and complex restricted zones are automatically rendered on the interactive map.
-        </p>
-        <p>
-            Whether you are a VFR pilot navigating around active military airspace or a flight simulator enthusiast wanting realistic route planning, visually distinguishing the boundaries between civil and military domains provides a massive operational advantage.
-        </p>
+        <div style="margin-top: 60px; text-align: center;">
+            <a href="/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
+        </div>
     </div>
-
-    <div class="nav-box">
-        <p style="margin-top:0; font-weight:bold; color:var(--primary-color);">📚 コラム・記事一覧</p>
-        <ul>
-            <li><a href="/article-notam.html">📖 【コラム】初心者向け NOTAMの基礎知識と読み方</a></li>
-            <li><a href="/article-icao.html">📖 【コラム】ICAOコードとは？空港を識別する4文字の秘密</a></li>
-            <li><a href="/article-swim.html">📖 【コラム】AIS JapanからSWIMへ！日本の航空情報システムの進化</a></li>
-            <li><a href="/article-fir.html">📖 【コラム】FIR（飛行情報区）とは？空の境界線と広域NOTAMの読み解き方</a></li>
-            <li><a href="/article-drone.html">📖 【コラム】ドローンの法律改正（イエローゾーン1000m）とNOTAM表記</a></li>
-            <li><a href="/article-military.html">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a></li>
-            <li><a href="/article-weather.html">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a></li>
-            <li><a href="/article-faa.html">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a></li>
-        </ul>
+    <div class="footer">
+        <p><a href="/privacy.html">Privacy Policy</a> | <a href="/contact.html">Contact Us</a> | <a href="/about.html">About & Guide</a></p>
+        © 2026 NOTAM MAP View. All rights reserved.
     </div>
-
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (!(navigator.language || navigator.userLanguage).startsWith('ja')) {
-                document.querySelector('.lang-ja').style.display = 'none';
-                document.querySelector('.lang-en').style.display = 'block';
-                document.getElementById('btn-back').innerText = '← Back to Map App';
-                document.title = '[Guide] Civil vs. Military NOTAMs - NOTAM MAP View';
+        function switchLang(lang) {
+            if (lang === 'ja') {
+                document.getElementById('content-ja').style.display = 'block';
+                document.getElementById('content-en').style.display = 'none';
+                document.getElementById('btn-ja').classList.add('active');
+                document.getElementById('btn-en').classList.remove('active');
+                document.title = "軍事訓練空域と民間機の関係 | NOTAM MAP View";
+                document.documentElement.lang = "ja";
+            } else {
+                document.getElementById('content-ja').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('btn-en').classList.add('active');
+                document.getElementById('btn-ja').classList.remove('active');
+                document.title = "Military Airspace and Civil Aviation | NOTAM MAP View";
+                document.documentElement.lang = "en";
             }
-        });
+        }
+        
+        window.onload = function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            if (userLang.startsWith('ja')) {
+                switchLang('ja');
+            } else {
+                switchLang('en');
+            }
+        };
     </script>
 </body>
 </html>
