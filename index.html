@@ -65,6 +65,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
         }
 
         /* 🌟 トップブランドバー */
@@ -306,14 +308,18 @@
             overflow: hidden; 
         }
 
-        /* 🌟 スマホとPCの表示切り替え（スマホではボトム広告を非表示にして地図を全域表示） */
+        /* 🌟 スマホとPCの表示切り替え */
         @media (max-width: 768px) {
             #fixed-ad-banner {
                 display: none !important; /* 携帯ではボトム広告を非表示 */
             }
             #map {
                 right: 0;
-                bottom: 38vh; /* リストパネルの上端まで地図を表示 */
+                bottom: 38vh; /* 通常時はリストパネルの高さ分空ける */
+            }
+            /* 🌟 「画面を広く」が押されて map-expanded クラスがついたときは下端まで地図を広げる */
+            body.map-expanded #map {
+                bottom: 0 !important;
             }
             #notam-panel {
                 position: absolute;
@@ -453,7 +459,7 @@
         }
         .details-btn:hover { text-decoration: underline; }
 
-        /* 🌟 画面最下部に固定表示するバナー広告（PC用） */
+        /* 🌟 画面最下部に固定表示するバナー広告（PC専用） */
         #fixed-ad-banner {
             flex-shrink: 0;
             width: 100%;
@@ -976,10 +982,12 @@
                 panel.style.display = 'none';
                 headerCollapsible.style.display = 'none';
                 btn.innerHTML = isJa ? '▶ リストと検索条件を表示' : '▶ Show List & Filters';
+                document.body.classList.add('map-expanded'); // 🌟 地図を画面下端まで広げる
             } else {
                 panel.style.display = 'flex';
                 headerCollapsible.style.display = 'flex';
                 btn.innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
+                document.body.classList.remove('map-expanded'); // 🌟 通常の高さに戻す
             }
             setTimeout(() => map.invalidateSize(), 300);
         }
