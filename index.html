@@ -496,7 +496,7 @@
             padding: 10px 20px 20px 20px;
             display: flex;
             justify-content: flex-end;
-            gap: 10px; /* ボタン間の余白 */
+            gap: 10px;
         }
         .modal-btn {
             background: none;
@@ -692,11 +692,17 @@
         </div>
     </div>
 
+    <!-- 🌟 3回検索時のポップアップ広告枠 -->
     <div id="fullscreen-ad-overlay" class="overlay">
         <div style="background:#fff; color:#333; padding:20px; border-radius:8px; text-align:center; width:80%; max-width:400px;">
             <h3>Advertisement</h3>
-            <div style="height:200px; background:#eee; margin:10px 0; display:flex; align-items:center; justify-content:center;">
-                Ad Content
+            <div style="margin:10px 0; min-height:200px; display:flex; align-items:center; justify-content:center;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-9711360644462159"
+                     data-ad-slot="9969479962"
+                     data-format="auto"
+                     data-full-width-responsive="true"></ins>
             </div>
             <button onclick="closeFullScreenAd()" style="padding:10px 20px; background:#555; color:#fff; border:none; border-radius:4px; cursor:pointer;">Close</button>
         </div>
@@ -1120,7 +1126,12 @@
             renderUI(false);
         }
 
-        function showFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; }
+        function showFullScreenAd() { 
+            document.getElementById('fullscreen-ad-overlay').style.display = 'flex'; 
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {}
+        }
         function closeFullScreenAd() { document.getElementById('fullscreen-ad-overlay').style.display = 'none'; }
 
         async function fetchNotams(isAutoLoad = false) {
