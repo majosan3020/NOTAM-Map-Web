@@ -354,9 +354,9 @@
             }
             #map {
                 right: 0;
-                bottom: 38vh; /* 通常時はリストパネルの高さ分空ける */
+                bottom: 30.4vh; /* 🌟 リストの高さ（30.4vh）に合わせて調整 */
             }
-            /* 🌟 「画面を広く」が押されて map-expanded クラスがつえたときは下端まで地図を広げる */
+            /* 🌟 「画面を広く」が押されて map-expanded クラスがついたときは下端まで地図を広げる */
             body.map-expanded #map {
                 bottom: 0 !important;
             }
@@ -365,7 +365,7 @@
                 bottom: 0; 
                 left: 0; 
                 right: 0;
-                height: 38vh; 
+                height: 30.4vh; /* 🌟 38vhから20%低くした高さ（38 * 0.8 = 30.4vh） */
                 border-top-left-radius: 16px;
                 border-top-right-radius: 16px;
                 border-top: 1px solid #444;
