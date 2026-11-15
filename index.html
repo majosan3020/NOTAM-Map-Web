@@ -50,6 +50,45 @@
             overflow: hidden;
         }
 
+        /* 🌟 スマホ用アプリ誘導トップバナー */
+        #app-install-banner {
+            display: none;
+            background: linear-gradient(135deg, #381e72, #2a2a2a);
+            color: #fff;
+            padding: 8px 12px;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            z-index: 2500;
+            border-bottom: 1px solid var(--primary-color);
+            flex-shrink: 0;
+        }
+        #app-install-banner .install-btn {
+            background-color: var(--primary-color);
+            color: var(--primary-dark);
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        #app-install-banner .close-banner {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0 4px;
+            line-height: 1;
+        }
+        /* スマホ（幅768px以下）かつ表示フラグがある時だけ表示 */
+        @media (max-width: 768px) {
+            body.show-app-banner #app-install-banner {
+                display: flex;
+            }
+        }
+
         #header-container {
             flex-shrink: 0;
             background-color: var(--bg-color);
@@ -317,7 +356,7 @@
                 right: 0;
                 bottom: 38vh; /* 通常時はリストパネルの高さ分空ける */
             }
-            /* 🌟 「画面を広く」が押されて map-expanded クラスがついたときは下端まで地図を広げる */
+            /* 🌟 「画面を広く」が押されて map-expanded クラスがつえたときは下端まで地図を広げる */
             body.map-expanded #map {
                 bottom: 0 !important;
             }
@@ -572,6 +611,18 @@
 </head>
 <body>
 
+    <!-- 🌟 スマホ用公式アプリ誘導トップバナー -->
+    <div id="app-install-banner">
+        <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
+            <span style="font-size: 18px;">📱</span>
+            <span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="banner-text">公式アプリ版公開中！</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a href="https://play.google.com/store/apps/details?id=com.majo.notammapview" class="install-btn" target="_blank" id="banner-install-btn">Google Play</a>
+            <button class="close-banner" onclick="closeAppBanner()">×</button>
+        </div>
+    </div>
+
     <div id="header-container">
         <div class="brand-row">
             <div class="brand-left">
@@ -745,6 +796,11 @@
         <div class="modal-content">
             <div class="modal-header" id="menu-header-title">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- 🌟 メニュー内にもアプリ版へのリンクを追加 -->
+                <a href="https://play.google.com/store/apps/details?id=com.majo.notammapview" class="nav-link" target="_blank" style="background-color: var(--primary-dark); color: var(--primary-color); border-color: var(--primary-color);">
+                    📱 Android公式アプリ版をインストール (Google Play)
+                </a>
+                <hr style="border: 0; border-top: 1px solid #444; margin: 2px 0;">
                 <a href="/about.html" class="nav-link" target="_blank" id="menu-about">ℹ️ About & Guide (概要・使い方)</a>
                 <a href="/privacy.html" class="nav-link" target="_blank" id="menu-privacy">🛡️ Privacy Policy (プライバシーポリシー)</a>
                 <a href="/contact.html" class="nav-link" target="_blank" id="menu-contact">✉️ Contact Us (お問い合わせ)</a>
@@ -757,7 +813,7 @@
                 <a href="/article-military.html" class="nav-link" target="_blank" id="menu-military">📖 【コラム】民間と軍事で違う？特殊なNOTAMと空域制限</a>
                 <a href="/article-weather.html" class="nav-link" target="_blank" id="menu-weather">📖 【コラム】METAR・TAF（気象）とNOTAMの違いと組み合わせ方</a>
                 <a href="/article-faa.html" class="nav-link" target="_blank" id="menu-faa">📖 【コラム】海外のNOTAMはどう違う？FAAフォーマットの落とし穴</a>
-                <button onclick="closeMenuModal()" class="nav-link" id="menu-close" style="margin-top: 10px; justify-content: center; background-color: var(--primary-dark); color: white; border: none; cursor: pointer;">
+                <button onclick="closeMenuModal()" class="nav-link" id="menu-close" style="margin-top: 10px; justify-content: center; background-color: var(--surface-variant); color: white; border: 1px solid #444; cursor: pointer;">
                     ⬅ マップ画面に戻る (Close Menu)
                 </button>
             </div>
@@ -850,13 +906,16 @@
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.error("AdSense push error", e);
+            // 🌟 スマホ用トップバナーの表示判定
+            if (!localStorage.getItem('hide_app_banner') && window.innerWidth <= 768) {
+                document.body.classList.add('show-app-banner');
             }
 
+            // 言語に応じたバナーテキスト切り替え
             if (!isJa) {
+                document.getElementById('banner-text').innerText = 'Official Android App Available!';
+                document.getElementById('banner-install-btn').innerText = 'Install';
+
                 document.getElementById('intro-ja').style.display = 'none';
                 document.getElementById('intro-en').style.display = 'block';
 
@@ -872,6 +931,12 @@
                 document.getElementById('menu-weather').innerHTML = '📖 [Guide] METAR/TAF vs NOTAMs';
                 document.getElementById('menu-faa').innerHTML = '📖 [Guide] FAA vs ICAO NOTAMs';
                 document.getElementById('menu-close').innerHTML = '⬅ Return to Map (Close Menu)';
+            }
+
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.error("AdSense push error", e);
             }
 
             document.getElementById('toggle-panel-btn').innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
@@ -922,6 +987,12 @@
                 document.getElementById('search-input').value = lastQuery;
             }
         });
+
+        // 🌟 アプリ誘導バナーを閉じる関数
+        function closeAppBanner() {
+            document.body.classList.remove('show-app-banner');
+            localStorage.setItem('hide_app_banner', 'true');
+        }
 
         function showWelcomeGuide() {
             allFetchedNotams = [];
@@ -982,12 +1053,12 @@
                 panel.style.display = 'none';
                 headerCollapsible.style.display = 'none';
                 btn.innerHTML = isJa ? '▶ リストと検索条件を表示' : '▶ Show List & Filters';
-                document.body.classList.add('map-expanded'); // 🌟 地図を画面下端まで広げる
+                document.body.classList.add('map-expanded'); 
             } else {
                 panel.style.display = 'flex';
                 headerCollapsible.style.display = 'flex';
                 btn.innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
-                document.body.classList.remove('map-expanded'); // 🌟 通常の高さに戻す
+                document.body.classList.remove('map-expanded'); 
             }
             setTimeout(() => map.invalidateSize(), 300);
         }
