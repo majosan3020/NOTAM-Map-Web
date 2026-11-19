@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://majosystem.com/</loc>
+    <loc>https://www.majosystem.com/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/about.html</loc>
+    <loc>https://www.majosystem.com/about.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/privacy.html</loc>
+    <loc>https://www.majosystem.com/privacy.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/contact.html</loc>
+    <loc>https://www.majosystem.com/contact.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-notam.html</loc>
+    <loc>https://www.majosystem.com/article-notam.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-icao.html</loc>
+    <loc>https://www.majosystem.com/article-icao.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-swim.html</loc>
+    <loc>https://www.majosystem.com/article-swim.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-fir.html</loc>
+    <loc>https://www.majosystem.com/article-fir.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-drone.html</loc>
+    <loc>https://www.majosystem.com/article-drone.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-military.html</loc>
+    <loc>https://www.majosystem.com/article-military.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-weather.html</loc>
+    <loc>https://www.majosystem.com/article-weather.html</loc>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://majosystem.com/article-faa.html</loc>
+    <loc>https://www.majosystem.com/article-faa.html</loc>
     <priority>0.9</priority>
   </url>
 </urlset>
