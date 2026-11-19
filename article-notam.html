@@ -7,7 +7,36 @@
     <link rel="canonical" href="https://www.majosystem.com/article-notam.html" />
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9711360644462159" crossorigin="anonymous"></script>
     <link rel="icon" href="/icon.png" type="image/png" sizes="any">
-    <meta name="description" content="Aviation knowledge base for NOTAM MAP View. Information on ICAO, FIR, SWIM, and flight safety.">
+    <meta name="description" content="NOTAM（Notice to Air Missions）の基礎知識、QコードやA)〜G)フォーマットの読み方、ブリーフィングのポイントを初心者向けにわかりやすく解説します。">
+
+    <!-- 構造化データ（JSON-LD） -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "初心者向け NOTAMの基礎知識と読み方",
+      "description": "NOTAM（Notice to Air Missions）の基礎知識、Qコードやフォーマットの読み方を初心者向けに解説します。",
+      "image": "https://www.majosystem.com/icon.png",
+      "author": {
+        "@type": "Organization",
+        "name": "NOTAM MAP View",
+        "url": "https://www.majosystem.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "NOTAM MAP View",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.majosystem.com/icon.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.majosystem.com/article-notam.html"
+      }
+    }
+    </script>
+
     <style>
         :root { --bg-color: #121212; --surface-color: #1e1e1e; --primary-color: #d0bcff; --text-main: #ffffff; --text-sub: #dddddd; --orange-accent: #ff9800; }
         body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; }
@@ -33,17 +62,17 @@
 <body>
     <div class="header">
         <img src="/icon.png" alt="Logo">
-        <a href="/">NOTAM MAP View</a>
+        <a href="https://www.majosystem.com/">NOTAM MAP View</a>
     </div>
     <div class="container">
         <div class="lang-switch">
             <button id="btn-ja" onclick="switchLang('ja')">日本語</button>
             <button id="btn-en" onclick="switchLang('en')">English</button>
         </div>
+
+        <h1 id="article-title">初心者向け NOTAMの基礎知識と読み方</h1>
         
         <div id="content-ja" style="display: none;">
-            <h1>初心者向け NOTAMの基礎知識と読み方</h1>
-            
             <h2>NOTAM（ノータム）とは何か？航空の安全を根本から支える不可欠な情報網</h2>
             <p>NOTAM（Notice to Air Missions）は、航空機の運航に直接関わるパイロット、ディスパッチャー（運航管理者）、航空管制官などに向けた、安全確保のための極めて重要な通知システムです。航空機は時速数百キロメートルから千キロメートル近い高速で空を移動します。そのため、目的地の空港の滑走路が急な工事で閉鎖されていたり、航法無線施設が故障していたり、あるいは飛行経路上で軍事訓練による空域制限が行われていたりすると、事前の準備がなければ大事故に直結しかねません。こうした「日常とは異なる変更点」や「一時的な危険情報」を、フライト前に確実に把握し、回避策を講じるためのシステムがNOTAMなのです。国際民間航空機関（ICAO）の基準に基づいてフォーマット化されており、世界中どこでも共通のルールで情報が配信されています。</p>
             <p>かつて、このシステムは「Notice to Airmen（航空操縦士への通知）」と呼ばれていました。しかし、近年におけるドローン（無人航空機）の爆発的な普及や、宇宙空間へのロケット打ち上げなど、空域を利用するミッションが多様化したことに伴い、より包括的で現代的な「Notice to Air Missions」へと国際的に名称が変更されました。これにより、有人機のパイロットだけでなく、無人機のオペレーターにとっても欠かせない公式な情報源として再定義されています。</p>
@@ -65,13 +94,11 @@
             <p>そのため、パイロットやディスパッチャーには「自分たちのフライトの経路・高度・時間帯に本当に関連するもの」だけを素早くフィルタリングして読み解くスキルが求められます。例えば、VFR（有視界飛行方式）で小型のセスナ機を低高度で飛ばす場合、高度な計器着陸システム（ILS）の不具合情報は直接的な影響を及ぼしません。逆に、低高度でドローンを飛ばす場合は、同じ空域でドクターヘリの低空離発着訓練が行われないか、あるいは近隣で花火大会やクレーン建設による障害物が発生していないかを示すNOTAMが、生死を分けるクリティカルな情報となります。情報の取捨選択（トリアージ）こそが、安全で効率的な運航の鍵を握っているのです。</p>
 
             <h2>NOTAM MAP Viewがもたらす情報の視覚化とフライトプランニングの革新</h2>
-            <p>これまで、パイロットはテキストで羅列された緯度経度（例：3530N13945E）を頭の中で地図上の座標に変換するか、定規とコンパスを使って手作業で紙の航空図（チャート）にプロットするという、非常に非効率でミスが起こりやすい作業を強いられていました。特に、多数の座標点を結んで複雑な多角形（ポリゴン）を描く軍事訓練空域や一時的な飛行制限区域などは、テキストの羅列だけではその正確な形状を直感的に把握することがほぼ不可能です。この長年の航空業界の課題を根本から解決するために開発されたのが、当サイト「NOTAM MAP View」です。</p>
+            <p>これまで、パイロットはテキストで羅列された緯度経度（例：3530N13945E）を頭の中で地図上の座標に変換するか、定規とコンパスを使って手作業で紙の航空図（チャート）にプロットするという、非常に非効率でミスが起こりやすい作業を強いられていました。特に、多数の座標点を結んで複雑な多角形（ポリゴン）を描く軍事訓練空域や一時的な飛行制限区域などは、テキストの羅列だけではその正確な形状を直感的に把握することがほぼ不可能です。この長年の航空業界の課題を根本から解決するために開発されたのが、当サイト「<a href="https://www.majosystem.com/">NOTAM MAP View</a>」です。</p>
             <p>当システムは、入力された難解なNOTAMのテキストデータをリアルタイムで自動解析（パース）し、影響範囲を円やポリゴンとしてデジタルマップ上にグラフィカルに描画します。これにより、「自分がこれから飛ぶ飛行ルート上に、危険エリアが被っているかどうか」が一目瞭然となり、ブリーフィングにかかる時間が劇的に短縮されます。人間は文字情報よりも視覚的な情報を圧倒的に早く、そして正確に処理できる生き物です。空の安全は、確実でミスのない情報収集から始まります。NOTAMの基本的な読み方と構造を理解した上で、最先端のデジタル視覚化ツールを活用し、より安全で確実なフライトプランニングを実現してください。</p>
         </div>
 
         <div id="content-en" style="display: none;">
-            <h1>Beginner's Guide to NOTAMs: Basics and How to Read Them</h1>
-            
             <h2>What is a NOTAM? The Essential Information Network Supporting Aviation Safety</h2>
             <p>A NOTAM (Notice to Air Missions) is a highly critical safety notification system directed at pilots, flight dispatchers, air traffic controllers, and anyone directly involved in flight operations. Aircraft travel through the sky at high speeds ranging from hundreds to nearly a thousand kilometers per hour. Consequently, if a runway at the destination airport is suddenly closed for emergency repairs, a vital navigational radio beacon fails, or military training exercises restrict airspace along the intended flight route, a lack of prior knowledge can directly lead to a catastrophic accident. NOTAMs act as the official system to ensure that operators reliably grasp these "deviations from the norm" and "temporary hazards" prior to flight, allowing them to formulate contingency plans. Standardized by the International Civil Aviation Organization (ICAO), this information is distributed globally under a uniform set of rules.</p>
             <p>Historically, this acronym stood for "Notice to Airmen." However, driven by the explosive proliferation of drones (Unmanned Aircraft Systems) and the diversification of airspace utilization—such as commercial space rocket launches—the terminology was internationally updated to the more inclusive and modern "Notice to Air Missions." Through this change, NOTAMs have been redefined as an indispensable and legally binding information source not only for manned aircraft pilots but also for unmanned aircraft operators.</p>
@@ -93,12 +120,12 @@
             <p>Therefore, pilots and dispatchers must develop the critical skill of quickly filtering out irrelevant data and extracting only the information pertinent to their specific route, altitude, and timeframe. For instance, if flying a small Cessna under VFR at 3,000 feet, an out-of-service high-altitude Instrument Landing System (ILS) holds no relevance. Conversely, for a drone operator flying at 400 feet, a NOTAM detailing low-altitude helicopter rescue training, temporary crane construction, or fireworks in the vicinity becomes critical, life-saving intelligence. This process of information triage is the absolute key to maintaining both safety and efficiency in flight operations.</p>
 
             <h2>How NOTAM MAP View Revolutionizes Flight Planning Through Visualization</h2>
-            <p>For decades, pilots were forced to endure the highly inefficient and error-prone process of mentally translating text-based latitude and longitude coordinates (e.g., 3530N13945E) into geographical map locations, or manually plotting them on paper aeronautical charts using rulers and compasses. Grasping the exact shape of complex military training areas or temporary flight restrictions—which often consist of numerous coordinates forming complex polygons—is virtually impossible using text alone. "NOTAM MAP View" was developed specifically to solve this persistent industry-wide challenge.</p>
+            <p>For decades, pilots were forced to endure the highly inefficient and error-prone process of mentally translating text-based latitude and longitude coordinates (e.g., 3530N13945E) into geographical map locations, or manually plotting them on paper aeronautical charts using rulers and compasses. Grasping the exact shape of complex military training areas or temporary flight restrictions—which often consist of numerous coordinates forming complex polygons—is virtually impossible using text alone. "<a href="https://www.majosystem.com/">NOTAM MAP View</a>" was developed specifically to solve this persistent industry-wide challenge.</p>
             <p>Our system automatically parses complex, hard-to-read NOTAM text data in real-time, graphically rendering the exact hazard areas as intuitive circles or polygons directly on a digital map. This visual approach makes it instantly obvious whether a danger zone intersects with your planned flight path, drastically reducing pre-flight briefing times and cognitive load. The human brain processes visual spatial information exponentially faster and more accurately than raw text. Aviation safety begins with flawless information gathering. By understanding the fundamentals of NOTAMs and leveraging cutting-edge digital visualization tools like ours, operators can achieve the highest standard of safe and confident flight planning.</p>
         </div>
 
         <div style="margin-top: 60px; text-align: center;">
-            <a href="/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
+            <a href="https://www.majosystem.com/" class="back-btn">⬅ マップ画面へ戻る / Back to Map</a>
         </div>
     </div>
     <div class="footer">
@@ -108,6 +135,7 @@
     <script>
         function switchLang(lang) {
             if (lang === 'ja') {
+                document.getElementById('article-title').innerText = "初心者向け NOTAMの基礎知識と読み方";
                 document.getElementById('content-ja').style.display = 'block';
                 document.getElementById('content-en').style.display = 'none';
                 document.getElementById('btn-ja').classList.add('active');
@@ -115,6 +143,7 @@
                 document.title = "初心者向け NOTAMの基礎知識と読み方 | NOTAM MAP View";
                 document.documentElement.lang = "ja";
             } else {
+                document.getElementById('article-title').innerText = "Beginner's Guide to NOTAMs: Basics and How to Read Them";
                 document.getElementById('content-ja').style.display = 'none';
                 document.getElementById('content-en').style.display = 'block';
                 document.getElementById('btn-en').classList.add('active');
