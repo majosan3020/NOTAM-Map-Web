@@ -85,12 +85,13 @@
             padding: 0 4px;
             line-height: 1;
         }
-        /* スマホ（幅768px以下）かつ表示フラグがある時だけ表示 */
+        /* GOOGLE_PLAY_OFF: スマホ（幅768px以下）バナー表示を一時停止中
         @media (max-width: 768px) {
             body.show-app-banner #app-install-banner {
                 display: flex;
             }
         }
+        */
 
         #header-container {
             flex-shrink: 0;
@@ -382,6 +383,10 @@
                 right: 400px;
                 bottom: 0;
             }
+            /* 🌟 PCで「画面を広く」が押されたときは右端（400px分）まで地図を広げる */
+            body.map-expanded #map {
+                right: 0 !important;
+            }
             #notam-panel {
                 position: absolute;
                 top: 0;
@@ -619,7 +624,7 @@
 </head>
 <body>
 
-    <!-- 🌟 スマホ用公式アプリ誘導トップバナー -->
+    <!-- GOOGLE_PLAY_OFF: スマホ用公式アプリ誘導トップバナーを一時停止中
     <div id="app-install-banner">
         <div style="display: flex; align-items: center; gap: 8px; overflow: hidden;">
             <span style="font-size: 18px;">📱</span>
@@ -630,6 +635,7 @@
             <button class="close-banner" onclick="closeAppBanner()">×</button>
         </div>
     </div>
+    -->
 
     <div id="header-container">
         <div class="brand-row">
@@ -804,11 +810,12 @@
         <div class="modal-content">
             <div class="modal-header" id="menu-header-title">Menu / Navigation</div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 12px;">
-                <!-- 🌟 メニュー内にもアプリ版へのリンクを追加 -->
+                <!-- GOOGLE_PLAY_OFF: メニュー内Google Playリンクを一時停止中
                 <a href="https://play.google.com/store/apps/details?id=com.majo.notammapview" class="nav-link" target="_blank" style="background-color: var(--primary-dark); color: var(--primary-color); border-color: var(--primary-color);">
                     📱 Android公式アプリ版をインストール (Google Play)
                 </a>
                 <hr style="border: 0; border-top: 1px solid #444; margin: 2px 0;">
+                -->
                 <a href="/about.html" class="nav-link" target="_blank" id="menu-about">ℹ️ About & Guide (概要・使い方)</a>
                 <a href="/privacy.html" class="nav-link" target="_blank" id="menu-privacy">🛡️ Privacy Policy (プライバシーポリシー)</a>
                 <a href="/contact.html" class="nav-link" target="_blank" id="menu-contact">✉️ Contact Us (お問い合わせ)</a>
@@ -1005,15 +1012,16 @@
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
         document.addEventListener('DOMContentLoaded', () => {
-            // 🌟 スマホ用トップバナーの表示判定
-            if (!localStorage.getItem('hide_app_banner') && window.innerWidth <= 768) {
-                document.body.classList.add('show-app-banner');
-            }
+            // GOOGLE_PLAY_OFF: スマホ用トップバナーの表示判定を一時停止中
+            // if (!localStorage.getItem('hide_app_banner') && window.innerWidth <= 768) {
+            //     document.body.classList.add('show-app-banner');
+            // }
 
-            // 言語に応じたバナーテキスト切り替え
+            // 言語に応じたテキスト切り替え
             if (!isJa) {
-                document.getElementById('banner-text').innerText = 'Official Android App Available!';
-                document.getElementById('banner-install-btn').innerText = 'Install';
+                // GOOGLE_PLAY_OFF: バナー文言切り替えを一時停止中
+                // document.getElementById('banner-text').innerText = 'Official Android App Available!';
+                // document.getElementById('banner-install-btn').innerText = 'Install';
 
                 document.getElementById('intro-ja').style.display = 'none';
                 document.getElementById('intro-en').style.display = 'block';
@@ -1159,7 +1167,10 @@
                 btn.innerHTML = isJa ? '⛶ 画面を広く' : '⛶ Expand Map';
                 document.body.classList.remove('map-expanded'); 
             }
-            setTimeout(() => map.invalidateSize(), 300);
+            setTimeout(() => {
+                map.invalidateSize();
+                drawGraticule(true);
+            }, 350);
         }
 
         function openMenuModal() { document.getElementById('menu-modal').style.display = 'flex'; }
