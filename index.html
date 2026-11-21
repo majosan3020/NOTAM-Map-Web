@@ -19,12 +19,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>NOTAM MAP View｜リアルタイムNOTAM地図表示・ICAO空港検索ツール</title>
-    <meta name="description" content="ICAO CODEを入力することで、リアルタイムな航空情報（NOTAM）を地図上でビジュアルに確認できるパイロット・航空ファン向けマップアプリ。">
-    <meta property="og:title" content="NOTAM MAP View (Web)">
-    <meta property="og:description" content="リアルタイムな航空情報（NOTAM）を地図上でビジュアルに確認できるパイロット・航空ファン向けマップアプリ。">
+    <meta name="description" content="Real-time NOTAM Map & ICAO Airport Search Tool. ICAOコードを入力することで、リアルタイムな航空情報（NOTAM）をNOTAM Map上でビジュアルに確認できるパイロット・航空ファン向けマップアプリ。">
+    <meta property="og:title" content="NOTAM MAP View (NOTAM Map Web)">
+    <meta property="og:description" content="Real-time NOTAM Map & ICAO Airport Search Tool. ICAOコードを入力することで、リアルタイムな航空情報（NOTAM）をNOTAM Map上でビジュアルに確認できるマップアプリ。">
     <meta property="og:image" content="https://www.majosystem.com/icon.png">
     <meta property="og:url" content="https://www.majosystem.com/">
     <meta property="og:type" content="website">
+
+    <!-- 構造化データ (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "NOTAM MAP View",
+      "alternateName": ["NOTAM Map", "NOTAM MAP Web", "NOTAMマップ"],
+      "url": "https://www.majosystem.com/",
+      "applicationCategory": "NavigationApplication",
+      "operatingSystem": "All",
+      "inLanguage": ["ja", "en"],
+      "description": "Real-time NOTAM Map and ICAO airport/airspace search tool. リアルタイムな航空情報（NOTAM）をインタラクティブなNOTAM Map上に視覚化するツール。"
+    }
+    </script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
@@ -132,9 +147,11 @@
             object-fit: cover;
         }
         .brand-title {
+            margin: 0;
             font-size: 16px;
             font-weight: bold;
             color: var(--primary-color);
+            line-height: 1.2;
         }
         .brand-right {
             display: flex;
@@ -640,8 +657,8 @@
     <div id="header-container">
         <div class="brand-row">
             <div class="brand-left">
-                <img src="/icon.png" alt="Logo" class="brand-icon">
-                <span class="brand-title">NOTAM MAP View</span>
+                <img src="/icon.png" alt="NOTAM Map Logo" class="brand-icon">
+                <h1 class="brand-title">NOTAM MAP View</h1>
             </div>
             <div class="brand-right">
                 <div class="last-update-badge" id="last-update-container">
@@ -706,12 +723,12 @@
             <div id="welcome-guide">
                 <!-- 🇯🇵 日本語用の初期表示テキスト -->
                 <div id="intro-ja" style="padding: 20px; color: var(--text-sub); line-height: 1.8;">
-                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）を地図上で視覚化</h2>
-                    <p>当サイト「NOTAM MAP View」は、世界中の航空従事者や航空ファンに向けて、最新のNOTAM（Notice to Air Missions：航空情報）をインタラクティブな地図上に描画し、視覚的に把握できる専門ツールです。</p>
+                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">リアルタイム航空情報（NOTAM）をNOTAM Map上で視覚化</h2>
+                    <p>当サイト「NOTAM MAP View」は、世界中の航空従事者や航空ファンに向けて、最新のNOTAM（Notice to Air Missions：航空情報）をインタラクティブな地図（NOTAM Map）上に描画し、視覚的に把握できる専門ツールです。</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">NOTAM（Notice to Air Missions）とは？</h3>
-                    <p>NOTAMとは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害など）を関係者に通知するためのシステムです。かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当ツールは、その複雑なテキストデータを解析し、ポリゴンやラインとして地図上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
+                    <p>NOTAMとは、航空機の運航に関わる重要な情報（滑走路の閉鎖、空域の制限、航法無線の障害など）を関係者に通知するためのシステムです。かつては「Notice to Airmen」と呼ばれていましたが、現在ではより包括的な「Notice to Air Missions」という名称が正式に採用されています。これらは通常、暗号のようなテキスト形式で配信されるため、直感的に位置や範囲を把握するのが困難でした。当ツールは、その複雑なテキストデータを解析し、ポリゴンやラインとしてNOTAM Map上にマッピングすることで、フライトプランニングや空域確認の効率を劇的に向上させます。</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">基本的な使い方</h3>
-                    <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>RJJJ</strong>（福岡FIR）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、マップ上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
+                    <p>画面上部の検索バーに、確認したい空港や空域のICAOコード（例: <strong>RJTT</strong>（羽田）, <strong>EGLL</strong>（ヒースロー）, <strong>RJJJ</strong>（福岡FIR）など）を入力し、「Search」ボタンを押してください。最新のデータがサーバーから取得され、NOTAM Map上に規制エリアやルートがハイライト表示されます。複数のICAOコードをスペース区切りで同時検索することも可能です。</p>
                     
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">関連ガイド・コラム</h3>
                     <p>当ツールの詳しい活用方法やNOTAM・航空システムに関する解説については、以下のページをご参照ください。</p>
@@ -733,15 +750,15 @@
                 
                 <!-- 🇬🇧 英語用の初期表示テキスト -->
                 <div id="intro-en" style="padding: 20px; color: var(--text-sub); line-height: 1.8; display: none;">
-                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">Visualize Real-Time NOTAMs on the Map</h2>
-                    <p>This site, "NOTAM MAP View", is a specialized tool for aviation professionals and enthusiasts worldwide. It visually maps the latest NOTAMs (Notice to Air Missions) on an interactive map for easy understanding.</p>
+                    <h2 style="color: var(--primary-color); margin-top: 0; font-size: 18px;">Visualize Real-Time NOTAMs on the NOTAM Map</h2>
+                    <p>This site, "NOTAM MAP View", is a specialized NOTAM Map tool for aviation professionals and enthusiasts worldwide. It visually maps the latest NOTAMs (Notice to Air Missions) on an interactive map for easy understanding.</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">What is a NOTAM?</h3>
-                    <p>A NOTAM is a system used to notify those concerned with aircraft operations about essential information such as runway closures, airspace restrictions, and navigation aid outages. Previously known as "Notice to Airmen," the more inclusive term "Notice to Air Missions" is now officially adopted. Since these are usually distributed in a cryptic text format, it was difficult to intuitively grasp their location and extent. This tool parses that complex text data and maps it as polygons and lines, dramatically improving the efficiency of flight planning and airspace verification.</p>
+                    <p>A NOTAM is a system used to notify those concerned with aircraft operations about essential information such as runway closures, airspace restrictions, and navigation aid outages. Previously known as "Notice to Airmen," the more inclusive term "Notice to Air Missions" is now officially adopted. Since these are usually distributed in a cryptic text format, it was difficult to intuitively grasp their location and extent. This NOTAM Map tool parses that complex text data and maps it as polygons and lines, dramatically improving the efficiency of flight planning and airspace verification.</p>
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Basic Usage</h3>
-                    <p>Enter the ICAO code of the airport or airspace you want to check (e.g., <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>RJJJ</strong>) in the search bar at the top of the screen and press the "Search" button. The latest data will be fetched from the server, and restricted areas and routes will be highlighted on the map. You can also search for multiple ICAO codes simultaneously by separating them with a space.</p>
+                    <p>Enter the ICAO code of the airport or airspace you want to check (e.g., <strong>RJTT</strong>, <strong>EGLL</strong>, <strong>RJJJ</strong>) in the search bar at the top of the screen and press the "Search" button. The latest data will be fetched from the server, and restricted areas and routes will be highlighted on the NOTAM Map. You can also search for multiple ICAO codes simultaneously by separating them with a space.</p>
                     
                     <h3 style="color: #ffffff; font-size: 15px; border-bottom: 1px solid #444; padding-bottom: 4px;">Related Columns and Guides</h3>
-                    <p>For more detailed explanations on reading NOTAMs and ICAO codes, as well as how to use this tool, please refer to the specialized columns and guide pages below.</p>
+                    <p>For more detailed explanations on reading NOTAMs and ICAO codes, as well as how to use this NOTAM Map tool, please refer to the specialized columns and guide pages below.</p>
                     <ul style="padding-left: 20px; font-weight: bold;">
                         <li><a href="/about.html" style="color: var(--orange-accent);" target="_blank">ℹ️ About & Guide</a></li>
                         <li><a href="/privacy.html" style="color: var(--orange-accent);" target="_blank">🛡️ Privacy Policy</a></li>
@@ -841,7 +858,17 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
-        const isJa = (navigator.language || navigator.userLanguage).startsWith('ja');
+        function detectIsJapanese() {
+            const params = new URLSearchParams(window.location.search);
+            const langParam = (params.get('lang') || '').toLowerCase();
+            if (langParam === 'en') return false;
+            if (langParam === 'ja') return true;
+            const browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+            return browserLang.startsWith('ja');
+        }
+
+        const isJa = detectIsJapanese();
+        document.documentElement.lang = isJa ? 'ja' : 'en';
 
         let searchCount = 0;
         let allFetchedNotams = []; 
@@ -1039,6 +1066,8 @@
 
             // 言語に応じたテキスト切り替え
             if (!isJa) {
+                document.title = 'NOTAM MAP View | Real-Time NOTAM Map & ICAO Search Tool';
+
                 // GOOGLE_PLAY_OFF: バナー文言切り替えを一時停止中
                 // document.getElementById('banner-text').innerText = 'Official Android App Available!';
                 // document.getElementById('banner-install-btn').innerText = 'Install';
