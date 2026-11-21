@@ -582,14 +582,19 @@
         }
 
         .graticule-label {
-            color: #ffffff;
-            font-size: 12px;
-            font-family: monospace;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 600;
+            text-shadow:
+                1px 1px 1px rgba(0, 0, 0, 0.7),
+               -1px -1px 1px rgba(0, 0, 0, 0.7),
+                1px -1px 1px rgba(0, 0, 0, 0.7),
+               -1px 1px 1px rgba(0, 0, 0, 0.7);
             pointer-events: none;
+            white-space: nowrap;
             text-align: center;
-            line-height: 20px;
+            line-height: 14px;
         }
 
         .nav-link {
@@ -852,59 +857,150 @@
         let mapLayers = L.layerGroup().addTo(map);
         const graticuleLayer = L.layerGroup().addTo(map);
 
-        function drawGraticule() {
+        let stableZoom = map.getZoom();
+        let stableCenter = map.getCenter();
+
+        function formatGrid(val) {
+            const rounded = Math.round(val * 100) / 100;
+            return Number.isInteger(rounded) ? String(rounded) : String(rounded);
+        }
+
+        function getGridStep(zoom) {
+            if (zoom < 3.5) return 10.0;
+            if (zoom < 5.5) return 5.0;
+            if (zoom < 7.0) return 2.0;
+            if (zoom < 8.5) return 1.0;
+            return 0.5;
+        }
+
+        function getSpanLon(zoom) {
+            if (zoom < 3.5) return 180.0;
+            if (zoom < 5.5) return 60.0;
+            if (zoom < 7.0) return 20.0;
+            if (zoom < 8.5) return 10.0;
+            return 4.0;
+        }
+
+        function drawGraticule(force = false) {
+            const currentZoom = map.getZoom();
+            const currentCenter = map.getCenter();
+            const currentSpan = getSpanLon(stableZoom);
+
+            const zDiff = Math.abs(currentZoom - stableZoom);
+            const lonDiff = Math.abs(currentCenter.lng - stableCenter.lng);
+            const latDiff = Math.abs(currentCenter.lat - stableCenter.lat);
+
+            if (!force && zDiff <= 0.4 && lonDiff <= currentSpan / 3 && latDiff <= currentSpan / 3) {
+                return;
+            }
+
+            stableZoom = currentZoom;
+            stableCenter = currentCenter;
+
             graticuleLayer.clearLayers();
-            const zoom = map.getZoom();
-            let step = 10;
-            if (zoom >= 5) step = 5;
-            if (zoom >= 7) step = 2;
-            if (zoom >= 9) step = 1;
-            if (zoom >= 11) step = 0.5;
 
-            const bounds = map.getBounds();
-            const west = Math.floor(bounds.getWest() / step) * step;
-            const east = Math.ceil(bounds.getEast() / step) * step;
-            const south = Math.max(-89.9, Math.floor(bounds.getSouth() / step) * step);
-            const north = Math.min(89.9, Math.ceil(bounds.getNorth() / step) * step);
+            const gridStep = getGridStep(stableZoom);
+            const spanLon = getSpanLon(stableZoom);
+            const spanLat = spanLon * 0.8;
 
-            const lineStyle = { color: '#888888', weight: 1, opacity: 0.5, dashArray: '5, 5', interactive: false };
-            const edgeWest = bounds.getWest();
-            const edgeSouth = bounds.getSouth();
+            const minLon = Math.max(-180.0, stableCenter.lng - spanLon);
+            const maxLon = Math.min(180.0, stableCenter.lng + spanLon);
+            const minLat = Math.max(-85.0, stableCenter.lat - spanLat);
+            const maxLat = Math.min(85.0, stableCenter.lat + spanLat);
 
-            function format60(val, isLat) {
-                let dir = '';
-                let num = val;
-                if (isLat) {
-                    dir = num >= 0 ? 'N' : 'S';
-                } else {
-                    num = num % 360;
-                    if (num > 180) num -= 360;
-                    if (num <= -180) num += 360;
-                    dir = num >= 0 ? 'E' : 'W';
+            const lineStyle = {
+                color: 'rgba(0, 0, 0, 0.25)',
+                weight: 1.0,
+                interactive: false
+            };
+
+            const labelInterval = Math.max(gridStep * 2.0, 2.0);
+            const subStep = Math.max(gridStep / 2.0, 0.5);
+
+            let lon = Math.floor(minLon / gridStep) * gridStep;
+            while (lon <= maxLon + 1e-9) {
+                const sLon = Math.round(lon * 10000) / 10000;
+                if (sLon >= -180.0 && sLon <= 180.0) {
+                    const points = [];
+                    let lat = minLat;
+                    while (lat <= maxLat) {
+                        points.push([lat, sLon]);
+                        lat += subStep;
+                    }
+                    points.push([maxLat, sLon]);
+
+                    if (points.length >= 2) {
+                        L.polyline(points, lineStyle).addTo(graticuleLayer);
+                    }
+
+                    const lonText = sLon < 0
+                        ? `${formatGrid(-sLon)}°W`
+                        : sLon > 0.0
+                            ? `${formatGrid(sLon)}°E`
+                            : '0°';
+
+                    let lLat = Math.floor(minLat / labelInterval) * labelInterval;
+                    while (lLat <= maxLat + 1e-9) {
+                        const labelLat = lLat + (gridStep * 0.15);
+                        if (labelLat >= -85.0 && labelLat <= 85.0) {
+                            const icon = L.divIcon({
+                                className: 'graticule-label',
+                                html: lonText,
+                                iconSize: [50, 14],
+                                iconAnchor: [25, 7]
+                            });
+                            L.marker([labelLat, sLon], { icon, interactive: false }).addTo(graticuleLayer);
+                        }
+                        lLat += labelInterval;
+                    }
                 }
-                num = Math.abs(num);
-                let deg = Math.floor(num);
-                let min = Math.round((num - deg) * 60);
-                if (min === 60) { deg += 1; min = 0; }
-                if (min === 0) return `${deg}${dir}`;
-                else return `${deg}.${min.toString().padStart(2, '0')}${dir}`; 
+                lon += gridStep;
             }
 
-            for (let lat = south; lat <= north; lat += step) {
-                L.polyline([[lat, bounds.getWest() - step], [lat, bounds.getEast() + step]], lineStyle).addTo(graticuleLayer);
-                const icon = L.divIcon({ className: 'graticule-label', html: format60(lat, true), iconSize: [40, 20], iconAnchor: [-5, 10] });
-                L.marker([lat, edgeWest], {icon: icon, interactive: false}).addTo(graticuleLayer);
-            }
+            let lat2 = Math.floor(minLat / gridStep) * gridStep;
+            while (lat2 <= maxLat + 1e-9) {
+                const sLat = Math.round(lat2 * 10000) / 10000;
+                if (sLat >= -85.0 && sLat <= 85.0) {
+                    const points = [];
+                    let lon2 = minLon;
+                    while (lon2 <= maxLon) {
+                        points.push([sLat, lon2]);
+                        lon2 += subStep;
+                    }
+                    points.push([sLat, maxLon]);
 
-            for (let lng = west; lng <= east; lng += step) {
-                L.polyline([[-90, lng], [90, lng]], lineStyle).addTo(graticuleLayer);
-                const icon = L.divIcon({ className: 'graticule-label', html: format60(lng, false), iconSize: [40, 20], iconAnchor: [20, 75] });
-                L.marker([edgeSouth, lng], {icon: icon, interactive: false}).addTo(graticuleLayer);
+                    if (points.length >= 2) {
+                        L.polyline(points, lineStyle).addTo(graticuleLayer);
+                    }
+
+                    const latText = sLat < 0
+                        ? `${formatGrid(-sLat)}°S`
+                        : sLat > 0.0
+                            ? `${formatGrid(sLat)}°N`
+                            : '0°';
+
+                    let lLon = Math.floor(minLon / labelInterval) * labelInterval;
+                    while (lLon <= maxLon + 1e-9) {
+                        const labelLon = lLon + (gridStep * 0.15);
+                        if (labelLon >= -180.0 && labelLon <= 180.0) {
+                            const icon = L.divIcon({
+                                className: 'graticule-label',
+                                html: latText,
+                                iconSize: [50, 14],
+                                iconAnchor: [25, 7]
+                            });
+                            L.marker([sLat, labelLon], { icon, interactive: false }).addTo(graticuleLayer);
+                        }
+                        lLon += labelInterval;
+                    }
+                }
+                lat2 += gridStep;
             }
         }
 
-        map.on('move', drawGraticule);
-        drawGraticule();
+        map.on('move', () => drawGraticule(false));
+        map.on('zoomend', () => drawGraticule(true));
+        drawGraticule(true);
 
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
