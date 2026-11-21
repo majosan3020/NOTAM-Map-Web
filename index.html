@@ -856,7 +856,8 @@
 
         const map = L.map('map', { 
             zoomControl: false,
-            preferCanvas: true 
+            preferCanvas: true,
+            worldCopyJump: true
         }).setView([35.5, 139.7], 5);
         
         L.control.zoom({ position: 'topleft' }).addTo(map);
@@ -872,20 +873,48 @@
             return Number.isInteger(rounded) ? String(rounded) : String(rounded);
         }
 
+        // ズームを引いたときに細かくなりすぎないよう粗めの刻み幅に設定
         function getGridStep(zoom) {
-            if (zoom < 3.5) return 10.0;
-            if (zoom < 5.5) return 5.0;
-            if (zoom < 7.0) return 2.0;
-            if (zoom < 8.5) return 1.0;
+            if (zoom < 3.0) return 20.0;
+            if (zoom < 4.5) return 10.0;
+            if (zoom < 6.5) return 5.0;
+            if (zoom < 8.5) return 2.0;
+            if (zoom < 10.0) return 1.0;
             return 0.5;
         }
 
         function getSpanLon(zoom) {
-            if (zoom < 3.5) return 180.0;
-            if (zoom < 5.5) return 60.0;
-            if (zoom < 7.0) return 20.0;
-            if (zoom < 8.5) return 10.0;
-            return 4.0;
+            if (zoom < 3.0) return 360.0;
+            if (zoom < 4.5) return 180.0;
+            if (zoom < 6.5) return 90.0;
+            if (zoom < 8.5) return 30.0;
+            if (zoom < 10.0) return 12.0;
+            return 5.0;
+        }
+
+        // 任意の経度（180°超や-180°未満のラップ座標含む）を [-180, 180] に正規化
+        function normalizeLon(lon) {
+            let wrapped = ((lon + 180) % 360 + 360) % 360 - 180;
+            if (Math.abs(wrapped + 180) < 1e-9 && lon > 0) {
+                wrapped = 180;
+            }
+            if (Math.abs(wrapped) < 1e-9) {
+                wrapped = 0;
+            }
+            return Math.round(wrapped * 10000) / 10000;
+        }
+
+        function formatLonLabel(lon) {
+            const norm = normalizeLon(lon);
+            if (norm === 0) return '0°';
+            if (Math.abs(Math.abs(norm) - 180) < 1e-9) return '180°';
+            return norm < 0 ? `${formatGrid(-norm)}°W` : `${formatGrid(norm)}°E`;
+        }
+
+        function formatLatLabel(lat) {
+            const snapped = Math.round(lat * 10000) / 10000;
+            if (Math.abs(snapped) < 1e-9) return '0°';
+            return snapped < 0 ? `${formatGrid(-snapped)}°S` : `${formatGrid(snapped)}°N`;
         }
 
         function drawGraticule(force = false) {
@@ -910,8 +939,9 @@
             const spanLon = getSpanLon(stableZoom);
             const spanLat = spanLon * 0.8;
 
-            const minLon = Math.max(-180.0, stableCenter.lng - spanLon);
-            const maxLon = Math.min(180.0, stableCenter.lng + spanLon);
+            // 経度は [-180, 180] で制限せず、東経〜西経またぎもそのまま描画範囲に含める
+            const minLon = stableCenter.lng - spanLon;
+            const maxLon = stableCenter.lng + spanLon;
             const minLat = Math.max(-85.0, stableCenter.lat - spanLat);
             const maxLat = Math.min(85.0, stableCenter.lat + spanLat);
 
@@ -921,49 +951,45 @@
                 interactive: false
             };
 
-            const labelInterval = Math.max(gridStep * 2.0, 2.0);
+            const labelInterval = Math.max(gridStep * 3.0, 6.0);
             const subStep = Math.max(gridStep / 2.0, 0.5);
 
+            // 経線（南北ライン）＋ 東経/西経ラベル
             let lon = Math.floor(minLon / gridStep) * gridStep;
             while (lon <= maxLon + 1e-9) {
-                const sLon = Math.round(lon * 10000) / 10000;
-                if (sLon >= -180.0 && sLon <= 180.0) {
-                    const points = [];
-                    let lat = minLat;
-                    while (lat <= maxLat) {
-                        points.push([lat, sLon]);
-                        lat += subStep;
-                    }
-                    points.push([maxLat, sLon]);
+                const drawLng = Math.round(lon * 10000) / 10000;
+                const points = [];
+                let lat = minLat;
+                while (lat <= maxLat) {
+                    points.push([lat, drawLng]);
+                    lat += subStep;
+                }
+                points.push([maxLat, drawLng]);
 
-                    if (points.length >= 2) {
-                        L.polyline(points, lineStyle).addTo(graticuleLayer);
-                    }
+                if (points.length >= 2) {
+                    L.polyline(points, lineStyle).addTo(graticuleLayer);
+                }
 
-                    const lonText = sLon < 0
-                        ? `${formatGrid(-sLon)}°W`
-                        : sLon > 0.0
-                            ? `${formatGrid(sLon)}°E`
-                            : '0°';
+                const lonText = formatLonLabel(drawLng);
 
-                    let lLat = Math.floor(minLat / labelInterval) * labelInterval;
-                    while (lLat <= maxLat + 1e-9) {
-                        const labelLat = lLat + (gridStep * 0.15);
-                        if (labelLat >= -85.0 && labelLat <= 85.0) {
-                            const icon = L.divIcon({
-                                className: 'graticule-label',
-                                html: lonText,
-                                iconSize: [50, 14],
-                                iconAnchor: [25, 7]
-                            });
-                            L.marker([labelLat, sLon], { icon, interactive: false }).addTo(graticuleLayer);
-                        }
-                        lLat += labelInterval;
+                let lLat = Math.floor(minLat / labelInterval) * labelInterval;
+                while (lLat <= maxLat + 1e-9) {
+                    const labelLat = lLat + (gridStep * 0.15);
+                    if (labelLat >= -85.0 && labelLat <= 85.0) {
+                        const icon = L.divIcon({
+                            className: 'graticule-label',
+                            html: lonText,
+                            iconSize: [54, 14],
+                            iconAnchor: [27, 7]
+                        });
+                        L.marker([labelLat, drawLng], { icon, interactive: false }).addTo(graticuleLayer);
                     }
+                    lLat += labelInterval;
                 }
                 lon += gridStep;
             }
 
+            // 緯線（東西ライン）＋ 北緯/南緯ラベル
             let lat2 = Math.floor(minLat / gridStep) * gridStep;
             while (lat2 <= maxLat + 1e-9) {
                 const sLat = Math.round(lat2 * 10000) / 10000;
@@ -980,24 +1006,18 @@
                         L.polyline(points, lineStyle).addTo(graticuleLayer);
                     }
 
-                    const latText = sLat < 0
-                        ? `${formatGrid(-sLat)}°S`
-                        : sLat > 0.0
-                            ? `${formatGrid(sLat)}°N`
-                            : '0°';
+                    const latText = formatLatLabel(sLat);
 
                     let lLon = Math.floor(minLon / labelInterval) * labelInterval;
                     while (lLon <= maxLon + 1e-9) {
                         const labelLon = lLon + (gridStep * 0.15);
-                        if (labelLon >= -180.0 && labelLon <= 180.0) {
-                            const icon = L.divIcon({
-                                className: 'graticule-label',
-                                html: latText,
-                                iconSize: [50, 14],
-                                iconAnchor: [25, 7]
-                            });
-                            L.marker([sLat, labelLon], { icon, interactive: false }).addTo(graticuleLayer);
-                        }
+                        const icon = L.divIcon({
+                            className: 'graticule-label',
+                            html: latText,
+                            iconSize: [54, 14],
+                            iconAnchor: [27, 7]
+                        });
+                        L.marker([sLat, labelLon], { icon, interactive: false }).addTo(graticuleLayer);
                         lLon += labelInterval;
                     }
                 }
